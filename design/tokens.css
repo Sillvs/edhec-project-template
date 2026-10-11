@@ -1,0 +1,18 @@
+/* EDHEC design tokens.
+   The slide and paper templates each carry their own copy of these variables so
+   that a single HTML file stays self-contained and can be handed in or opened
+   offline. This file is the reference: change a value here, then mirror it into
+   slides/slides.html and paper/paper.html.
+
+   The burgundy is read out of the official logo at design/edhec-logo.svg. */
+
+:root{
+  --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
+  --sky:#F8F1F4; --sky2:#EEDCE4;
+  --olive:#7A8300; --olive-dark:#5F6600;
+  --orange:#C08A2E; --orange-dark:#8C5F1B;
+  --ink:#1A2430; --muted:#5D6B79; --line:#D9E0E7; --soft:#F3F6F9;
+  --optA:#5F1937; --optB:#9C0D16; --optC:#69085A; --optD:#5D6B79;
+  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A96882; --int3:#5F1937;
+  --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
+}

@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EDHEC Business School | AuditCert France — AI strategy | Philoway Consulting Challenge | Cohort B, Group 4</title>
+<style>
+/* =====================================================================
+   Executive deck · AuditCert France — AI strategy
+   Philoway Consulting Challenge · Cohort B, Group 4
+   ---------------------------------------------------------------------
+   Design language taken over from the team's seminar deck
+   (07 Praesentation/praesentation.html): ghost digits per section,
+   icon bands, process chains, chevron lists, honeycomb pattern,
+   dark tables, intensity matrix, stat tiles. No animations.
+   University branding removed (no logo, no chair line).
+   Colour rule: corporate blue throughout, orange only as a pointed
+   highlight (risk, deferral, the figure that decides).
+   One file, runs offline. 16:9 (1280x720), scaled on screen;
+   print (Chrome "Save as PDF", margins: none, backgrounds: on):
+   one slide per page.
+   Controls: ->/space next · <- back · Home/End · O overview
+             F fullscreen · P print · B backup index
+   ===================================================================== */
+:root{
+  --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
+  --sky:#F8F1F4; --sky2:#EEDCE4;
+  --olive:#7A8300; --olive-dark:#5F6600;
+  --orange:#C08A2E; --orange-dark:#8C5F1B;
+  --ink:#1A2430; --muted:#5D6B79; --line:#D9E0E7; --soft:#F3F6F9;
+  --optA:#5F1937; --optB:#9C0D16; --optC:#69085A; --optD:#5D6B79;
+  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A96882; --int3:#5F1937;
+  --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+html,body{margin:0;padding:0;font-family:var(--sans);color:var(--ink);}
+
+.slide{position:relative;width:1280px;height:720px;background:#fff;overflow:hidden;}
+
+@media screen{
+  html,body{height:100%;background:#1A0710;overflow:hidden;}
+  #deck{position:fixed;top:50%;left:50%;width:1280px;height:720px;
+    transform:translate(-50%,-50%) scale(var(--scale,1));transform-origin:center center;
+    box-shadow:0 24px 80px rgba(0,0,0,.55);}
+  .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateY(12px);
+    transition:opacity .24s ease-out,transform .24s ease-out,visibility 0s linear .24s;}
+  .slide.active{opacity:1;visibility:visible;transform:translateY(0);
+    transition:opacity .24s ease-out,transform .24s ease-out,visibility 0s linear 0s;}
+}
+@media print{
+  @page{size:1280px 720px;margin:0;}
+  html,body{background:#fff;}
+  #deck{position:static;transform:none;width:auto;height:auto;box-shadow:none;}
+  .slide{position:relative;inset:auto;opacity:1!important;visibility:visible!important;
+         break-after:page;page-break-after:always;break-inside:avoid;}
+  .slide:last-child{break-after:auto;page-break-after:auto;}
+  .no-print{display:none!important;}
+  /* Chrome renders soft box-shadows as a grey block in PDF: drop soft shadows
+     in print, keep the solid light-blue ring of the process circles. */
+  .circle .cicon, .band .bicon, .vcard{box-shadow:none!important;}
+  .chain .cir{box-shadow:0 0 0 9px var(--sky)!important;}
+}
+
+
+/* ---------- Header: big digit + section + blue action title ---------- */
+.pad{position:absolute;inset:0;padding:44px 64px 64px;display:flex;flex-direction:column;}
+.grow{flex:1;display:flex;flex-direction:column;justify-content:center;padding-bottom:16px;}
+.secrow{display:flex;align-items:baseline;gap:14px;margin:0 0 6px;}
+.secrow .n{font-size:30px;font-weight:800;color:var(--blue);letter-spacing:.02em;}
+.secrow .t{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:.16em;text-transform:uppercase;}
+.action{font-size:26px;line-height:1.22;font-weight:700;color:var(--blue);margin:0 0 22px;max-width:1120px;}
+.action.sm{font-size:23px;}
+.ghost{position:absolute;top:6px;right:52px;font-size:190px;font-weight:800;color:var(--blue);opacity:.06;line-height:1;pointer-events:none;font-variant-numeric:tabular-nums;}
+
+p{margin:0 0 12px;font-size:19px;line-height:1.4;}
+.small{font-size:16px;color:var(--muted);line-height:1.4;}
+.tiny{font-size:12.5px;color:var(--muted);line-height:1.35;}
+strong{color:var(--navy);}
+.blue{color:var(--blue);font-weight:700;}
+.org{color:var(--orange-dark);font-weight:700;}
+em{font-style:italic;}
+
+/* Chevron lists */
+ul{margin:0;padding:0;list-style:none;}
+li{position:relative;font-size:17.5px;line-height:1.38;margin:0 0 10px;padding-left:24px;}
+li:before{content:"\203A";position:absolute;left:2px;top:-2px;font-size:21px;font-weight:800;color:var(--blue);}
+li.o:before{color:var(--orange);}
+li.g:before{color:var(--olive);}
+
+.foot{position:absolute;left:64px;right:64px;bottom:20px;display:flex;justify-content:space-between;z-index:3;
+      align-items:center;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px;gap:18px;}
+.foot .fmid{flex:1;text-align:center;}
+.foot .fright{font-variant-numeric:tabular-nums;}
+.srcline{position:absolute;left:64px;right:64px;bottom:48px;font-size:11.5px;color:var(--muted);z-index:3;}
+
+.cols{display:flex;gap:32px;}
+.cols>div{flex:1;min-width:0;}
+.col-7{flex:1.32;} .col-5{flex:.9;}
+
+/* ---------- Icon bands ---------- */
+.band{position:relative;margin:0 0 14px;display:flex;flex-direction:column;}
+.band .bhead{display:flex;align-items:center;gap:0;background:linear-gradient(90deg,var(--deep),var(--blue));
+  color:#fff;border-radius:4px;padding:9px 16px 9px 62px;font-size:16.5px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;}
+.band.green .bhead{background:linear-gradient(90deg,var(--olive-dark),var(--olive));}
+.band.warm .bhead{background:linear-gradient(90deg,var(--orange-dark),var(--orange));}
+
+.band .bicon{position:absolute;left:-8px;top:-10px;width:58px;height:58px;border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,#7E2A4B,var(--deep));border:3px solid #fff;z-index:2;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(7,33,64,.3);}
+.band.green .bicon{background:radial-gradient(circle at 30% 25%,#8a9410,var(--olive-dark));}
+.band.warm .bicon{background:radial-gradient(circle at 30% 25%,#D2A049,var(--orange-dark));}
+
+.band .bicon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.band .bbody{background:var(--soft);border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;
+  padding:13px 18px 9px 20px;flex:1;display:flex;flex-direction:column;}
+.bcost{margin-top:auto;padding-top:9px;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.45;min-height:46px;}
+.bcost .r{color:var(--muted);}
+.band .bbody li{margin-bottom:8px;}
+.bandwrap{padding-left:22px;}
+
+/* Double-chevron connector */
+.vchev{display:flex;justify-content:center;margin:2px 0 8px;}
+.vchev svg{width:44px;height:22px;}
+
+/* ---------- Process chain (circles + chevrons) ---------- */
+.chain{display:flex;align-items:flex-start;gap:0;justify-content:space-between;}
+.chain .step{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.chain .cir{width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 32% 26%,#7E2A4B,var(--deep));
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 9px var(--sky),0 6px 14px rgba(7,33,64,.28);margin-bottom:16px;}
+.chain .cir svg{width:44px;height:44px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.chain .clab{background:var(--navy);color:#fff;font-size:14px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  border-radius:4px;padding:7px 10px;min-height:44px;display:flex;align-items:center;justify-content:center;width:100%;line-height:1.25;}
+.chain .ctext{font-size:13.5px;color:var(--ink);line-height:1.35;margin-top:9px;text-align:left;width:100%;}
+.chain .ctext b{color:var(--navy);}
+.chain .sep{flex:0 0 46px;display:flex;align-items:center;justify-content:center;height:92px;}
+.chain .sep svg{width:26px;height:30px;}
+.chain.sm .cir{width:72px;height:72px;box-shadow:0 0 0 7px var(--sky),0 6px 14px rgba(7,33,64,.24);margin-bottom:13px;}
+.chain.sm .cir svg{width:34px;height:34px;}
+.chain.sm .clab{font-size:12.5px;min-height:38px;}
+.chain.sm .sep{flex:0 0 32px;height:72px;}
+
+/* ---------- Cards & building blocks ---------- */
+.card{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:16px 20px;}
+.card h4{margin:0 0 8px;font-size:16.5px;color:var(--navy);}
+.card.white{background:#fff;}
+.note-strip{background:var(--sky);border-left:5px solid var(--blue);border-radius:0 8px 8px 0;padding:12px 18px;font-size:16px;line-height:1.4;}
+.note-strip.warm{background:#FAF4EA;border-left-color:var(--orange);}
+
+/* Option identity: colour square + letter (never colour alone) */
+.fdot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;flex-shrink:0;}
+.oA{background:var(--optA);} .oB{background:var(--optB);} .oC{background:var(--optC);} .oD{background:var(--optD);}
+
+/* Recommendation / claim banner */
+.prop{border-radius:10px;padding:13px 18px;color:#fff;font-size:16px;line-height:1.4;}
+.prop.p1{background:linear-gradient(100deg,var(--deep),var(--blue));}
+.prop .plabel{display:inline-block;font-weight:800;background:rgba(255,255,255,.2);border-radius:6px;
+  padding:1px 9px;margin-right:9px;font-size:15px;}
+
+/* Letter chips */
+.fchips{display:flex;gap:8px;}
+.fchip{width:40px;height:40px;border-radius:10px;background:var(--navy);color:#fff;
+  font-weight:800;font-size:21px;display:flex;align-items:center;justify-content:center;}
+.fchip.dim{background:var(--sky2);color:var(--navy);}
+
+/* Dark tables */
+table.dark{border-collapse:collapse;width:100%;}
+table.dark th{background:var(--navy);color:#fff;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;
+  text-align:left;padding:8px 10px;}
+table.dark th:first-child{border-radius:5px 0 0 5px;} table.dark th:last-child{border-radius:0 5px 5px 0;}
+table.dark td{font-size:14.5px;padding:8.5px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.3;}
+table.dark tr:nth-child(even) td{background:var(--soft);}
+table.dark tr.dim td{color:var(--muted);font-style:italic;}
+table.dark tr.tot td{font-weight:800;color:var(--navy);background:var(--sky2)!important;border-bottom:1px solid #c6d6e6;}
+table.dark tr.rule td{border-top:2px solid var(--navy);}
+table.dark td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+table.dark th.num{text-align:right;}
+table.dark td.win{color:var(--blue);font-weight:800;}
+table.dark.xs td{font-size:13px;padding:6.5px 9px;}
+table.dark.tight td{padding:5.5px 9px;}
+table.dark.xs th{font-size:11.5px;padding:7px 9px;}
+
+/* Intensity matrix (sequential blue ramp, symbol inside the cell) */
+table.matrix{border-collapse:separate;border-spacing:4px;}
+table.matrix th{font-size:13.5px;color:var(--muted);font-weight:700;padding:3px 8px;text-align:left;}
+table.matrix th.c{text-align:center;}
+table.matrix td{font-size:16px;padding:9px 10px;border-radius:7px;}
+table.matrix td.lab{background:transparent;font-size:16px;white-space:nowrap;padding-left:0;}
+table.matrix td.lab .sub{color:var(--muted);font-size:12.5px;}
+table.matrix td.v{width:80px;text-align:center;font-weight:700;}
+td.i0{background:var(--int0);color:var(--muted);} td.i1{background:var(--int1);color:var(--ink);}
+td.i2{background:var(--int2);color:#fff;} td.i3{background:var(--int3);color:#fff;}
+td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
+
+.verdict{display:inline-block;border-radius:13px;padding:3px 12px;font-size:13.5px;font-weight:700;}
+.verdict.yes{background:var(--blue);color:#fff;}
+.verdict.part{background:var(--sky2);color:var(--navy);}
+.verdict.no{background:var(--int0);color:var(--muted);border:1px solid var(--line);}
+.verdict.warm{background:var(--orange);color:#fff;}
+
+/* Micro labels inside cards + status flags */
+.mlab{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
+.cellflag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);background:var(--int0);border:1px solid var(--line);border-radius:9px;padding:2px 8px;white-space:nowrap;}
+.cellflag.exit{color:#fff;background:var(--blue);border-color:var(--blue);}
+.cellflag.warm{color:#fff;background:var(--orange);border-color:var(--orange);}
+
+/* Implication / conclusion circles */
+.circles{display:flex;gap:34px;justify-content:center;}
+.circle{position:relative;width:300px;min-height:250px;background:var(--soft);border-radius:24px;
+  padding:56px 26px 20px;border:1px solid var(--line);}
+.circle .cicon{position:absolute;top:-26px;left:50%;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,#7E2A4B,var(--deep));border:3px solid #fff;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(7,33,64,.3);}
+.circle .cicon svg{width:32px;height:32px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.circle h4{margin:0 0 10px;font-size:18px;color:var(--navy);text-align:center;}
+.circle li{font-size:14.5px;margin-bottom:8px;padding-left:20px;}
+.circle li:before{font-size:18px;top:-1px;}
+
+/* Stat tiles */
+.tiles{display:flex;gap:18px;}
+.tile{flex:1;min-width:0;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:26px 18px 20px;text-align:center;}
+.tile .ti{margin-bottom:9px;}
+.tile .ti svg{width:28px;height:28px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.tile .ti.orange svg{stroke:var(--orange-dark);}
+.tile .n{font-size:47px;font-weight:800;color:var(--blue);line-height:1;white-space:nowrap;}
+.tile .n .unit{font-size:23px;font-weight:700;}
+.tile .n.orange{color:var(--orange-dark);}
+.tile .l{font-size:14.5px;color:var(--muted);margin-top:11px;line-height:1.4;}
+.tiles.sm .tile{padding:18px 14px 14px;}
+.tiles.sm .tile .n{font-size:36px;}
+.tiles.sm .tile .l{font-size:13px;margin-top:8px;}
+.band-navy{background:linear-gradient(100deg,var(--deep),var(--blue));border-radius:10px;padding:16px 24px;color:#fff;}
+.band-warm{background:linear-gradient(100deg,var(--orange-dark),var(--orange));border-radius:10px;padding:16px 24px;color:#fff;}
+
+/* Roadmap rail (phases with gates) */
+.road{display:flex;align-items:stretch;gap:8px;}
+.road .ph{flex:1;min-width:0;background:var(--soft);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px 12px;display:flex;flex-direction:column;}
+.road .ph .pt{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;
+  background:var(--navy);border-radius:4px;padding:4px 8px;display:inline-block;margin-bottom:9px;}
+.road .ph.now .pt{background:var(--blue);}
+.road .ph.later .pt{background:var(--muted);}
+.road .ph .pb{font-size:12.8px;line-height:1.35;flex:1;min-height:70px;}
+.road .ph .pg{margin-top:9px;padding-top:8px;border-top:1px dashed var(--line);font-size:12px;
+  line-height:1.32;color:var(--navy);min-height:50px;}
+.road .ph .pg b{color:var(--blue);}
+.road .gate{flex:0 0 22px;display:flex;align-items:center;justify-content:center;}
+.road .gate svg{width:18px;height:22px;}
+
+/* Framed block that carries the case question it answers, as a border legend */
+.qblock{position:relative;border:1px solid var(--line);border-radius:10px;padding:27px 24px 20px;}
+.grow>.qblock+.qblock{margin-top:17px;}/* stacked only: side-by-side blocks must stay top-aligned */
+.qblock>.qtag{position:absolute;top:-8px;left:20px;background:#fff;padding:0 9px;
+  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);white-space:nowrap;}
+.qblock.warm{border-color:#E9E0CB;background:#FCF8F0;}
+.qblock.warm>.qtag{color:var(--orange-dark);background:#FCF8F0;}
+
+/* Five-word bullets: one icon, one line, nothing else */
+.pts{display:flex;flex-wrap:wrap;gap:13px 26px;}
+.pts .pt{display:flex;align-items:center;gap:11px;flex:0 0 calc(50% - 13px);font-size:18px;line-height:1.3;}
+.pts .pt svg{flex:0 0 22px;width:22px;height:22px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.pts.warm .pt svg{stroke:var(--orange-dark);}
+.pts.three .pt{flex:0 0 calc(33.333% - 18px);}
+.pts.one .pt{flex:0 0 100%;}
+
+/* Process flow with an AI-support and a process-change layer (Q2) */
+.pflow{display:flex;align-items:stretch;gap:0;}
+.pflow .pcol{flex:1;min-width:0;display:flex;flex-direction:column;}
+.pflow .arr{flex:0 0 28px;display:flex;align-items:flex-start;justify-content:center;padding-top:24px;}
+.pflow .arr svg{width:20px;height:14px;}
+.pflow .pbox{background:var(--navy);color:#fff;border-radius:5px;padding:11px 8px 12px;text-align:center;}
+.pflow .pbox .ph{display:flex;align-items:center;justify-content:center;gap:9px;}
+.pflow .pbox .ph svg{width:24px;height:24px;stroke:#D6A6B9;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.pflow .pbox .pn{font-size:20px;font-weight:800;line-height:1;letter-spacing:.02em;}
+.pflow .pbox .pl{font-size:13px;font-weight:700;margin-top:5px;line-height:1.2;}
+.xband{display:flex;align-items:center;gap:10px;}
+.xband svg{flex:0 0 19px;width:19px;height:19px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.xband.grey svg{stroke:var(--navy);}
+.pflow .down{display:flex;justify-content:center;padding:5px 0 6px;}
+.pflow .down svg{width:14px;height:18px;}
+.pflow .lay{background:var(--sky);border-radius:6px;padding:8px 11px 7px;flex:1;}
+/* every repeated box in a row must be the same height: text is normalised to the
+   same number of lines and the height is pinned so a reflow cannot break it */
+.pflow .lay.pc{background:var(--soft);border:1px solid var(--line);margin-top:6px;flex:0 0 68px;}
+.pchip{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border-radius:8px;
+  padding:3px 9px;background:var(--sky2);color:var(--navy);margin-right:auto;white-space:nowrap;}
+.pchip.red{background:#F0E3C7;color:var(--orange-dark);}
+.pflow .lay .h{display:flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:5px;}
+.pflow .lay.pc .h{color:var(--muted);}
+.pflow .lay li{font-size:12.8px;line-height:1.3;margin:0 0 4px;padding-left:13px;}
+.pflow .lay li:before{content:"\2022";font-size:14px;left:1px;top:-1px;color:var(--navy);}
+.pflow .lay p{font-size:12.8px;line-height:1.3;margin:0;}
+.pflow .outdoc{position:relative;background:var(--sky);border:2px solid var(--blue);border-radius:6px;
+  padding:11px 10px 12px;text-align:center;overflow:hidden;
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.pflow .outdoc:after{content:"";position:absolute;top:-1px;right:-1px;border-width:0 15px 15px 0;
+  border-style:solid;border-color:#fff #fff var(--blue) var(--blue);}
+.pflow .outdoc .pn{font-size:20px;font-weight:800;color:var(--blue);line-height:1;}
+.pflow .outdoc .pl{font-size:13px;font-weight:800;color:var(--navy);margin-top:4px;line-height:1.2;}
+.pflow .outdoc .ps{font-size:11.5px;color:var(--muted);margin-top:5px;}
+.xband{background:var(--sky);border-radius:5px;padding:7px 14px;font-size:14px;line-height:1.3;margin-bottom:7px;}
+.xband b{color:var(--blue);}
+.xband.grey{background:var(--int0);}
+.xband.grey b{color:var(--navy);}
+
+/* Weight scale: how much a risk should steer the decision */
+.wdots{display:inline-flex;gap:3px;vertical-align:-1px;}
+.wdots i{width:9px;height:9px;border-radius:2px;background:var(--int0);display:block;}
+.wdots i.on{background:var(--blue);}
+.wdots i.hot{background:var(--orange);}
+
+/* Stacked cost bars */
+.bars{display:flex;flex-direction:column;gap:12px;}
+.bar{display:flex;align-items:center;gap:13px;}
+.bar .blab{flex:0 0 118px;font-size:14.5px;font-weight:700;color:var(--navy);}
+.bar .btrack{flex:1;position:relative;height:32px;background:var(--int0);border-radius:5px;display:flex;}
+.bar .seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;
+  color:#fff;white-space:nowrap;overflow:hidden;}
+.bar .seg:first-child{border-radius:5px 0 0 5px;}
+.bar .seg.s1{background:var(--deep);}
+.bar .seg.s2{background:var(--blue);}
+.bar .seg.s3{background:#A96882;}
+.bar .btot{flex:0 0 92px;text-align:right;font-size:16px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;}
+.bar.win .btot{color:var(--blue);}
+.barmark{position:absolute;top:-7px;bottom:-7px;border-left:2px dashed var(--orange);z-index:2;}
+.barkey{display:flex;gap:18px;align-items:center;font-size:12.5px;color:var(--muted);}
+.barkey span{display:inline-flex;align-items:center;gap:6px;}
+.barkey i{width:11px;height:11px;border-radius:2px;display:inline-block;}
+
+/* Scenario grid: one column per growth driver, one row per layer */
+.sgrid{display:flex;gap:14px;}
+.sgrid .scol{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.sgrid .shead{background:var(--navy);color:#fff;padding:10px 13px;display:flex;align-items:center;gap:9px;}
+.sgrid .shead svg{width:21px;height:21px;stroke:#D6A6B9;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.sgrid .shead b{font-size:15px;}
+.sgrid .srow{padding:9px 13px;border-top:1px solid var(--line);}
+.sgrid .srow:first-of-type{border-top:0;}
+.sgrid .srow .sk{font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
+.sgrid .srow .sv{font-size:13.2px;line-height:1.32;min-height:35px;}
+.sgrid .scol.warm .shead{background:var(--orange-dark);}
+.sgrid .scol.warm .srow .sk{color:var(--orange-dark);}
+
+/* Two-sided comparison (resolving the board split) */
+.split{display:flex;gap:0;align-items:stretch;}
+.split .side{flex:1;min-width:0;border:1px solid var(--line);padding:14px 18px 16px;}
+.split .side:first-child{border-radius:10px 0 0 10px;border-right:0;}
+.split .side:last-child{border-radius:0 10px 10px 0;}
+.split .side h4{margin:0 0 9px;font-size:15.5px;color:var(--navy);}
+.split .side.pro{background:var(--sky);}
+.split .side.con{background:#FAF4EA;}
+.split .mid{flex:0 0 56px;display:flex;align-items:center;justify-content:center;}
+.split .mid span{background:var(--navy);color:#fff;font-size:12px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;border-radius:14px;padding:5px 10px;writing-mode:vertical-rl;}
+
+.hl{padding:0 2px;border-radius:3px;}
+.hl.hb{background-image:linear-gradient(transparent 64%,rgba(0,101,189,.30) 0);}
+.hl.ho{background-image:linear-gradient(transparent 64%,rgba(227,114,34,.38) 0);}
+
+/* ---------- Title slide ---------- */
+.title-slide{background:#fff;}
+.brandslot{display:none;}
+.tmark{position:absolute;top:46px;right:72px;text-align:right;}
+.tmark .w1{font-size:17px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);}
+.tmark .w2{font-size:11.5px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.tbody{position:absolute;left:72px;top:176px;right:72px;}
+.teyebrow{font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);font-weight:800;margin-bottom:26px;}
+.tbody h1{font-size:52px;font-weight:800;color:var(--ink);margin:0;line-height:1.14;letter-spacing:-.015em;}
+.trule{width:92px;height:4px;background:var(--blue);margin:30px 0 24px;}
+.tsub{font-size:19px;color:var(--muted);line-height:1.5;}
+.tfoot{position:absolute;left:0;right:0;bottom:0;background:var(--deep);color:#fff;
+  padding:22px 72px;display:flex;gap:56px;align-items:flex-start;}
+.tfoot>div{font-size:14.5px;line-height:1.5;}
+.tfoot>div:first-child{flex:1;}
+.tfoot .k{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#C2A0AE;margin-bottom:7px;}
+.footlogo{display:none;}
+.wordmark{position:absolute;top:44px;right:72px;text-align:right;}
+.wordmark .w1{font-size:16px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);}
+.wordmark .w2{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:5px;}
+.wordmark .rule{height:3px;width:74px;background:var(--blue);margin:9px 0 0 auto;}
+
+/* ---------- Closing slide: red, so nobody misses that it is the last ------ */
+.reco-slide{background:#2F0B1B;color:#fff;}
+.reco-slide .pad{justify-content:center;padding-bottom:78px;}
+.reco-slide .foot{color:rgba(255,255,255,.62);border-top-color:rgba(255,255,255,.28);}
+.reco-eyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:800;
+  color:rgba(255,255,255,.72);margin-bottom:20px;}
+.reco-h{font-size:44px;font-weight:800;line-height:1.16;margin:0;letter-spacing:-.01em;}
+.reco-rule{width:92px;height:4px;background:rgba(255,255,255,.85);margin:26px 0 30px;}
+.reco-tiles{gap:16px;margin-bottom:26px;}
+.reco-tiles .tile{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);
+  padding:16px 14px 15px;}
+.reco-tiles .tile .n{font-size:32px;color:#fff;}
+.reco-tiles .tile .l{font-size:13.5px;color:rgba(255,255,255,.80);margin-top:8px;}
+.reco-cards{display:flex;gap:16px;}
+.reco-cards>div{flex:1;font-size:14.5px;line-height:1.45;color:rgba(255,255,255,.92);
+  border-top:2px solid rgba(255,255,255,.4);padding-top:11px;}
+.reco-cards .k{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:rgba(255,255,255,.66);margin-bottom:7px;font-weight:800;}
+
+/* ---------- Q&A slide (navy) ---------- */
+.qa-slide{background:var(--deep);color:#fff;}
+.qa-slide .stripe{position:absolute;left:0;right:0;top:0;height:6px;background:var(--blue);}
+.qa-slide .uni{position:absolute;top:44px;left:72px;font-size:15px;color:#EEDCE4;line-height:1.5;}
+.closewrap{position:absolute;left:72px;right:72px;top:238px;}
+.ceyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#C2A0AE;font-weight:800;margin-bottom:22px;}
+.closewrap h2{font-size:46px;font-weight:800;margin:0;line-height:1.2;letter-spacing:-.01em;}
+.crule{width:92px;height:4px;background:var(--blue);margin:28px 0 22px;}
+.closewrap .csub{font-size:19px;color:#EEDCE4;line-height:1.5;max-width:880px;}
+.cthanks{position:absolute;right:72px;bottom:58px;font-size:26px;font-weight:800;color:rgba(255,255,255,.26);letter-spacing:.01em;}
+.brandslot.light{filter:brightness(0) invert(1);opacity:.9;}
+
+/* ---------- Backup chrome ---------- */
+.chip-backup{display:inline-block;align-self:flex-start;background:var(--sky2);color:var(--navy);border-radius:13px;
+  padding:3px 12px;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
+.toindex{position:absolute;left:64px;top:22px;z-index:5;display:inline-flex;align-items:center;gap:6px;
+  font:700 12px/1 var(--sans);color:var(--blue);background:var(--soft);border:1px solid var(--line);
+  border-radius:15px;padding:6px 12px;cursor:pointer;text-decoration:none;}
+.toindex:hover{background:#fff;border-color:var(--blue);}
+/* Backups carry dense tables: start the body right under the title instead of centring it */
+section[data-chapter] .grow{justify-content:flex-start;}
+.bgroup{margin-bottom:15px;}
+.bgroup-h{display:flex;align-items:baseline;gap:10px;margin-bottom:7px;}
+.bgroup-h .bg-n{font-size:19px;font-weight:800;color:var(--blue);}
+.bgroup-h .bg-t{font-size:17.5px;font-weight:700;color:var(--navy);}
+.bgroup-h .bg-who{font-size:13px;color:var(--muted);}
+.bx{display:inline-flex;align-items:center;gap:9px;background:var(--soft);border:1px solid var(--line);border-radius:9px;
+  padding:8px 13px;margin:0 8px 8px 0;cursor:pointer;text-decoration:none;color:var(--ink);}
+.bx:hover{border-color:var(--blue);background:#fff;}
+.bx .bx-n{font-size:12.5px;font-weight:800;color:var(--blue);}
+.bx .bx-t{font-size:14px;font-weight:600;}
+
+/* Derivation rail */
+.drail{background:var(--soft);border:1px solid var(--line);border-radius:7px;padding:5px 10px;
+  font-size:12.5px;line-height:1.25;color:var(--navy);font-weight:700;}
+.drail .dsub{color:var(--muted);font-weight:400;}
+.drail.dcf{background:#FAF4EA;border-color:#E9E0CB;color:var(--orange-dark);}
+.dchev{color:var(--blue);font-weight:800;font-size:15px;}
+
+/* Sources */
+.refcols{display:flex;gap:38px;margin-top:2px;}
+.refcols>div{flex:1;min-width:0;}
+.refhead{font-size:12px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--blue);margin:0 0 8px;}
+.refhead.mt{margin-top:13px;}
+.refitem{font-size:12.4px;line-height:1.33;color:#31404d;margin:0 0 6.5px;padding-left:14px;text-indent:-14px;}
+.refitem .sid{font-weight:800;color:var(--navy);}
+.refitem a{color:#31404d;text-decoration:none;border-bottom:1px solid var(--line);}
+
+/* ---------- Control overlays (screen only) ---------- */
+#bar{position:fixed;left:0;top:0;height:4px;background:var(--blue);width:0;z-index:60;transition:width .25s;}
+#counter{position:fixed;right:14px;bottom:10px;color:#C2A0AE;font:600 12px/1.4 var(--sans);z-index:60;
+  background:rgba(4,16,31,.55);padding:4px 10px;border-radius:12px;}
+body.fs #counter{display:none!important;}
+@media print{#bar,#counter,#ov{display:none!important;}}
+
+#ov{position:fixed;inset:0;background:rgba(4,16,31,.97);z-index:80;display:none;overflow:auto;
+  padding:40px;grid-template-columns:repeat(4,1fr);gap:22px;}
+body.overview #ov{display:grid;}
+#ov .th{cursor:pointer;}
+#ov .thbox{width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px;border:2px solid transparent;background:#fff;position:relative;}
+#ov .th.sel .thbox{border-color:var(--orange);}
+#ov .thbox .slide{transform:scale(0.208);transform-origin:top left;position:absolute;top:0;left:0;}
+#ov .cap{color:#EEDCE4;font:600 12px/1.4 var(--sans);margin-top:6px;}
+
+/* ---------- EDHEC branding (generated by make_edhec.py) ---------- */
+/* the cover carries the mark once, in the footer band; the slot in the top
+   right corner stays hidden so the logo does not appear twice */
+.slide>.slidemark{position:absolute;top:30px;right:64px;width:124px;height:31px;z-index:4;
+  background:url("edhec-logo.svg") no-repeat right center/contain;}
+.ghost{top:78px;right:56px;font-size:162px;}
+.action{max-width:980px;}
+/* the mark sits where the audience column used to be, in the title footer band */
+.footlogo{display:block;width:180px;height:45px;align-self:center;
+  background:url("edhec-logo.svg") no-repeat right center/contain;
+  filter:brightness(0) invert(1);}
+.tfoot{align-items:center;}
+.reco-slide .brandslot{display:block;position:absolute;top:44px;right:72px;margin:0;
+  width:176px;height:44px;background:url("edhec-logo.svg") no-repeat right center/contain;
+  filter:brightness(0) invert(1);z-index:4;}
+</style>
+</head>
+<body>
+<!-- Icon library (line style), reused via <use> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+  </defs>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18h10.5a3.5 3.5 0 0 0 .3-7 5.5 5.5 0 0 0-10.6-1.3A4 4 0 0 0 7 18z"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M7 7h.01M7 17h.01M11 7h5M11 17h5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4.5 6v6c0 4.5 3 7.5 7.5 9 4.5-1.5 7.5-4.5 7.5-9V6L12 3z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/></symbol>
+  <symbol id="i-euro" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5A4.5 4.5 0 0 0 8 12a4.5 4.5 0 0 0 7.5 3.5M7 11h6M7 13.5h6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.4 2"/></symbol>
+  <symbol id="i-gauge" viewBox="0 0 24 24"><path d="M3.5 17a9 9 0 1 1 17 0"/><path d="M12 13.5 16 9"/><circle cx="12" cy="15" r="1.6"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="8" cy="8" r="3.2"/><path d="M2.5 20c.6-4 2.8-6 5.5-6s4.9 2 5.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M14.8 14.6c.7-.4 1.4-.6 2.2-.6 2.3 0 4 1.7 4.5 5"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M7.5 14h3M13.5 14h3M7.5 17.5h3"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.7 2.7L16.2 9.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 2.6 20h18.8L12 3.5z"/><path d="M12 9.5v5M12 17.3h.01"/></symbol>
+  <symbol id="i-lens" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/><path d="M8 10.5h5M10.5 8v5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h5"/></symbol>
+  <symbol id="i-net" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.4"/><circle cx="5" cy="18" r="2.4"/><circle cx="19" cy="18" r="2.4"/><path d="M12 7.4v4.2M12 11.6 6.4 16M12 11.6 17.6 16"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14v3"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3.5 20.5h17"/><rect x="5" y="12" width="3.4" height="7"/><rect x="10.3" y="8" width="3.4" height="11"/><rect x="15.6" y="4.5" width="3.4" height="14.5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1.2"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4c3-1.5 6 1.5 9 0s5 0 5 0v9c-3 1.5-5 0-5 0-3 1.5-6-1.5-9 0"/></symbol>
+  <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-3.5 10.9c.9.7 1.5 1.6 1.5 2.6h4c0-1 .6-1.9 1.5-2.6A6 6 0 0 0 12 3z"/><path d="M10 19.5h4M10.8 22h2.4"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 4v16M7 20h10M12 4 5 7l-2.5 6a3.5 3.5 0 0 0 5 0L5 7M12 4l7 3 2.5 6a3.5 3.5 0 0 1-5 0L19 7"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V5M12 5l-6 6M12 5l6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v15M12 19l-6-6M12 19l6-6"/></symbol>
+  <symbol id="i-updown" viewBox="0 0 24 24"><path d="M12 5v14M12 5l-5 5M12 5l5 5M12 19l-5-5M12 19l5-5"/></symbol>
+  <symbol id="i-coins" viewBox="0 0 24 24"><ellipse cx="9" cy="6.5" rx="6" ry="2.8"/><path d="M3 6.5v5c0 1.5 2.7 2.8 6 2.8s6-1.3 6-2.8v-5"/><path d="M3 11.5v5c0 1.5 2.7 2.8 6 2.8 1.2 0 2.4-.2 3.3-.5"/><circle cx="17.5" cy="16.5" r="4.5"/><path d="M17.5 14.5v4M15.5 16.5h4"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.4 4 5.6 4 9s-1.4 6.6-4 9c-2.6-2.4-4-5.6-4-9s1.4-6.6 4-9z"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v2.6M12 18.4V21M4.2 7.5l2.2 1.3M17.6 15.2l2.2 1.3M4.2 16.5l2.2-1.3M17.6 8.8l2.2-1.3"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6c-2-1.8-5-2-8-1v14c3-1 6-.8 8 1 2-1.8 5-2 8-1V5c-3-1-6-.8-8 1z"/><path d="M12 6v14"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20.5 4.9 16 16.4 4.5a2.2 2.2 0 0 1 3.1 3.1L8 19.1l-4 1.4z"/><path d="M14.8 6.1 17.9 9.2"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="5.5" cy="5.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/><path d="M8 5.5h6.5a4 4 0 0 1 0 8H9.5a4 4 0 0 0 0 8H16"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><path d="M12 21V11M12 11 5 4M12 11l7-7"/><path d="M3 3h4v4M21 3h-4v4"/></symbol>
+  <symbol id="i-handshake" viewBox="0 0 24 24"><path d="M2.5 10.5 6 7h4l2 1.8L14 7h4l3.5 3.5"/><path d="M6 7v8.5M18 7v8.5"/><path d="M8.5 13.5 11 16l1.8-1.6L15 16l2.2-2"/></symbol>
+</svg>
+<div id="deck">
+
+<!-- ============================ TITLE ============================ -->
+<section class="slide title-slide" data-title="Title" id="sl-title">
+  <div style="position:absolute;left:0;right:0;top:0;height:7px;background:var(--blue);"></div>
+  <div class="tmark">
+    <span class="brandslot"></span>
+    <div class="w1">AuditCert France</div>
+    <div class="w2">AI strategy</div>
+  </div>
+  <div class="tbody">
+    <div class="teyebrow">Philoway Consulting Challenge</div>
+    <h1>Adopt AI to release audit capacity<br>while protecting client trust</h1>
+    <div class="trule"></div>
+    <div class="tsub">Cloud, on-premise, hybrid or wait? A recommendation with its business case,<br>its risk boundary and its implementation plan.</div>
+  </div>
+    <div class="tfoot">
+    <div><span class="k">Consulting team</span>Presenter A &nbsp;Presenter B &nbsp;Presenter D &nbsp;Presenter C &nbsp;Silas Zamzow</div>
+    <div><span class="k">Group</span>Cohort B, Group 4</div>
+    <span class="footlogo"></span>
+  </div>
+</section>
+
+<!-- ============================ Q1 STRATEGIC ASSESSMENT ============================ -->
+<section class="slide" data-title="Q1 Why invest, and why now" data-fnum="Q1" id="sl-q1">
+  <span class="slidemark"></span>
+  <div class="ghost">1</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q1</span><span class="t">Strategic assessment</span></div>
+    <div class="action">Why invest in AI and why do it now?</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">Why invest in AI, and what business value?</span>
+      <div class="chain">
+        <div class="step">
+          <div class="cir"><svg><use href="#i-lens"/></svg></div>
+          <div class="clab">Release capacity</div>
+          <div class="ctext" style="text-align:center;font-size:15.5px;">Search and preparation absorb hours clients do not pay for</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-shield"/></svg></div>
+          <div class="clab">Defend the service</div>
+          <div class="ctext" style="text-align:center;font-size:15.5px;">Faster, evidence-backed findings at unchanged independence</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-route"/></svg></div>
+          <div class="clab">Own the knowledge</div>
+          <div class="ctext" style="text-align:center;font-size:15.5px;">Our case knowledge is what rivals cannot buy</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#C08A2E" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir" style="background:radial-gradient(circle at 32% 26%,#D2A049,#8C5F1B);box-shadow:0 0 0 7px #FAF4EA,0 6px 14px rgba(179,84,26,.28);"><svg><use href="#i-clock"/></svg></div>
+          <div class="clab" style="background:var(--orange-dark);">Cost of waiting</div>
+          <div class="ctext" style="text-align:center;font-size:15.5px;">The prerequisites take calendar time whenever we decide to start</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qblock">
+      <span class="qtag">What is the risk of not investing now?</span>
+      <div class="pts">
+        <div class="pt"><svg><use href="#i-people"/></svg><span>Peers already run internal assistants at far larger scale</span></div>
+        <div class="pt"><svg><use href="#i-cal"/></svg><span>Every client must sign an ICT agreement before use</span></div>
+        <div class="pt"><svg><use href="#i-shield"/></svg><span>Our accreditation body expects notice before first deployment</span></div>
+        <div class="pt"><svg><use href="#i-bulb"/></svg><span>Auditors are now expected to understand AI-using clients</span></div>
+      </div>
+    </div>
+
+    <div class="band-navy" style="margin-top:18px;text-align:center;font-size:18px;padding:18px 24px;">Waiting does not postpone the prerequisites. It only delays the pay-off.</div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q1 COMPETITIVE LANDSCAPE ============================ -->
+<section class="slide" data-title="Q1 Competitive landscape" data-fnum="Q1" id="sl-q1b">
+  <span class="slidemark"></span>
+  <div class="ghost">1</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q1</span><span class="t">Strategic assessment</span></div>
+    <div class="action">Our peers already run their own AI assistants, and they built them the way we propose</div>
+    <div class="grow">
+
+    <div class="cols" style="gap:20px;align-items:stretch;">
+      <div class="qblock" style="flex:1;">
+        <span class="qtag">How are competitors already integrating AI?</span>
+        <div class="pts one" style="gap:15px 26px;">
+          <div class="pt"><svg><use href="#i-people"/></svg><span>Two sector peers run their own internal assistants</span></div>
+          <div class="pt"><svg><use href="#i-lens"/></svg><span>Retrieval over standards, past reports and prior findings</span></div>
+          <div class="pt"><svg><use href="#i-doc"/></svg><span>Used for preparation, drafting findings and knowledge reuse</span></div>
+          <div class="pt"><svg><use href="#i-cloud"/></svg><span>Deployed on business cloud rather than local hardware</span></div>
+          <div class="pt"><svg><use href="#i-lock"/></svg><span>Internal use only, under documented confidentiality controls</span></div>
+        </div>
+      </div>
+      <div class="qblock" style="flex:1;">
+        <span class="qtag">What does this imply for a twenty-person firm?</span>
+        <div class="pts one" style="gap:15px 26px;">
+          <div class="pt"><svg><use href="#i-stop"/></svg><span>No competitor published a measured productivity return</span></div>
+          <div class="pt"><svg><use href="#i-check"/></svg><span>The architecture is proven, the business case is ours</span></div>
+          <div class="pt"><svg><use href="#i-gauge"/></svg><span>We compete on internal efficiency</span></div>
+          <div class="pt"><svg><use href="#i-bulb"/></svg><span>Auditor AI competence sits in our scope and costs training</span></div>
+          <div class="pt"><svg><use href="#i-stop"/></svg><span>Becoming an accredited ISO 42001 body is out of reach</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-strip" style="margin-top:15px;font-size:14px;display:flex;gap:11px;align-items:flex-start;">
+      <svg style="flex:0 0 20px;width:20px;height:20px;margin-top:1px;stroke:var(--blue);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><use href="#i-split"/></svg>
+      <span><strong>Not the same thing:</strong> SGS, DEKRA, TÜV, DNV and LRQA now sell certification <em>of</em> client AI systems. Selling assurance about AI is a service decision. Running an assistant inside the audit process is the operational benchmark, and that is the one we are measuring ourselves against.</span>
+    </div>
+
+    <div class="band-navy" style="margin-top:14px;text-align:center;font-size:17.5px;padding:15px 24px;">Nobody is ahead on measured productivity. The race is on lead time.</div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q2 OPERATIONS AND PROCESS IMPACT ============================ -->
+<section class="slide" data-title="Q2 Operations and process impact" data-fnum="Q2" id="sl-q2">
+  <span class="slidemark"></span>
+  <div class="ghost">2</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q2</span><span class="t">Operations and process impact</span></div>
+    <div class="action">AI supports each audit step, while auditors remain accountable for the final report</div>
+    <div class="grow">
+    <div class="qblock" style="padding:25px 20px 16px;margin-bottom:0;">
+    <span class="qtag">How could AI affect each step, and must the step be redesigned first?</span>
+    <div class="pflow">
+      <div class="pcol">
+        <div class="pbox"><div class="ph"><svg><use href="#i-cal"/></svg><div class="pn">P1</div></div><div class="pl">Audit preparation</div></div>
+        <div class="down"><svg viewBox="0 0 14 18" fill="none"><path d="M7 0v13M7 17l-4.5-5M7 17l4.5-5" stroke="#431127" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="lay" style="min-height:100px;">
+          <div class="h">AI support</div>
+          <ul><li>Retrieve prior findings</li><li>Draft the audit checklist</li></ul>
+        </div>
+        <div class="lay pc" style="min-height:62px;">
+          <div class="h"><span class="pchip">Accelerate</span></div>
+          <p>Only after access rights and versions are clean</p>
+        </div>
+      </div>
+      <div class="arr"><svg viewBox="0 0 20 14" fill="none"><path d="M1 7h16M13 2l5 5-5 5" stroke="#5D6B79" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pcol">
+        <div class="pbox"><div class="ph"><svg><use href="#i-doc"/></svg><div class="pn">P2</div></div><div class="pl">Document review</div></div>
+        <div class="down"><svg viewBox="0 0 14 18" fill="none"><path d="M7 0v13M7 17l-4.5-5M7 17l4.5-5" stroke="#431127" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="lay" style="min-height:100px;">
+          <div class="h">AI support</div>
+          <ul><li>Match evidence to ISO clauses</li><li>Flag gaps and contradictions</li></ul>
+        </div>
+        <div class="lay pc" style="min-height:62px;">
+          <div class="h"><span class="pchip red">Redesign first</span></div>
+          <p>Mandatory document ID, version and client tag</p>
+        </div>
+      </div>
+      <div class="arr"><svg viewBox="0 0 20 14" fill="none"><path d="M1 7h16M13 2l5 5-5 5" stroke="#5D6B79" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pcol">
+        <div class="pbox"><div class="ph"><svg><use href="#i-lens"/></svg><div class="pn">P3</div></div><div class="pl">Fieldwork</div></div>
+        <div class="down"><svg viewBox="0 0 14 18" fill="none"><path d="M7 0v13M7 17l-4.5-5M7 17l4.5-5" stroke="#431127" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="lay" style="min-height:100px;">
+          <div class="h">AI support</div>
+          <ul><li>Structure authorised notes</li><li>Suggest follow-up questions</li></ul>
+        </div>
+        <div class="lay pc" style="min-height:62px;">
+          <div class="h"><span class="pchip">Accelerate</span></div>
+          <p>Assist only, no emotion or credibility inference</p>
+        </div>
+      </div>
+      <div class="arr"><svg viewBox="0 0 20 14" fill="none"><path d="M1 7h16M13 2l5 5-5 5" stroke="#5D6B79" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pcol">
+        <div class="pbox"><div class="ph"><svg><use href="#i-pen"/></svg><div class="pn">P4</div></div><div class="pl">Report writing</div></div>
+        <div class="down"><svg viewBox="0 0 14 18" fill="none"><path d="M7 0v13M7 17l-4.5-5M7 17l4.5-5" stroke="#431127" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="lay" style="min-height:100px;">
+          <div class="h">AI support</div>
+          <ul><li>Draft findings with sources</li><li>Assemble the first draft</li></ul>
+        </div>
+        <div class="lay pc" style="min-height:62px;">
+          <div class="h"><span class="pchip red">Redesign first</span></div>
+          <p>Split drafting from approval, record ICT use</p>
+        </div>
+      </div>
+      <div class="arr"><svg viewBox="0 0 20 14" fill="none"><path d="M1 7h16M13 2l5 5-5 5" stroke="#5D6B79" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="pcol" style="flex:.72;">
+        <div class="outdoc">
+          <div class="ph" style="display:flex;align-items:center;justify-content:center;gap:8px;"><svg style="width:24px;height:24px;stroke:#5F1937;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;"><use href="#i-check"/></svg><div class="pn">R</div></div>
+          <div class="pl">Approved<br>audit report</div>
+          <div class="ps">Human sign-off</div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="qblock" style="margin-top:16px;">
+      <span class="qtag">What has to exist before any of this works?</span>
+      <div class="pts">
+        <div class="pt"><svg><use href="#i-book"/></svg><span>Knowledge management has to come first</span></div>
+        <div class="pt"><svg><use href="#i-lock"/></svg><span>A curated, permissioned base must exist before retrieval works</span></div>
+        <div class="pt"><svg><use href="#i-lens"/></svg><span>The audit RAG searches that base and cites every source</span></div>
+        <div class="pt"><svg><use href="#i-cog"/></svg><span>Internal support starts the pilot because its content is approved</span></div>
+      </div>
+    </div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q3 RISK VERSUS BUSINESS VALUE ============================ -->
+<section class="slide" data-title="Q3 Risk versus business value" data-fnum="Q3" id="sl-q3">
+  <span class="slidemark"></span>
+  <div class="ghost">3</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q3</span><span class="t">Confidentiality and risk analysis</span></div>
+    <div class="action">Risk governs which documents enter the system</div>
+    <div class="grow">
+
+    <div class="cols" style="gap:20px;align-items:stretch;">
+      <div class="qblock" style="flex:1.42;">
+        <span class="qtag">Which risks arise, and how much should each one weigh?</span>
+        <table class="dark xs tight">
+          <tr><th style="width:30px;"></th><th style="width:150px;">Risk</th><th style="width:74px;">Weight</th><th>What it actually decides</th></tr>
+          <tr><td style="text-align:center;"><svg style="width:16px;height:16px;stroke:var(--navy);fill:none;stroke-width:1.7;"><use href="#i-lock"/></svg></td>
+              <td><b>Confidentiality and reputation</b></td><td><span class="wdots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+              <td>Which documents may leave the building. One serious breach ends the client relationship.</td></tr>
+          <tr><td style="text-align:center;"><svg style="width:16px;height:16px;stroke:var(--navy);fill:none;stroke-width:1.7;"><use href="#i-scale"/></svg></td>
+              <td><b>Regulatory and contractual</b></td><td><span class="wdots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+              <td>Written client agreement before use, manual fallback on refusal, DPIA before indexing.</td></tr>
+          <tr><td style="text-align:center;"><svg style="width:16px;height:16px;stroke:var(--navy);fill:none;stroke-width:1.7;"><use href="#i-alert"/></svg></td>
+              <td><b>Incorrect findings</b></td><td><span class="wdots"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+              <td>Mandatory human approval and refusal without evidence. A citation is not a conclusion.</td></tr>
+          <tr><td style="text-align:center;"><svg style="width:16px;height:16px;stroke:var(--navy);fill:none;stroke-width:1.7;"><use href="#i-shield"/></svg></td>
+              <td><b>Cybersecurity</b></td><td><span class="wdots"><i class="on"></i><i class="on"></i><i></i></span></td>
+              <td>Standard controls either way. Local adds patching and insider duties rather than removing them.</td></tr>
+          <tr><td style="text-align:center;"><svg style="width:16px;height:16px;stroke:var(--navy);fill:none;stroke-width:1.7;"><use href="#i-net"/></svg></td>
+              <td><b>Vendor dependency</b></td><td><span class="wdots"><i class="on"></i><i></i><i></i></span></td>
+              <td>Exportable documents and metadata, tested switching, annual contract review.</td></tr>
+        </table>
+      </div>
+      <div class="qblock" style="flex:1;">
+        <span class="qtag">How much should risk weigh against the value at stake?</span>
+        <div class="pts one" style="gap:13px 20px;">
+          <div class="pt" style="font-size:16px;"><svg><use href="#i-scale"/></svg><span>Fines are capped; accreditation loss is uncapped</span></div>
+          <div class="pt" style="font-size:16px;"><svg><use href="#i-euro"/></svg><span>Every excluded document costs us benefit</span></div>
+          <div class="pt" style="font-size:16px;"><svg><use href="#i-server"/></svg><span>Local removes the provider, adds insider access</span></div>
+          <div class="pt" style="font-size:16px;"><svg><use href="#i-stop"/></svg><span>A weighted scorecard would fake precision</span></div>
+          <div class="pt" style="font-size:16px;"><svg><use href="#i-check"/></svg><span>Exclude first, then compare the compliant options</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-navy" style="margin-top:15px;text-align:center;font-size:17px;padding:15px 24px;">Not one of these five risks selects cloud over local. They select <b>what enters the system and who signs it off.</b></div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q4A CLOUD VERSUS ON-PREMISE ============================ -->
+<section class="slide" data-title="Q4 Cloud versus on-premise" data-fnum="Q4" id="sl-q4a">
+  <span class="slidemark"></span>
+  <div class="ghost">4</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q4</span><span class="t">Technology options</span></div>
+    <div class="action">Cloud wins five of six criteria; on-premise wins only where nothing may leave the building</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">How do cloud and on-premise compare on the same criteria?</span>
+      <table class="dark xs tight">
+        <tr><th style="width:150px;">Criterion</th><th>Cloud</th><th>On-premise</th><th style="width:118px;">Better fit</th></tr>
+        <tr><td><b>Speed to value</b></td><td>Pilot running in weeks on existing licences</td><td>Procurement, build and tuning before first use</td><td><span class="verdict yes">Cloud</span></td></tr>
+        <tr><td><b>Scalability</b></td><td>Capacity bought in small increments, per user</td><td>Grows in hardware steps; one server is not high availability</td><td><span class="verdict yes">Cloud</span></td></tr>
+        <tr><td><b>Data protection</b></td><td>Processing leaves the firm, bounded by contract and region</td><td>Inference and index stay on the internal network</td><td><span class="verdict warm">On-premise</span></td></tr>
+        <tr><td><b>User experience</b></td><td>Familiar interface, maintained and updated by the provider</td><td>Own portal to build, own quality and latency to tune</td><td><span class="verdict yes">Cloud</span></td></tr>
+        <tr><td><b>Maintenance</b></td><td>Provider patches models and platform; we own content</td><td>We own patching, backup, restore tests and capacity</td><td><span class="verdict yes">Cloud</span></td></tr>
+        <tr><td><b>Cost at our scale</b></td><td>EUR 77,424 over three years</td><td>EUR 131,000 over three years</td><td><span class="verdict yes">Cloud</span></td></tr>
+      </table>
+    </div>
+
+    <div class="cols" style="gap:16px;margin-top:15px;">
+      <div class="note-strip" style="flex:1;font-size:14px;"><strong>The honest caveat:</strong> on-premise does not remove risk, it moves it. The provider disappears, patching, insider access, backups and outages arrive. In a twenty-person firm total risk can rise.</div>
+      <div class="note-strip warm" style="flex:1;font-size:14px;"><strong>Hybrid is not a compromise:</strong> it needs both operating capabilities, adds routing errors and costs EUR 173,164. It becomes the answer only if a client contractually requires local processing.</div>
+    </div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q4B CONCRETE CONFIGURATIONS ============================ -->
+<section class="slide" data-title="Q4 Concrete technical solutions" data-fnum="Q4" id="sl-q4b">
+  <span class="slidemark"></span>
+  <div class="ghost">4</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q4</span><span class="t">Technology options</span></div>
+    <div class="action">Both paths are buildable today with named products, and only one is reversible</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">Which real suppliers, configurations and indicative costs?</span>
+      <div class="cols" style="gap:18px;align-items:stretch;">
+        <div class="band" style="flex:1;margin-bottom:0;">
+          <div class="bicon"><svg><use href="#i-cloud"/></svg></div>
+          <div class="bhead">Cloud configuration</div>
+          <div class="bbody" style="padding:11px 16px 10px 18px;">
+            <div class="pts one" style="gap:9px;">
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-doc"/></svg><span><b>Microsoft 365 Copilot Business</b> for approved office work</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-bulb"/></svg><span><b>Azure OpenAI</b>, GPT-4.1-mini class, EU Data Zone</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-grid"/></svg><span><b>PostgreSQL with pgvector</b>, EU-hosted audit index</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-lock"/></svg><span><b>Entra ID portal</b>, permissions enforced before retrieval</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-cog"/></svg><span>Three free settings: no web search, no flex routing, EU pinned</span></div>
+            </div>
+            <div class="bcost">
+              <b>EUR 18.20</b>/user/month &nbsp;&nbsp;<b>EUR 120</b>/month model &nbsp;&nbsp;<b>EUR 200</b>/month hosting<br>
+              <span class="r">List prices and budget allowances, confirm before purchase</span>
+            </div>
+          </div>
+        </div>
+        <div class="band" style="flex:1;margin-bottom:0;">
+          <div class="bicon"><svg><use href="#i-server"/></svg></div>
+          <div class="bhead">On-premise configuration</div>
+          <div class="bbody" style="padding:11px 16px 10px 18px;">
+            <div class="pts one" style="gap:9px;">
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-server"/></svg><span><b>Dell Precision 7960</b>, 128 GB RAM, 4 TB SSD</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-gauge"/></svg><span><b>NVIDIA RTX PRO 6000</b>, 96 GB, plus UPS and backup</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-bulb"/></svg><span><b>Qwen3-32B</b> under Apache 2.0, served with vLLM</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-grid"/></svg><span><b>PostgreSQL with pgvector</b> and local OCR</span></div>
+              <div class="pt" style="font-size:14px;"><svg style="flex:0 0 18px;width:18px;height:18px;"><use href="#i-net"/></svg><span>VPN access and a contracted IT operator</span></div>
+            </div>
+            <div class="bcost">
+              <b>EUR 25,000</b> hardware package &nbsp;&nbsp;<b>EUR 0</b> model licence, Apache 2.0<br>
+              <span class="r">Hardware subject to quotation, no list price available</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-navy" style="margin-top:15px;text-align:center;font-size:16px;padding:14px 24px;">The cloud configuration can be switched off; the hardware cannot be unbought. We keep a <b>current quote on file</b> so the on-premise path stays selectable at month twelve. <b>What these components add up to is the next slide.</b></div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q5 THREE-YEAR TCO ============================ -->
+<section class="slide" data-title="Q5 Three-year total cost of ownership" data-fnum="Q5" id="sl-q5">
+  <span class="slidemark"></span>
+  <div class="ghost">5</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q5</span><span class="t">Financial analysis</span></div>
+    <div class="action">Only the cloud route stays below the value it is meant to create</div>
+    <div class="grow">
+
+    <div class="qblock" style="padding:24px 20px 16px;">
+      <span class="qtag">What does each option cost over three years?</span>
+      <div class="bars">
+        <div class="bar win">
+          <div class="blab">Cloud</div>
+          <div class="btrack">
+            <div class="seg s1" style="width:12.70%;">22.0k</div>
+            <div class="seg s2" style="width:30.85%;">53.4k</div>
+            <div class="seg s3" style="width:1.16%;"></div>
+            <div class="barmark" style="left:68.85%;"></div>
+          </div>
+          <div class="btot">77,424</div>
+        </div>
+        <div class="bar">
+          <div class="blab">On-premise</div>
+          <div class="btrack">
+            <div class="seg s1" style="width:32.34%;">56.0k</div>
+            <div class="seg s2" style="width:39.85%;">69.0k</div>
+            <div class="seg s3" style="width:3.47%;"></div>
+            <div class="barmark" style="left:68.85%;"></div>
+          </div>
+          <div class="btot">131,000</div>
+        </div>
+        <div class="bar">
+          <div class="blab">Hybrid</div>
+          <div class="btrack">
+            <div class="seg s1" style="width:36.96%;">64.0k</div>
+            <div class="seg s2" style="width:59.58%;">103.2k</div>
+            <div class="seg s3" style="width:3.47%;"></div>
+            <div class="barmark" style="left:68.85%;"></div>
+          </div>
+          <div class="btot">173,164</div>
+        </div>
+      </div>
+      <div class="barkey" style="margin-top:12px;">
+        <span><i style="background:var(--deep);"></i> One-off</span>
+        <span><i style="background:var(--blue);"></i> Three years of recurring cost</span>
+        <span><i style="background:#A96882;"></i> Upgrade in year three</span>
+        <span><i style="background:var(--orange);width:2px;height:14px;border-radius:0;"></i> Capacity released, EUR 119,232</span>
+      </div>
+    </div>
+
+    <div class="qblock" style="margin-top:16px;padding:24px 20px 15px;">
+      <span class="qtag">Where does the money go?</span>
+      <div class="cols" style="gap:20px;align-items:flex-start;">
+        <div style="flex:1;">
+          <table class="dark xs tight">
+            <tr><th>One-off investment</th><th class="num">Cloud</th><th class="num">On-premise</th><th class="num">Hybrid</th></tr>
+            <tr><td>Hardware and infrastructure</td><td class="num">0</td><td class="num">25,000</td><td class="num">25,000</td></tr>
+            <tr><td>Integration and RAG build</td><td class="num">12,000</td><td class="num">18,000</td><td class="num">24,000</td></tr>
+            <tr><td>Data, security and contracts</td><td class="num">6,000</td><td class="num">8,000</td><td class="num">9,000</td></tr>
+            <tr><td>Training and staff learning time</td><td class="num">4,000</td><td class="num">5,000</td><td class="num">6,000</td></tr>
+            <tr class="tot"><td>Total before go-live</td><td class="num">22,000</td><td class="num">56,000</td><td class="num">64,000</td></tr>
+          </table>
+        </div>
+        <div style="flex:1;">
+          <table class="dark xs tight">
+            <tr><th>Every year</th><th class="num">Cloud</th><th class="num">On-premise</th><th class="num">Hybrid</th></tr>
+            <tr><td>Licence subscriptions</td><td class="num">4,368</td><td class="num">0</td><td class="num">4,368</td></tr>
+            <tr><td>Model usage</td><td class="num">1,440</td><td class="num">0</td><td class="num">720</td></tr>
+            <tr><td>Hosting, power and backup</td><td class="num">2,400</td><td class="num">1,800</td><td class="num">2,400</td></tr>
+            <tr><td>External maintenance and support</td><td class="num">3,600</td><td class="num">7,200</td><td class="num">8,400</td></tr>
+            <tr><td>Internal ownership</td><td class="num">4,000</td><td class="num">12,000</td><td class="num">16,000</td></tr>
+            <tr><td>Governance and quality assurance</td><td class="num">2,000</td><td class="num">2,000</td><td class="num">2,500</td></tr>
+            <tr class="tot"><td>Total per year</td><td class="num">17,808</td><td class="num">23,000</td><td class="num">34,388</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q6 ORGANIZATIONAL READINESS ============================ -->
+<section class="slide" data-title="Q6 Organizational readiness" data-fnum="Q6" id="sl-q6">
+  <span class="slidemark"></span>
+  <div class="ghost">6</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q6</span><span class="t">Organizational readiness</span></div>
+    <div class="action">Twenty people can own a managed platform; nobody here can run one</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">Which capabilities does each option need, and who would own them?</span>
+      <table class="dark xs tight">
+        <tr><th style="width:168px;">Capability</th><th style="width:96px;">Today</th><th>Needed for cloud</th><th>Needed for on-premise</th><th style="width:132px;">Owner</th></tr>
+        <tr><td><b>Audit domain knowledge</b></td><td><span class="verdict yes">Have it</span></td><td>Unchanged. The scarce asset stays internal.</td><td>Unchanged</td><td>Audit and quality lead</td></tr>
+        <tr><td><b>Sources, tests and approval rules</b></td><td><span class="verdict part">Partly</span></td><td>0.05 FTE, about two hours per week</td><td>0.15 FTE, plus content duties</td><td>Internal product owner</td></tr>
+        <tr><td><b>Platform operation</b></td><td><span class="verdict no">None</span></td><td>Bought from the provider and an IT partner</td><td>Own patching, backup, restore tests, capacity</td><td>External IT partner</td></tr>
+        <tr><td><b>Privacy and accreditation</b></td><td><span class="verdict part">Partly</span></td><td>DPIA, processor terms, client ICT annex</td><td>The same, plus insider-access controls</td><td>Privacy function</td></tr>
+        <tr><td><b>Availability and cover</b></td><td><span class="verdict no">None</span></td><td>Provider service levels</td><td>One server is not high availability</td><td>Not achievable in-house</td></tr>
+      </table>
+    </div>
+
+    <div class="cols" style="gap:18px;margin-top:15px;align-items:stretch;">
+      <div class="qblock" style="flex:1;padding:24px 20px 15px;">
+        <span class="qtag">Are the processes ready to absorb AI?</span>
+        <div class="pts one" style="gap:11px;">
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-check"/></svg><span>Internal support and preparation can start as they are</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-cog"/></svg><span>Document review and reporting need redesign first</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-book"/></svg><span>The knowledge base must be curated before retrieval</span></div>
+        </div>
+      </div>
+      <div class="qblock" style="flex:1;padding:24px 20px 15px;">
+        <span class="qtag">What resistance should we expect, and what do we do?</span>
+        <div class="pts one" style="gap:11px;">
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-people"/></svg><span>Two practitioners co-design the test set from week one</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-clock"/></svg><span>Released time goes to quality before it goes to targets</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-lock"/></svg><span>Excess access rights are corrected before switch-on</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q7 FUTURE SCALABILITY ============================ -->
+<section class="slide" data-title="Q7 Future scalability" data-fnum="Q7" id="sl-q7">
+  <span class="slidemark"></span>
+  <div class="ghost">7</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q7</span><span class="t">Future scalability</span></div>
+    <div class="action">The recommendation survives growth; the audit workflow does not survive it unchanged</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">Would the solution still work at triple volume, double headcount and abroad?</span>
+      <div class="sgrid">
+        <div class="scol">
+          <div class="shead"><svg><use href="#i-doc"/></svg><b>Three times the documents</b></div>
+          <div class="srow"><div class="sk">Solution</div><div class="sv">Incremental indexing, duplicate detection and version control.</div></div>
+          <div class="srow"><div class="sk">Organisation</div><div class="sv">Source ownership assigned per standard and per client.</div></div>
+          <div class="srow"><div class="sk">Process</div><div class="sv">Retention and deletion rules become mandatory.</div></div>
+        </div>
+        <div class="scol">
+          <div class="shead"><svg><use href="#i-people"/></svg><b>Twice the headcount</b></div>
+          <div class="srow"><div class="sk">Solution</div><div class="sv">Forty licences and a load test at ten concurrent requests.</div></div>
+          <div class="srow"><div class="sk">Organisation</div><div class="sv">Approval rights spread across teams instead of one owner.</div></div>
+          <div class="srow"><div class="sk">Process</div><div class="sv">Onboarding carries AI training as a standard module.</div></div>
+        </div>
+        <div class="scol">
+          <div class="shead"><svg><use href="#i-globe"/></svg><b>International expansion</b></div>
+          <div class="srow"><div class="sk">Solution</div><div class="sv">Country, language and standard metadata, tested per language.</div></div>
+          <div class="srow"><div class="sk">Organisation</div><div class="sv">Local reviewers and local accreditation relationships.</div></div>
+          <div class="srow"><div class="sk">Process</div><div class="sv">Client agreements renegotiated under each jurisdiction.</div></div>
+        </div>
+        <div class="scol warm">
+          <div class="shead"><svg><use href="#i-alert"/></svg><b>The binding constraint</b></div>
+          <div class="srow"><div class="sk">Solution</div><div class="sv">Technology scales in small increments.</div></div>
+          <div class="srow"><div class="sk">Organisation</div><div class="sv">Expert review capacity must grow with throughput.</div></div>
+          <div class="srow"><div class="sk">Process</div><div class="sv">Faster research without more reviewers only moves the queue.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-navy" style="margin-top:16px;text-align:center;font-size:17px;padding:15px 24px;">At forty people and thirty thousand documents, cloud remains the right direction. The annual run rate rises to roughly <b>EUR 35,816</b>.</div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q8A PILOT AND PHASED ROLLOUT ============================ -->
+<section class="slide" data-title="Q8 Pilot and phased rollout" data-fnum="Q8" id="sl-q8a">
+  <span class="slidemark"></span>
+  <div class="ghost">8</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q8</span><span class="t">Implementation strategy</span></div>
+    <div class="action">A twelve-week pilot on approved content buys the evidence for every later decision</div>
+    <div class="grow">
+
+    <div class="qblock" style="padding:25px 20px 17px;">
+      <span class="qtag">Which low-risk pilot, and what happens short, medium and long term?</span>
+      <div class="road">
+        <div class="ph now">
+          <div class="pt">Weeks 1 to 2</div>
+          <div class="pb">Baseline times measured, data classes sized in hours, ICT annex drafted and the accreditation body informed.</div>
+          <div class="pg"><b>Gate</b> Scope, named owners and a documented eligibility estimate agreed</div>
+        </div>
+        <div class="gate"><svg viewBox="0 0 18 22" fill="none"><path d="M3 2v18M15 2v18" stroke="#D9E0E7" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="ph now">
+          <div class="pt">Weeks 3 to 6</div>
+          <div class="pb"><b>The pilot use case: internal procedures and synthetic cases.</b> Five users and no real client file.</div>
+          <div class="pg"><b>Gate</b> Fifty validated questions, ten unanswerable, access tests passed</div>
+        </div>
+        <div class="gate"><svg viewBox="0 0 18 22" fill="none"><path d="M3 2v18M15 2v18" stroke="#D9E0E7" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="ph now">
+          <div class="pt">Weeks 7 to 12</div>
+          <div class="pb">After written client agreement, twenty representative document packages assessed by two auditors.</div>
+          <div class="pg"><b>Gate</b> At least 2.5 net hours per week, quality and cost confirmed</div>
+        </div>
+        <div class="gate"><svg viewBox="0 0 18 22" fill="none"><path d="M3 2v18M15 2v18" stroke="#D9E0E7" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="ph later">
+          <div class="pt">Months 4 to 6</div>
+          <div class="pb">Up to twenty users. The authorised audit RAG and the reporting templates go live, partner takes over support.</div>
+          <div class="pg"><b>Gate</b> Independent approval and monthly benefit tracking in place</div>
+        </div>
+        <div class="gate"><svg viewBox="0 0 18 22" fill="none"><path d="M3 2v18M15 2v18" stroke="#D9E0E7" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div class="ph later">
+          <div class="pt">Months 7 to 12</div>
+          <div class="pb">Model change and data export tested, contracts reviewed and growth loads simulated for forty users.</div>
+          <div class="pg"><b>Gate</b> Month twelve: cloud re-decided against on-premise on measured eligibility</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="band-warm" style="margin-top:16px;text-align:center;font-size:16.5px;padding:14px 24px;">If a gate fails, the manual workflow stays and the rollout stops. <b>A failed pilot costs EUR 12,000 and answers the question.</b></div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ Q8B GOVERNANCE AND SUCCESS ============================ -->
+<section class="slide" data-title="Q8 Governance and success measures" data-fnum="Q8" id="sl-q8b">
+  <span class="slidemark"></span>
+  <div class="ghost">8</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">Q8</span><span class="t">Implementation strategy</span></div>
+    <div class="action">Every success measure has a number, an owner and a consequence</div>
+    <div class="grow">
+
+    <div class="qblock">
+      <span class="qtag">Who governs it, how is success measured, and what if people resist?</span>
+      <table class="dark xs tight">
+        <tr><th style="width:132px;">Area</th><th style="width:176px;">Who owns it</th><th style="width:232px;">How we measure success</th><th>What we do about friction</th></tr>
+        <tr><td><b>Quality</b></td><td>Audit and quality lead</td><td>95 % correct evidence references, no critical decision error</td><td>Two senior auditors design the test set, so the bar is theirs</td></tr>
+        <tr><td><b>Security</b></td><td>External IT partner</td><td>No unauthorised result in negative-access tests</td><td>Access rights are cleaned before switch-on</td></tr>
+        <tr><td><b>Economics</b></td><td>Management</td><td>2.5 net hours per auditor per fully utilised week</td><td>Released time funds quality first, so nobody loses by reporting it</td></tr>
+        <tr><td><b>Adoption</b></td><td>Internal product owner</td><td>80 % of pilot users use it meaningfully each week</td><td>Weekly feedback decides what gets built next</td></tr>
+        <tr><td><b>Compliance</b></td><td>Privacy function</td><td>Signed ICT annex on file for every client in scope</td><td>Refusal is a normal answer; the manual method stays available</td></tr>
+      </table>
+    </div>
+
+    <div class="cols" style="gap:18px;margin-top:15px;">
+      <div class="note-strip" style="flex:1;font-size:14.5px;"><strong>Management approves two things today:</strong> the pilot budget of EUR 12,000 and the name of the internal product owner. Everything else follows a gate.</div>
+      <div class="note-strip" style="flex:1;font-size:14.5px;"><strong>The honest risk:</strong> experienced auditors may read this as a judgement on their speed. It is not, and the measures are built so that reporting a saving never costs anyone anything.</div>
+    </div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ ADDITIONAL CONSIDERATION: RAG ============================ -->
+<section class="slide" data-title="RAG" data-fnum="RAG" id="sl-rag">
+  <span class="slidemark"></span>
+  <div class="ghost">+</div>
+  <div class="pad">
+    <div class="secrow"><span class="n">+</span><span class="t">Additional consideration, RAG</span></div>
+    <div class="action">Yes, build the audit RAG, because it makes every answer checkable</div>
+    <div class="grow">
+
+    <div class="qblock" style="padding:25px 20px 17px;">
+      <span class="qtag">What is RAG, and how does it differ from uploading files to ChatGPT?</span>
+      <div class="chain sm">
+        <div class="step">
+          <div class="cir"><svg><use href="#i-doc"/></svg></div>
+          <div class="clab">1 Approved base</div>
+          <div class="ctext" style="text-align:center;font-size:14px;">Only documents we may legitimately reuse</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-lens"/></svg></div>
+          <div class="clab">2 Retrieve</div>
+          <div class="ctext" style="text-align:center;font-size:14px;">Permissions enforced before results are picked</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-bulb"/></svg></div>
+          <div class="clab">3 Answer</div>
+          <div class="ctext" style="text-align:center;font-size:14px;">Only the retrieved passages reach the model</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-book"/></svg></div>
+          <div class="clab">4 Cite</div>
+          <div class="ctext" style="text-align:center;font-size:14px;">Source, page and version shown with every claim</div>
+        </div>
+        <div class="sep"><svg viewBox="0 0 26 30" fill="none"><path d="M4 3l14 12L4 27" stroke="#5F1937" stroke-width="4" stroke-linecap="round"/></svg></div>
+        <div class="step">
+          <div class="cir"><svg><use href="#i-check"/></svg></div>
+          <div class="clab">5 Auditor approves</div>
+          <div class="ctext" style="text-align:center;font-size:14px;">No evidence, no answer. Approval is recorded</div>
+        </div>
+      </div>
+      <div class="xband grey" style="margin:14px 0 0;"><svg><use href="#i-split"/></svg><span><b>The difference is not the algorithm.</b> A chatbot upload also retrieves. Business RAG adds maintained sources, client separation, version control, deletion rules and a tested answer set.</span></div>
+    </div>
+
+    <div class="cols" style="gap:18px;margin-top:15px;align-items:stretch;">
+      <div class="qblock" style="flex:1;padding:24px 20px 15px;">
+        <span class="qtag">Should it be part of the solution, and how do we build it?</span>
+        <div class="pts one" style="gap:11px;">
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-check"/></svg><span>Yes, from month four, once the pilot gates pass</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-grid"/></svg><span>Index inside the EU, protected like the originals</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-cog"/></svg><span>Model stays interchangeable after quality testing</span></div>
+        </div>
+      </div>
+      <div class="qblock warm" style="flex:1;padding:24px 20px 15px;">
+        <span class="qtag">What does RAG not solve?</span>
+        <div class="pts one warm" style="gap:11px;">
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-cloud"/></svg><span>Retrieved passages still leave the internal network</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-alert"/></svg><span>A correct citation is not a correct conclusion</span></div>
+          <div class="pt" style="font-size:15.5px;"><svg><use href="#i-lock"/></svg><span>It improves traceability and does not protect confidentiality</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+    <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+<!-- ============================ CLOSING: RECOMMENDATION ============================ -->
+<section class="slide reco-slide" data-title="Recommendation" data-fnum="" id="sl-reco">
+  <span class="brandslot"></span>
+  <div class="pad" style="padding:52px 72px 64px;">
+    <div class="reco-eyebrow">Our recommendation</div>
+    <h2 class="reco-h">Deploy a controlled business cloud<br>and prove it on a twelve-week pilot</h2>
+    <div class="reco-rule"></div>
+    <div class="tiles reco-tiles">
+      <div class="tile"><div class="n">EUR 77,424</div><div class="l">Three-year cost</div></div>
+      <div class="tile"><div class="n">EUR 119,232</div><div class="l">Capacity released</div></div>
+      <div class="tile"><div class="n">EUR 41,808</div><div class="l">Net value</div></div>
+      <div class="tile"><div class="n">EUR 12,000</div><div class="l">What we ask for today</div></div>
+    </div>
+    <div class="reco-cards">
+      <div><span class="k">Approve today</span>The pilot budget and a named internal product owner.</div>
+      <div><span class="k">Review in twelve weeks</span>Quality, access controls, eligible workload and measured time savings.</div>
+      <div><span class="k">Reopens the decision</span>Eligible workload below 64 per cent, or a client requiring local processing.</div>
+    </div>
+  </div>
+  <div class="foot"><span>Group 4</span><span class="fmid">AuditCert France</span><span>Cohort B, Group 4</span><span class="fright"></span></div>
+</section>
+
+</div>
+
+<!-- Control overlays -->
+<div id="bar" class="no-print"></div>
+<div id="counter" class="no-print"></div>
+<div id="ov" class="no-print"></div>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=[].slice.call(deck.querySelectorAll('.slide'));
+  var i=0, n=slides.length;
+
+  // Footer marks: a slide may set its own via data-fnum (Q1…Q8); otherwise
+  // main part counts 01,02,…, backups count B1,B2,… from DOM order.
+  (function(){ var mainPos=0, backNo=0;
+    slides.forEach(function(s){
+      var title=s.getAttribute('data-title')||'';
+      var isBackup=/^Backup/.test(title);
+      if(!isBackup) mainPos++;
+      var fr=s.querySelector('.foot .fright'); if(!fr) return;
+      var own=s.getAttribute('data-fnum');
+      if(own){ fr.textContent=own; return; }
+      if(isBackup){ if(title!=='Backup index'){ backNo++; fr.textContent='B'+backNo; } }
+      else { fr.textContent=('0'+mainPos).slice(-2); }
+    });
+  })();
+
+  var bar=document.getElementById('bar');
+  var counter=document.getElementById('counter');
+  var ov=document.getElementById('ov');
+
+  function fit(){
+    var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+    document.documentElement.style.setProperty('--scale', s);
+  }
+  window.addEventListener('resize', fit); fit();
+
+  document.addEventListener('fullscreenchange', function(){
+    document.body.classList.toggle('fs', !!document.fullscreenElement);
+  });
+
+  // Progress bar runs up to the closing slide (end of the 25-minute part)
+  var endIdx=(function(){for(var k=0;k<slides.length;k++){if((slides[k].getAttribute('data-title')||'')==='Decision')return k;}return slides.length-1;})();
+
+  function render(){
+    slides.forEach(function(s,k){ s.classList.toggle('active', k===i); });
+    bar.style.width=(Math.min(i/endIdx,1)*100)+'%';
+    counter.textContent=(i+1)+' / '+n+'   '+(slides[i].getAttribute('data-title')||'');
+    try{ if(location.hash!=='#'+(i+1)) history.replaceState(null,'','#'+(i+1)); }catch(e){}
+    highlightOv();
+  }
+  function go(k){ i=Math.max(0,Math.min(n-1,k)); render(); }
+  function next(){ go(i+1); } function prev(){ go(i-1); }
+
+  var bIdx=(function(){for(var k=0;k<slides.length;k++){if((slides[k].getAttribute('data-title')||'')==='Backup index')return k;}return -1;})();
+
+  document.addEventListener('keydown',function(e){
+    if(document.body.classList.contains('overview')){
+      if(e.key==='Escape'||e.key==='o'||e.key==='O'){ document.body.classList.remove('overview'); e.preventDefault(); }
+      return;
+    }
+    switch(e.key){
+      case 'ArrowRight': case ' ': case 'PageDown': next(); e.preventDefault(); break;
+      case 'ArrowLeft': case 'PageUp': prev(); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End': go(n-1); break;
+      case 'o': case 'O': document.body.classList.add('overview'); buildOv(); break;
+      case 'b': case 'B': if(bIdx>=0) go(bIdx); break;
+      case 'f': case 'F':
+        try{
+          if(!document.fullscreenElement){ var el=document.documentElement; if(el.requestFullscreen) el.requestFullscreen(); }
+          else if(document.exitFullscreen){ document.exitFullscreen(); }
+        }catch(err){}
+        break;
+      case 'p': case 'P': window.print(); break;
+    }
+  });
+
+  // Click navigation (right third forward, left third back)
+  deck.addEventListener('click',function(e){
+    if(e.target.closest('a,.toindex,.bx')) return;
+    var x=e.clientX/window.innerWidth;
+    if(x>0.6) next(); else if(x<0.4) prev();
+  });
+
+  // Overview (key O)
+  function buildOv(){
+    if(ov.childElementCount) return;
+    slides.forEach(function(s,k){
+      var th=document.createElement('div'); th.className='th'; th.setAttribute('data-k',k);
+      var box=document.createElement('div'); box.className='thbox';
+      var mini=s.cloneNode(true); mini.classList.add('mini'); mini.classList.remove('active');
+      mini.style.opacity='1'; mini.style.visibility='visible';
+      box.appendChild(mini);
+      var cap=document.createElement('div'); cap.className='cap'; cap.textContent=(k+1)+'  '+(s.getAttribute('data-title')||'');
+      th.appendChild(box); th.appendChild(cap);
+      th.addEventListener('click',function(){ go(k); document.body.classList.remove('overview'); });
+      ov.appendChild(th);
+    });
+  }
+  function highlightOv(){
+    if(!ov.childElementCount) return;
+    [].forEach.call(ov.children,function(c){ c.classList.toggle('sel', +c.getAttribute('data-k')===i); });
+  }
+
+  // Backup index: backups grouped by analysis area (data-chapter), clickable
+  (function(){ var host=document.getElementById('bindex'); if(!host) return;
+    var chapters=[
+      {n:'A', title:'Strategy and market',        who:''},
+      {n:'B', title:'Operations, risk and technology', who:''},
+      {n:'C', title:'Economics and delivery',     who:''}
+    ];
+    var buckets={}, bno=0;
+    slides.forEach(function(s,k){ var title=s.getAttribute('data-title')||'';
+      if(!/^Backup/.test(title) || title==='Backup index') return; bno++;
+      var ch=s.getAttribute('data-chapter')||'0';
+      (buckets[ch]=buckets[ch]||[]).push({k:k,bno:bno,label:title.replace(/^Backup:\s*/,'')});
+    });
+    chapters.forEach(function(c){
+      var items=buckets[c.n]||[];
+      if(!items.length) return;
+      var grp=document.createElement('div'); grp.className='bgroup';
+      var h=document.createElement('div'); h.className='bgroup-h';
+      h.innerHTML='<span class="bg-n">'+c.n+'</span><span class="bg-t">'+c.title+'</span>'+
+                  (c.who?('<span class="bg-who">'+c.who+'</span>'):'');
+      grp.appendChild(h);
+      items.forEach(function(it){
+        var b=document.createElement('a'); b.className='bx'; b.href='#'+(it.k+1);
+        b.innerHTML='<span class="bx-n">B'+it.bno+'</span><span class="bx-t">'+it.label+'</span>';
+        b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); go(it.k); });
+        grp.appendChild(b);
+      });
+      host.appendChild(grp);
+    });
+  })();
+
+  // "To index" button on every backup slide
+  (function(){ if(bIdx<0) return;
+    [].forEach.call(document.querySelectorAll('.toindex'),function(b){
+      b.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); go(bIdx); });
+    });
+  })();
+
+  // Deep link (#slideNumber)
+  var h=parseInt((location.hash||'').replace('#',''),10);
+  if(h>=1&&h<=n) i=h-1;
+  render();
+})();
+</script>
+</body>
+</html>

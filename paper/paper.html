@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>EDHEC paper template</title>
+<style>
+/* =====================================================================
+   EDHEC paper template, A4.
+   Same palette and the same components as the slide deck, set for
+   continuous reading instead of projection.
+
+   Export:  chrome --headless --print-to-pdf=paper.pdf \
+                   --no-pdf-header-footer paper.html
+   Page numbers come from the @page margin boxes below, so Chrome's own
+   header and footer must stay switched off.
+   ===================================================================== */
+:root{
+  --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
+  --sky:#F8F1F4; --sky2:#EEDCE4;
+  --orange:#C08A2E; --orange-dark:#8C5F1B;
+  --ink:#1A2430; --muted:#5D6B79; --line:#EFE1E7; --soft:#FAF6F8;
+  --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
+  --serif:Georgia,"Times New Roman",serif;
+}
+
+@page{
+  size:A4;
+  margin:24mm 22mm 20mm;
+  @bottom-center{
+    content:counter(page);
+    font-family:Arial,sans-serif; font-size:8.5pt; color:#5D6B79;
+  }
+  @top-right{
+    content:"Short running title, edit me";   /* appears on every page but the first */
+    font-family:Arial,sans-serif; font-size:7.5pt; color:#9AA7B4;
+    letter-spacing:.08em; text-transform:uppercase;
+  }
+}
+/* the title page carries neither a number nor a running title */
+@page:first{ margin:0; @bottom-center{content:""} @top-right{content:""} }
+
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+html,body{margin:0;padding:0;color:var(--ink);font-family:var(--serif);
+  font-size:10.5pt;line-height:1.55;}
+
+/* ---------- title page ---------- */
+.cover{position:relative;width:210mm;height:297mm;padding:38mm 22mm 0;
+  page-break-after:always;break-after:page;}
+.cover .rule-top{position:absolute;left:0;right:0;top:0;height:7mm;background:var(--blue);}
+.cover .mark{position:absolute;top:18mm;right:22mm;width:46mm;height:12mm;
+  background:url("edhec-logo.svg") no-repeat right center/contain;}
+.cover .eyebrow{font-family:var(--sans);font-size:9pt;font-weight:800;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--blue);margin-bottom:9mm;}
+.cover h1{font-family:var(--sans);font-size:30pt;font-weight:800;line-height:1.16;
+  margin:0;letter-spacing:-.01em;color:var(--ink);}
+.cover .crule{width:28mm;height:1.4mm;background:var(--blue);margin:9mm 0 7mm;}
+.cover .csub{font-size:12pt;color:var(--muted);line-height:1.5;max-width:140mm;}
+.cover .cfoot{position:absolute;left:0;right:0;bottom:0;background:var(--deep);color:#fff;
+  padding:9mm 22mm;display:flex;gap:14mm;font-family:var(--sans);font-size:9.5pt;line-height:1.5;}
+.cover .cfoot .k{display:block;font-size:7.5pt;letter-spacing:.14em;text-transform:uppercase;
+  color:#C2A0AE;margin-bottom:2mm;}
+.cover .cfoot>div:first-child{flex:1;}
+
+/* ---------- headings ---------- */
+h2,h3,h4{font-family:var(--sans);color:var(--navy);margin:0 0 3mm;break-after:avoid;}
+h2{font-size:15pt;font-weight:800;margin-top:10mm;padding-bottom:2mm;
+   border-bottom:1.2px solid var(--line);counter-increment:sec;counter-reset:sub;}
+h2:before{content:counter(sec) "  ";color:var(--blue);}
+h3{font-size:11.5pt;font-weight:800;margin-top:6mm;counter-increment:sub;}
+h3:before{content:counter(sec) "." counter(sub) "  ";color:var(--blue);}
+h4{font-size:10pt;font-weight:800;margin-top:5mm;}
+body{counter-reset:sec;}
+h2:first-of-type{margin-top:0;}
+
+p{margin:0 0 3.2mm;text-align:justify;hyphens:auto;}
+.lead{font-size:11.5pt;color:var(--muted);margin-bottom:6mm;text-align:left;}
+strong{color:var(--navy);}
+a{color:var(--blue);text-decoration:none;border-bottom:.4px solid var(--sky2);}
+
+ul,ol{margin:0 0 3.5mm;padding-left:6mm;}
+li{margin:0 0 1.4mm;}
+ul{list-style:none;padding-left:5mm;}
+ul li{position:relative;}
+ul li:before{content:"";position:absolute;left:-4mm;top:2.1mm;width:1.4mm;height:1.4mm;
+  border-radius:50%;background:var(--blue);}
+
+/* ---------- the deck's components, set for print ---------- */
+.callout{position:relative;border:.8px solid var(--line);border-radius:2.5mm;
+  padding:6mm 6mm 4.5mm;margin:5mm 0;break-inside:avoid;}
+.callout>.ctag{position:absolute;top:-2mm;left:5mm;background:#fff;padding:0 2.5mm;
+  font-family:var(--sans);font-size:7.5pt;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--blue);}
+.callout.warm{border-color:#E9E0CB;background:#FCF8F0;}
+.callout.warm>.ctag{color:var(--orange-dark);background:#FCF8F0;}
+
+.strip{background:var(--sky);border-left:1.4mm solid var(--blue);border-radius:0 2mm 2mm 0;
+  padding:3.5mm 5mm;margin:4mm 0;font-size:10pt;break-inside:avoid;}
+.strip.warm{background:#FCF8F0;border-left-color:var(--orange);}
+
+.band{background:var(--deep);color:#fff;border-radius:2mm;padding:4mm 6mm;margin:5mm 0;
+  font-family:var(--sans);font-size:10.5pt;text-align:center;break-inside:avoid;}
+
+table{border-collapse:collapse;width:100%;margin:4mm 0;font-family:var(--sans);
+  font-size:8.6pt;break-inside:avoid;}
+thead th{background:var(--navy);color:#fff;text-align:left;padding:2.2mm 2.5mm;
+  font-size:7.6pt;letter-spacing:.06em;text-transform:uppercase;font-weight:800;}
+tbody td{padding:2mm 2.5mm;border-bottom:.5px solid var(--line);vertical-align:top;line-height:1.35;}
+tbody tr:nth-child(even) td{background:var(--soft);}
+tbody tr.total td{font-weight:800;color:var(--navy);background:var(--sky2);}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+
+.tiles{display:flex;gap:4mm;margin:5mm 0;break-inside:avoid;}
+.tiles>div{flex:1;background:var(--soft);border:.8px solid var(--line);border-radius:2.5mm;
+  padding:4mm 3mm;text-align:center;font-family:var(--sans);}
+.tiles .n{font-size:16pt;font-weight:800;color:var(--blue);line-height:1;}
+.tiles .n.accent{color:var(--orange-dark);}
+.tiles .l{font-size:8pt;color:var(--muted);margin-top:2mm;line-height:1.35;}
+
+figure{margin:5mm 0;break-inside:avoid;}
+figure img{width:100%;display:block;border:.8px solid var(--line);border-radius:2mm;}
+figcaption{font-family:var(--sans);font-size:8pt;color:var(--muted);margin-top:2mm;
+  counter-increment:fig;}
+figcaption:before{content:"Figure " counter(fig) ". ";color:var(--navy);font-weight:800;}
+body{counter-reset:sec fig}
+
+.refs{font-size:9pt;}
+.refs p{padding-left:7mm;text-indent:-7mm;margin-bottom:2.2mm;text-align:left;}
+
+.note{font-size:8.5pt;color:var(--muted);}
+.pagebreak{page-break-before:always;break-before:page;}
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="cover">
+  <div class="rule-top"></div>
+  <div class="mark"></div>
+  <div class="eyebrow">Course, module or challenge</div>
+  <h1>The title states the finding,<br>not only the topic</h1>
+  <div class="crule"></div>
+  <div class="csub">A subtitle of one or two lines that says what the paper argues and
+  for whom it was written.</div>
+  <div class="cfoot">
+    <div><span class="k">Authors</span>Given Name Surname, Given Name Surname, Given Name Surname</div>
+    <div><span class="k">Programme</span>Programme, Group</div>
+    <div><span class="k">Date</span>Month Year</div>
+  </div>
+</section>
+
+<!-- ============================ BODY ============================ -->
+<h2>Introduction</h2>
+<p class="lead">Open with the answer. A reader who stops after this paragraph should
+still know what you recommend and on what evidence.</p>
+
+<p>Body text is set in a serif face because a paper is read continuously, while
+headings, tables and figures keep the sans of the deck so that both documents
+belong to the same family. Swap <code>--serif</code> for <code>var(--sans)</code> in
+<code>body</code> if you prefer an all-sans paper.</p>
+
+<h3>A subsection</h3>
+<p>Sections and subsections number themselves through CSS counters, so inserting
+one in the middle does not force a renumbering by hand.</p>
+
+<div class="callout">
+  <span class="ctag">The question this section answers</span>
+  <p style="margin:0;">The framed callout is the paper's version of the question frame
+  used on the slides. Use it to state the question a section answers, then answer it
+  in the paragraph that follows.</p>
+</div>
+
+<h2>Evidence</h2>
+<p>Tables carry the same dark header band as the deck.</p>
+
+<table>
+  <thead><tr><th>Cost item</th><th class="num">Option one</th><th class="num">Option two</th></tr></thead>
+  <tbody>
+    <tr><td>First line item</td><td class="num">0</td><td class="num">25,000</td></tr>
+    <tr><td>Second line item</td><td class="num">12,000</td><td class="num">18,000</td></tr>
+    <tr class="total"><td>Total</td><td class="num">12,000</td><td class="num">43,000</td></tr>
+  </tbody>
+</table>
+
+<div class="tiles">
+  <div><div class="n">EUR 00,000</div><div class="l">What this number is</div></div>
+  <div><div class="n">00 months</div><div class="l">What this number is</div></div>
+  <div><div class="n accent">00 %</div><div class="l">The one that decides</div></div>
+</div>
+
+<div class="strip"><strong>A qualification:</strong> the blue strip carries a caveat that
+supports the argument without interrupting it.</div>
+
+<div class="strip warm"><strong>A caution:</strong> the warm strip is reserved for a real
+warning, at most once per section.</div>
+
+<figure>
+  <img src="figure-placeholder.png" alt="">
+  <figcaption>Figures are numbered automatically. Export a slide to PNG and drop it in,
+  or embed an SVG.</figcaption>
+</figure>
+
+<h2>Conclusion</h2>
+<p>Close on the decision, the condition that would change it, and what you are asking
+the reader to do.</p>
+
+<div class="band">The closing band states the one sentence you want quoted.</div>
+
+<h2 class="pagebreak">References</h2>
+<div class="refs">
+  <p>Author, A. (Year). <em>Title of the work</em>. Publisher.</p>
+  <p>Author, B., &amp; Author, C. (Year). Title of the article. <em>Journal Name</em>, 00(0), 00–00.</p>
+</div>
+
+<p class="note">Delete this line and everything above it that you did not use. The
+template is a starting point, not a checklist.</p>
+
+</body>
+</html>
