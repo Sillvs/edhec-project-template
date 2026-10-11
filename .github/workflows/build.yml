@@ -63,6 +63,9 @@ jobs:
             [ -f "$old" ] || continue
             if ! diff -q <(pdftotext -layout "$old" -) <(pdftotext -layout "$f" -) >/dev/null; then
               echo "::warning file=$f::$f is committed stale: rebuild and commit it"
+              echo "--- first differences in $f ---"
+              diff <(pdftotext -layout "$old" -) <(pdftotext -layout "$f" -) | head -24
+              echo "--- pages: committed $(pdfinfo "$old" | awk '/Pages/{print $2}'), built $(pdfinfo "$f" | awk '/Pages/{print $2}') ---"
               stale=$((stale+1))
             fi
           done
@@ -85,6 +88,7 @@ jobs:
           echo "Every README picture matches the templates."
 
       - uses: actions/upload-artifact@v4
+        if: always()          # a failed build is exactly when you want the output
         with:
           name: deliverables
           path: |
