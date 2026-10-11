@@ -1,0 +1,97 @@
+name: build
+
+# Why this exists: the toolchain depends on a Chrome build, poppler, Node 22
+# and python-pptx. A change to any of them breaks the export, and without this
+# the first person to find out is whoever is exporting at midnight before a
+# hand-in. That is not hypothetical here: a routine Playwright upgrade once
+# moved chromium-1223 to chromium-1234 and the whole thing stopped with "No
+# such file or directory", which gives no hint that Chrome is the missing part.
+#
+# It also answers the second open question, whether the committed PDFs still
+# match their sources. See the staleness step for why that compares text
+# rather than bytes.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'          # the extractor uses the built-in WebSocket
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install poppler and the Calibri-metric font
+        run: |
+          sudo apt-get update -qq
+          # fonts-crosextra-carlito is only for docs/_default-powerpoint.html,
+          # the before-and-after picture. Without it that one slide falls back
+          # to Liberation Sans and the comparison stops matching real Office.
+          sudo apt-get install -y -qq poppler-utils fonts-crosextra-carlito
+
+      - run: pip install -r tools/requirements.txt
+
+      - name: Keep the committed outputs, so we can tell if they went stale
+        run: |
+          mkdir -p /tmp/committed
+          for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf paper/onepager.pdf; do
+            [ -f "$f" ] && cp "$f" "/tmp/committed/$(basename $f)"
+          done
+
+      - name: Build everything
+        run: ./build.sh
+
+      - name: Are the committed PDFs still current?
+        run: |
+          # Byte comparison does not work: every PDF carries a /ID that Chrome
+          # regenerates on each run, so identical documents differ by a few
+          # bytes. Compare the extracted text and the page count instead, which
+          # is what actually going stale would change.
+          stale=0
+          for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf paper/onepager.pdf; do
+            old="/tmp/committed/$(basename $f)"
+            [ -f "$old" ] || continue
+            if ! diff -q <(pdftotext -layout "$old" -) <(pdftotext -layout "$f" -) >/dev/null; then
+              echo "::warning file=$f::$f is committed stale: rebuild and commit it"
+              stale=$((stale+1))
+            fi
+          done
+          if [ "$stale" -gt 0 ]; then
+            echo "$stale committed PDF(s) no longer match their source."
+            echo "Run ./build.sh and commit the result."
+            exit 1
+          fi
+          echo "Every committed PDF matches its source."
+
+      - name: Are the README pictures still current?
+        run: |
+          # docs/img/* must stay committed or the README renders broken on
+          # GitHub, which means they can go stale in exactly the same way.
+          if ! git diff --quiet -- docs/img; then
+            echo "::warning::docs/img changed. Run ./build.sh docs and commit."
+            git diff --stat -- docs/img
+            exit 1
+          fi
+          echo "Every README picture matches the templates."
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deliverables
+          path: |
+            slides/slides.pdf
+            slides/slides.pptx
+            slides/slides-pictures.pptx
+            slides/gallery.pdf
+            paper/paper.pdf
+            paper/onepager.pdf
+          retention-days: 30
