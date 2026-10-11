@@ -156,7 +156,7 @@ rehearsal, by anybody, without a toolchain.
 
 ## Charts for a second question
 
-Four charts answer questions the first eight cannot.
+Five charts answer questions the first eight cannot.
 
 **`.mekko` — Marimekko.** Column width is one share, segment height is another.
 Reach for it when the finding is "a big share of a small market", which a bar

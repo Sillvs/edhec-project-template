@@ -132,3 +132,27 @@ soffice --headless --convert-to pdf slides/slides.pptx
 LibreOffice needs `libreoffice-impress` installed or it refuses every `.pptx`
 with "source file could not be loaded", which reads like a corrupt file and is
 not.
+
+## The build checks two things you cannot see
+
+`./build.sh` runs `tools/check_slides.py` over the geometry the layout extractor
+pulls out of Chrome, for both `slides.html` and `gallery.html`. It fails the
+build on either of these:
+
+**Overflow.** Any box ending past 1280x720. An overflowing slide still exports,
+still looks plausible in a contact sheet, and silently loses its last line.
+
+**Contrast.** Every run of text against the colour actually painted behind it,
+at 4.5:1, or 3:1 for large text as WCAG allows. Partly transparent text is
+flattened onto its background first, and a gradient is measured at whichever
+stop is worse.
+
+Both measure the **rendered page**, not the stylesheet, and that distinction is
+the whole point. Two white-on-gold pairings survived three CSS reviews because
+the rule setting the text colour and the rule setting the background live in
+different selectors, and the only file that rendered them was the gallery. The
+checker found both on its first run.
+
+Decoration is exempt below 25% opacity, which is how the giant watermark slide
+number stays. If you add decorative text above that threshold, it will fail, and
+it should: at that opacity somebody will try to read it.

@@ -498,6 +498,11 @@ body.overview #ov{display:grid;}
    file, so a chart can still be corrected during a rehearsal.
    ===================================================================== */
 
+/* The bright --orange is a FILL, never a background for text: white on it is
+   3.04:1. Anything with a label on it uses --orange-dark (5.57:1) or
+   --orange-mid (4.52:1). Below, .cbar.accent, .wbar.down and .line.dash are
+   bare fills, their values sit outside the shape in --navy on white. */
+
 /* ---- column chart -------------------------------------------------- */
 .cols-chart{display:flex;align-items:flex-end;gap:18px;height:186px;
   border-bottom:2px solid var(--line);padding:0 6px;}
@@ -575,7 +580,7 @@ body.overview #ov{display:grid;}
 .quad .bub{position:absolute;transform:translate(-50%,50%);border-radius:50%;
   background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;
   font-size:13px;font-weight:800;border:2px solid #fff;}
-.quad .bub.accent{background:var(--orange);}
+.quad .bub.accent{background:var(--orange-dark);}  /* carries a label, so AA */
 .quad .bub.dim{background:var(--int2);}
 .quad-y{margin-bottom:7px;font-size:11.5px;font-weight:800;letter-spacing:.09em;
   text-transform:uppercase;color:var(--navy);}
@@ -590,7 +595,7 @@ body.overview #ov{display:grid;}
 .funnel .f.s2{background:var(--navy);}
 .funnel .f.s3{background:var(--blue);}
 .funnel .f.s4{background:var(--int2);}
-.funnel .f.s5{background:var(--orange);}
+.funnel .f.s5{background:var(--orange-dark);}  /* carries a label, so AA */
 
 /* ---- tile cartogram ------------------------------------------------ */
 .carto{display:grid;grid-template-columns:repeat(7,34px);gap:4px;}

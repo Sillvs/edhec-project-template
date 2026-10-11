@@ -127,10 +127,15 @@ that carry them, and names how each one usually goes wrong.
 </tr>
 </table>
 
-Every text-on-colour pairing in the templates clears **WCAG AA at 4.5:1**, and
-nothing is set below 11.5px. That is not a box-tick. A projector in a bright
-room costs you far more contrast than your laptop suggests, and the pairing that
-fails is always the one carrying the number you came to show.
+Every text-on-colour pairing clears **WCAG AA**, and nothing is set below
+11.5px. Not as a box-tick, and not on trust: `./build.sh` measures every
+rendered run of text against the colour actually painted behind it, and fails
+if one falls short. It fails on overflow too, because a slide that
+runs past the canvas still exports and just loses its last line.
+
+A projector in a bright room costs you far more contrast than your laptop
+suggests, and the pairing that fails is always the one carrying the number you
+came to show.
 
 ---
 

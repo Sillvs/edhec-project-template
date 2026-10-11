@@ -3,35 +3,11 @@
 Found during a scope review on 2026-10-11 and consciously deferred, because a
 deferred item that is not written down is not deferred, it is forgotten.
 
-Ordered by what bites first.
+Ordered by what bites first. Two remain.
 
 ---
 
-## 1. Slide overflow is documented but not detected
-
-**Evidence:** `docs/EXPORT.md` names silent clipping past 720 px as the most
-dangerous failure mode. Nothing in `build.sh`, `extract_layout.mjs` or either
-Python tool checks for it.
-
-**Why it bites:** a slide that overflows still exports, still looks plausible in
-a thumbnail, and loses its last line. Somebody hands that in.
-
-**Fix:** the layout extractor already walks every element with its exact
-geometry. Add a pass that flags any element whose bottom edge exceeds 720 px
-minus the footer, and make `build.sh` exit non-zero with the slide number and
-the offending element. The measurement already exists; only the assertion is
-missing.
-
-**Note:** a 32-agent review ranked this first among everything proposed, ahead
-of every new component. It is still the top item.
-
-**Partially covered now:** `build.sh` fails if `onepager.pdf` is not exactly one
-page, which is the same class of check for the one format where overflow adds a
-page rather than clipping. Slides clip silently and are still unchecked.
-
----
-
-## 2. Build outputs are committed and can go stale
+## 1. Build outputs are committed and can go stale
 
 **Evidence:** tracked `.pdf`, `.pptx` and `.png` files make up most of the
 repository by size.
@@ -48,7 +24,7 @@ CI job that rebuilds and fails if the committed copy differs.
 
 ---
 
-## 3. Nothing verifies the build still works
+## 2. Nothing verifies the build still works
 
 **Evidence:** no `.github/workflows`.
 
@@ -62,19 +38,6 @@ the whole toolchain stopped with "No such file or directory". Fixed by
 **Fix:** a GitHub Action that runs `./build.sh` on push and uploads the PDF and
 PPTX as artefacts. It doubles as the preview mechanism for teammates who do not
 clone.
-
----
-
-## 4. The gallery is not exported to PowerPoint
-
-**Evidence:** `build.sh` runs `extract_layout.mjs` on `slides/slides.html` only.
-
-**Why it bites:** the gallery is the catalogue, so it is the file people copy
-from, and it is the one file whose PowerPoint behaviour nobody has ever seen.
-The rotation bug lived there undetected for exactly this reason.
-
-**Fix:** run the extractor over the gallery too, even if the `.pptx` is only
-ever inspected and never shipped. Cheap, and it turns the catalogue into a test.
 
 ---
 
@@ -100,6 +63,21 @@ Kept so the reasoning survives.
   above the axis now, left aligned, and the reason is in the CSS.
 - **Ancestor debris in the tokens** — `--olive`, `--optA` to `--optD` and their
   dead classes deleted. Two of the four were not EDHEC colours at all.
+- **Slide overflow is documented but not detected** — `tools/check_slides.py`
+  measures every box against the 1280x720 canvas from the geometry Chrome
+  actually rendered, and `./build.sh` fails on any that runs past it. This was
+  ranked first by a 32-agent review, ahead of every new component, and it was
+  right to be.
+- **The gallery is not exported to PowerPoint** — the extractor now runs over
+  the gallery as well. No `.pptx` ships from it, but its geometry is checked,
+  which turns the catalogue into a test. The two contrast failures below were
+  found the hour after this went in, and both were gallery-only.
+- **Two white-on-gold pairings carried text** — `.funnel .f.s5` and
+  `.quad .bub.accent` set a `--orange` background under inherited white text,
+  3.04:1. They survived three contrast reviews because the colour and the
+  background are set in different selectors and `slides.html` never rendered
+  either one. Grepping CSS could not have found this; measuring the rendered
+  page did, on the first run. Now checked on every build.
 
 ## Not deferred, decided against
 

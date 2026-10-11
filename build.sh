@@ -35,6 +35,11 @@ if [ "$WHAT" = all ] || [ "$WHAT" = slides ]; then
   pdf slides/slides.html slides/slides.pdf
   pdf slides/gallery.html slides/gallery.pdf
   node tools/extract_layout.mjs slides/slides.html "$WORK/slides.json" | sed 's/^/   /'
+  # The gallery is the file people copy from, so it is the one whose geometry
+  # has to be right. It is extracted for checking even though no .pptx ships.
+  node tools/extract_layout.mjs slides/gallery.html "$WORK/gallery.json" | sed 's/^/   /'
+  echo "== overflow and contrast =="
+  "$PY" tools/check_slides.py "$WORK/slides.json" "$WORK/gallery.json" || exit 1
   "$PY" tools/make_pptx_native.py "$WORK/slides.json" slides/slides.pptx | sed 's/^/   /'
   "$PY" tools/make_pptx.py slides/slides.pdf | sed 's/^/   /'
 fi
