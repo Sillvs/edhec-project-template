@@ -55,17 +55,24 @@ jobs:
         run: |
           # Byte comparison does not work: every PDF carries a /ID that Chrome
           # regenerates on each run, so identical documents differ by a few
-          # bytes. Compare the extracted text and the page count instead, which
-          # is what actually going stale would change.
+          # bytes. `pdftotext -layout` does not work either, and this run
+          # proved it: the committed gallery.pdf differed from a CI rebuild by
+          # exactly one blank line, at the same page count and the same words,
+          # because sub-pixel layout differs between Chrome builds.
+          #
+          # So compare what going stale would actually change: the page count,
+          # and the sequence of words with all whitespace collapsed.
+          words () { pdftotext "$1" - | tr -s '[:space:]' ' '; }
           stale=0
           for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf paper/onepager.pdf; do
             old="/tmp/committed/$(basename $f)"
             [ -f "$old" ] || continue
-            if ! diff -q <(pdftotext -layout "$old" -) <(pdftotext -layout "$f" -) >/dev/null; then
+            po=$(pdfinfo "$old" | awk '/Pages/{print $2}')
+            pn=$(pdfinfo "$f"   | awk '/Pages/{print $2}')
+            if [ "$po" != "$pn" ] || ! diff -q <(words "$old") <(words "$f") >/dev/null; then
               echo "::warning file=$f::$f is committed stale: rebuild and commit it"
-              echo "--- first differences in $f ---"
-              diff <(pdftotext -layout "$old" -) <(pdftotext -layout "$f" -) | head -24
-              echo "--- pages: committed $(pdfinfo "$old" | awk '/Pages/{print $2}'), built $(pdfinfo "$f" | awk '/Pages/{print $2}') ---"
+              echo "--- pages: committed $po, built $pn ---"
+              diff <(words "$old" | tr ' ' '\n') <(words "$f" | tr ' ' '\n') | head -24
               stale=$((stale+1))
             fi
           done
