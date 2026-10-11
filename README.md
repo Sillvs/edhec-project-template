@@ -234,6 +234,10 @@ raised eyebrow.** Use the accent at most once per slide, and only where it means
 
 ## Licence
 
-MIT, **except the EDHEC mark**. `design/edhec-logo.svg` is EDHEC Business
-School's trademark and is not ours to relicense. Not at EDHEC? Replace the logo
-and the burgundy, and everything else is yours. See [LICENSE](LICENSE).
+[MIT](LICENSE) for the code, the stylesheets, the templates and the docs.
+
+**The EDHEC mark is not covered.** `design/edhec-logo.svg` is the school's
+trademark and is not ours to relicense. A copyright licence does not grant
+trademark rights, and MIT does not pretend to. Not at EDHEC? Swap the logo and
+the burgundy and everything else is yours. See **[TRADEMARKS.md](TRADEMARKS.md)**
+for the two commands that do it.
