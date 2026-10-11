@@ -44,9 +44,13 @@ jobs:
       - name: Keep the committed outputs, so we can tell if they went stale
         run: |
           mkdir -p /tmp/committed
+          # Key by the full path, not the basename. slides/slides.pdf and
+          # examples/auditcert-france-2026/slides.pdf share a basename, so
+          # keying by it made the example overwrite the deck and the next step
+          # compared a 6-page deck against a 14-page example.
           for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf \
                    paper/onepager.pdf examples/auditcert-france-2026/slides.pdf; do
-            [ -f "$f" ] && cp "$f" "/tmp/committed/$(basename $f)"
+            [ -f "$f" ] && cp "$f" "/tmp/committed/${f//\//__}"
           done
           : # never let a missing last file end this step under bash -e
 
@@ -68,7 +72,7 @@ jobs:
           stale=0
           for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf \
                    paper/onepager.pdf examples/auditcert-france-2026/slides.pdf; do
-            old="/tmp/committed/$(basename $f)"
+            old="/tmp/committed/${f//\//__}"
             [ -f "$old" ] || continue
             po=$(pdfinfo "$old" | awk '/Pages/{print $2}')
             pn=$(pdfinfo "$f"   | awk '/Pages/{print $2}')
