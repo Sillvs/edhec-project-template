@@ -185,3 +185,50 @@ Use it for anything ordered: low to high, early to late, small to large.
 
 The warm gold is **not** part of the scale. It marks the one series, bar or
 bubble the audience should look at. One per chart.
+
+## The scale: nine sizes, ten gaps, three radii
+
+Every size in the templates comes from a fixed set. The tokens are at the top of
+each template and in `design/tokens.css`:
+
+| | Values | Token |
+|---|---|---|
+| Type | 11.5 · 13 · 14 · 15.5 · 17 · 19 · 23 · 30 · 46 px | `--t1` … `--t9` |
+| Gaps and padding | 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 48 · 64 px | `--s1` … `--s10` |
+| Corner radius | 4 · 6 · 10 px | `--r1` … `--r3` |
+
+**Use a rung.** Picking 12.5px because a line nearly fits is how the previous
+version ended up with 35 different font sizes, which is why type that should
+have looked the same across two slides did not.
+
+Two rules behind the numbers:
+
+- **11.5px is the floor.** The exporter maps 1 CSS px to 0.75 pt, so 11.5px
+  arrives in PowerPoint at 8.6pt. Below that nobody reads it from the back of a
+  room. Anything smaller in the old files was raised, not snapped down.
+- **A handful of display sizes sit off the scale on purpose** — the big slide
+  number in the corner, the title-slide wordmark. They are decoration at one
+  known position, not text in a system, and they are listed as exceptions in the
+  token comment rather than silently different.
+
+Check a change before you commit it:
+
+```bash
+grep -o 'font-size:[0-9.]*px' slides/slides.html | sort | uniq -c | sort -rn
+```
+
+Anything outside the nine rungs should be a display size you can name.
+
+## Contrast
+
+Every text-on-colour pairing in the templates meets WCAG AA (4.5:1). That is not
+an accessibility box-tick: a projector in a bright room costs you far more
+contrast than a laptop screen suggests, and the pairing that fails is always the
+one carrying the number you came to show.
+
+Two consequences you will hit if you add colours:
+
+- White on the warm gold `--orange` is **3.04:1** and fails. Use `--orange-dark`
+  for any chip or band with text on it. The bright gold is for fills without text.
+- The intensity ramp carries white text only from `--int2` down. `--int0` and
+  `--int1` are too light; put dark text on those.
