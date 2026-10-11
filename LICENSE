@@ -1,0 +1,53 @@
+MIT License
+
+Copyright (c) 2026 Silas Zamzow
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Trademark carve-out: the EDHEC logo is not covered
+
+The MIT licence above covers the code, the stylesheets, the templates and the
+documentation in this repository. It does **not** cover the EDHEC Business
+School name, logo or visual identity.
+
+`design/edhec-logo.svg` is the official mark, obtained from
+`edhec.edu/sites/default/files/logo.svg`. It is EDHEC Business School's
+trademark. It is included here, and embedded in the templates, so that members
+of EDHEC can produce EDHEC-branded work. It is not ours to relicense, and the
+MIT grant above does not extend to it.
+
+**If you are not at EDHEC and you fork this:** replace `design/edhec-logo.svg`
+with your own mark and change the burgundy `#5F1937` in the token block of each
+template. Everything else is yours to use under MIT. Using the EDHEC mark on
+work that is not EDHEC's is a trademark matter, not a licence matter, and this
+file does not permit it.
+
+The same applies to any other institution's mark you substitute in: check what
+your own school or employer allows before you publish.
+
+---
+
+## The example deck
+
+`examples/auditcert-france-2026/` is a finished piece of coursework, kept as a
+worked example. "AuditCert France" is a fictionalised client name from the
+original case brief. Everyone in it other than the repository owner is referred
+to by role rather than by name.

@@ -10,13 +10,14 @@
 //
 // Uses the DevTools protocol over Node 22's built-in WebSocket, no packages.
 
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { writeFileSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 
-const CHROME =
-  process.env.CHROME ||
-  `${process.env.HOME}/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome`;
+// Resolved at run time, never hardcoded: a Playwright upgrade renames the
+// directory and a pinned path fails with a bare "No such file or directory".
+const CHROME = process.env.CHROME || execFileSync(
+  new URL("find-chrome.sh", import.meta.url).pathname, { encoding: "utf8" }).trim();
 
 const [, , htmlArg, outArg] = process.argv;
 if (!htmlArg || !outArg) {

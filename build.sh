@@ -11,7 +11,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 
-CHROME="${CHROME:-$HOME/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome}"
+CHROME=$(tools/find-chrome.sh) || exit 1
 PY="${PY:-python3}"
 WORK="${WORK:-.build}"
 WHAT="${1:-all}"
@@ -23,6 +23,9 @@ pdf () {  # pdf <html> <out.pdf>
     --virtual-time-budget=12000 "file://$PWD/$1" 2>/dev/null
   echo "   $2  $(pdfinfo "$2" | awk '/Pages/{print $2}') pages"
 }
+
+echo "== self-containment =="
+"$PY" tools/inline_assets.py --check || exit 1
 
 if [ "$WHAT" = all ] || [ "$WHAT" = slides ]; then
   echo "== slides =="

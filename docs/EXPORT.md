@@ -8,10 +8,17 @@ traps that cost us real time, so you do not rediscover them.
 The authoritative export. Everything else is derived from it.
 
 ```bash
-chrome --headless --disable-gpu --no-sandbox \
-       --print-to-pdf=slides/slides.pdf --no-pdf-header-footer \
-       --virtual-time-budget=12000 "file://$PWD/slides/slides.html"
+CHROME=$(tools/find-chrome.sh)
+"$CHROME" --headless --disable-gpu --no-sandbox \
+          --print-to-pdf=slides/slides.pdf --no-pdf-header-footer \
+          --virtual-time-budget=12000 "file://$PWD/slides/slides.html"
 ```
+
+`tools/find-chrome.sh` resolves Chrome at run time. Never hardcode the path: it
+used to point at one Playwright build number, a routine upgrade renamed that
+directory, and the whole toolchain started failing with a bare "No such file or
+directory" that gives no hint Chrome is the missing piece. Override with
+`CHROME=/path/to/chrome` if you want a specific one.
 
 By hand in Chrome: press `P`, choose **Save as PDF**, set **Margins: none** and
 **Background graphics: on**. Both give one slide per page at 16:9.
