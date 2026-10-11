@@ -1,43 +1,11 @@
-# Deferred
+# What was found, and what was decided against
 
-Found during a scope review on 2026-10-11 and consciously deferred, because a
-deferred item that is not written down is not deferred, it is forgotten.
+Nothing is currently deferred. Every item from the 2026-10-11 scope review is
+closed, and each is kept below with its reasoning, because a repository that
+forgets why it did something does it again.
 
-Ordered by what bites first. Two remain.
-
----
-
-## 1. Build outputs are committed and can go stale
-
-**Evidence:** tracked `.pdf`, `.pptx` and `.png` files make up most of the
-repository by size.
-
-**Nuance:** this is not simply wrong. `docs/img/*` must stay committed or the
-README renders broken on GitHub, and the example is an archive that should not
-move. The questionable ones are the template's own outputs: `slides/slides.pdf`,
-`slides/slides.pptx`, `slides/slides-pictures.pptx`, `slides/gallery.pdf`,
-`paper/paper.pdf`, `paper/onepager.pdf`. They are regenerable, they will
-silently stop matching their sources, and a reader cannot tell.
-
-**Fix:** either gitignore those six and let `./build.sh` produce them, or add a
-CI job that rebuilds and fails if the committed copy differs.
-
----
-
-## 2. Nothing verifies the build still works
-
-**Evidence:** no `.github/workflows`.
-
-**Why it bites:** the toolchain depends on a Chrome build, poppler, Node 22 and
-python-pptx. A change to any of them breaks the export, and the first person to
-find out is whoever is exporting at midnight before a hand-in. This already
-happened once: a Playwright upgrade moved `chromium-1223` to `chromium-1234` and
-the whole toolchain stopped with "No such file or directory". Fixed by
-`tools/find-chrome.sh`, but only because somebody was watching.
-
-**Fix:** a GitHub Action that runs `./build.sh` on push and uploads the PDF and
-PPTX as artefacts. It doubles as the preview mechanism for teammates who do not
-clone.
+If you add an item, put it above this line with its evidence. A deferred item
+that is not written down is not deferred, it is forgotten.
 
 ---
 
@@ -72,6 +40,19 @@ Kept so the reasoning survives.
   the gallery as well. No `.pptx` ships from it, but its geometry is checked,
   which turns the catalogue into a test. The two contrast failures below were
   found the hour after this went in, and both were gallery-only.
+- **Build outputs are committed and can go stale** — CI rebuilds on every push
+  and fails if a committed PDF or README picture no longer matches its source.
+  Neither check could use the obvious comparison. PDFs carry a Chrome-generated
+  `/ID` so bytes always differ, and `pdftotext -layout` always differs too,
+  which the first CI run demonstrated with a one-blank-line diff at identical
+  page counts. Pictures are rasterised, so bytes always differ there as well,
+  and mean pixel difference turned out to miss a real edit by an order of
+  magnitude. Both now measure what staleness would actually change.
+- **Nothing verifies the build still works** — `.github/workflows/build.yml`
+  runs the whole build on every push and uploads the deliverables for 30 days,
+  which doubles as the preview for teammates who do not clone. This was not
+  hypothetical: a Playwright upgrade moved `chromium-1223` to `chromium-1234`
+  mid-session and the toolchain stopped with "No such file or directory".
 - **Two white-on-gold pairings carried text** — `.funnel .f.s5` and
   `.quad .bub.accent` set a `--orange` background under inherited white text,
   3.04:1. They survived three contrast reviews because the colour and the

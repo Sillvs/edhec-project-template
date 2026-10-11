@@ -2,6 +2,9 @@
 
 # Hand in work that looks like you meant it
 
+[![build](https://github.com/Sillvs/edhec-project-template/actions/workflows/build.yml/badge.svg)](https://github.com/Sillvs/edhec-project-template/actions/workflows/build.yml)
+[![licence: MIT](https://img.shields.io/badge/licence-MIT-5F1937)](LICENSE)
+
 **Slides, a paper and a one-page leave-behind in the EDHEC design.**
 Write plain HTML, get a PDF and an **editable** PowerPoint.
 No framework, no build step, no npm, nothing to break the night before a hand-in.
@@ -224,7 +227,7 @@ templates drift apart or if `design/tokens.css` disagrees with them.
 | **[docs/COMPONENTS.md](docs/COMPONENTS.md)** | Every component and chart, the type and spacing scale, and the contrast rules. |
 | **[docs/FRAMEWORKS.md](docs/FRAMEWORKS.md)** | Nine consulting frameworks and what to build each one from. |
 | **[docs/PAPER.md](docs/PAPER.md)** | Writing a paper in the same design. |
-| **[TODO.md](TODO.md)** | What is deliberately not done yet, with the evidence, and what was proposed and rejected. |
+| **[TODO.md](TODO.md)** | Everything that was found, fixed and why, plus what was proposed and deliberately rejected. |
 
 ---
 
