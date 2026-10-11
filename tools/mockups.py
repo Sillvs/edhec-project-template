@@ -333,7 +333,7 @@ def main() -> None:
 
     if paper.exists():
         pp = pages(paper)
-        print_mockup(pp[:3], OUT / "mockup-paper.png")
+        print_mockup(pp[:4], OUT / "mockup-paper.png")  # include the references page
         pp[0].resize((900, round(900 * pp[0].height / pp[0].width)),
                      Image.LANCZOS).save(OUT / "paper-cover.png")
         if len(pp) > 1:

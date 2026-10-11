@@ -36,23 +36,38 @@ FLOOR_PX = 11.5
 FOOTER_MIN_HEIGHT = 40
 
 
-def lum(hex6: str) -> float:
+def lum(hex6: str):
+    """Relative luminance, or None for anything that is not a hex triple.
+
+    CSS keywords reach here: a gradient stop of `transparent` used to raise
+    ValueError and kill the build on a traceback naming neither the slide nor
+    the rule. A checker that crashes instead of reporting is worse than one
+    that says it could not measure something.
+    """
+    hex6 = (hex6 or "").lstrip("#")
+    if len(hex6) == 3:
+        hex6 = "".join(ch * 2 for ch in hex6)
+    if len(hex6) != 6 or any(ch not in "0123456789abcdefABCDEF" for ch in hex6):
+        return None
     c = [int(hex6[i:i + 2], 16) / 255 for i in (0, 2, 4)]
     c = [v / 12.92 if v <= .03928 else ((v + .055) / 1.055) ** 2.4 for v in c]
     return .2126 * c[0] + .7152 * c[1] + .0722 * c[2]
 
 
-def ratio(a: str, b: str) -> float:
-    l1, l2 = sorted((lum(a), lum(b)), reverse=True)
+def ratio(a: str, b: str):
+    la, lb = lum(a), lum(b)
+    if la is None or lb is None:
+        return None
+    l1, l2 = sorted((la, lb), reverse=True)
     return (l1 + .05) / (l2 + .05)
 
 
 def over(fg: dict, bg: str) -> str:
     """Flatten a partly transparent colour onto an opaque background."""
     a = fg.get("a", 1)
-    if a >= .999:
-        return fg["c"]
-    f, b = fg["c"], bg
+    if a >= .999 or lum(fg.get("c")) is None or lum(bg) is None:
+        return fg.get("c", "")
+    f, b = fg["c"].lstrip("#"), bg.lstrip("#")
     return "".join(f"{round(int(f[i:i+2],16)*a + int(b[i:i+2],16)*(1-a)):02X}"
                    for i in (0, 2, 4))
 
@@ -112,7 +127,7 @@ def footer_band(doc) -> float | None:
     return float(y) if hits >= max(2, n * 0.6) else None
 
 
-def check(path: pathlib.Path) -> list:
+def check(path: pathlib.Path, unmeasured: list) -> list:
     doc = json.loads(path.read_text())
     W, H = doc["w"], doc["h"]
     fails = []
@@ -175,6 +190,11 @@ def check(path: pathlib.Path) -> list:
                 for b in bgs:
                     fg = over(f["colour"], b)
                     r = ratio(fg, b)
+                    if r is None:
+                        unmeasured.append(
+                            f"  {where}: \"{run['s'][:34].strip()}\" sits on "
+                            f"{b!r}, which is not a hex colour. Not measured.")
+                        break
                     if r < need:
                         txt = run["s"][:42].strip()
                         fails.append(
@@ -187,20 +207,25 @@ def check(path: pathlib.Path) -> list:
 def main() -> None:
     if len(sys.argv) < 2:
         sys.exit(__doc__)
-    all_fails, checked = [], 0
+    all_fails, unmeasured, checked = [], [], 0
     for arg in sys.argv[1:]:
         p = pathlib.Path(arg)
         if not p.exists():
             print(f"   skipped {p}: not extracted")
             continue
         checked += 1
-        f = check(p)
+        f = check(p, unmeasured)
         all_fails += f
         doc = json.loads(p.read_text())
         items = sum(len(s["items"]) for s in doc["slides"])
         print(f"   {p.name}: {len(doc['slides'])} slides, {items} boxes, "
               f"{len(f)} problem{'' if len(f) == 1 else 's'}")
 
+    if unmeasured:
+        # Named, not swallowed. A pairing nobody could measure is not a pass.
+        print(f"\n   {len(unmeasured)} text run(s) could not be measured:")
+        for u in unmeasured[:8]:
+            print(u)
     if all_fails:
         print()
         for f in all_fails:
@@ -209,8 +234,10 @@ def main() -> None:
               f"thumbnail, which is why they are checked here.")
         sys.exit(1)
     if checked:
-        print("   no overflow, nothing under the footer, every run at or above "
-              "AA and the 11.5px floor")
+        caveat = (f", except {len(unmeasured)} run(s) listed above"
+                  if unmeasured else "")
+        print(f"   no overflow, nothing under the footer, every run at or above"
+              f" AA and the 11.5px floor{caveat}")
 
 
 if __name__ == "__main__":

@@ -53,6 +53,32 @@ Kept so the reasoning survives.
   which doubles as the preview for teammates who do not clone. This was not
   hypothetical: a Playwright upgrade moved `chromium-1223` to `chromium-1234`
   mid-session and the toolchain stopped with "No such file or directory".
+- **The worked example was outside every check, and failing** — `examples/` is
+  the file students copy. It had 3 live AA failures, 51 text runs below the
+  11.5px floor, and committed outputs stale by a full commit. `build.sh` now
+  builds and gates it like everything else.
+- **The documented rebrand did not work** — TRADEMARKS.md told a forker to
+  change the burgundy in `tokens.css` and run `sync_components.py`. The script
+  only wrote the component block, so the colour stayed in five files and the
+  next build failed with no hint why. This is the MIT-fork path the trademark
+  carve-out depends on. The script now writes tokens into all four templates.
+- **Content ran under the footer, undetected** — not an overflow, so the canvas
+  test said nothing and the PDF merely looked cramped. `check_slides.py` now
+  derives the footer from what repeats across the document and flags
+  collisions. The first version took the highest text in the bottom band and
+  flagged every chart axis label, which is why it derives rather than assumes.
+- **Nothing enforced the 11.5px floor** — claimed in three documents, checked
+  nowhere. Now part of `check_slides.py`.
+- **`check_images.py` passed after comparing nothing** — a wrong path, a
+  renamed folder or the wrong cwd printed "every picture still matches" and
+  exited 0, and it is the only staleness gate on the README.
+- **A gradient stop of `transparent` killed the build** — `ValueError` on a
+  traceback naming neither the slide nor the rule. Unparseable colours are now
+  reported as unmeasured, and the summary line says so rather than claiming a
+  clean pass.
+- **The `.pptx` had no staleness guard** — the headline deliverable, and a deck
+  edit committed without it left the PowerPoint contradicting the PDF beside
+  it. CI now compares the text runs.
 - **Two white-on-gold pairings carried text** — `.funnel .f.s5` and
   `.quad .bub.accent` set a `--orange` background under inherited white text,
   3.04:1. They survived three contrast reviews because the colour and the

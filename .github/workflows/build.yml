@@ -49,7 +49,8 @@ jobs:
           # keying by it made the example overwrite the deck and the next step
           # compared a 6-page deck against a 14-page example.
           for f in slides/slides.pdf slides/gallery.pdf paper/paper.pdf \
-                   paper/onepager.pdf examples/auditcert-france-2026/slides.pdf; do
+                   paper/onepager.pdf examples/auditcert-france-2026/slides.pdf \
+                   slides/slides.pptx examples/auditcert-france-2026/slides.pptx; do
             [ -f "$f" ] && cp "$f" "/tmp/committed/${f//\//__}"
           done
           : # never let a missing last file end this step under bash -e
@@ -83,6 +84,21 @@ jobs:
               stale=$((stale+1))
             fi
           done
+          # The editable .pptx is the headline deliverable, and nothing was
+          # checking it. A deck edit committed without it leaves the PowerPoint
+          # contradicting the PDF beside it. Compare the text runs, since the
+          # zip bytes differ on every build.
+          pptx_text () { unzip -p "$1" 'ppt/slides/slide*.xml' | grep -o '<a:t>[^<]*' | sort; }
+          for f in slides/slides.pptx examples/auditcert-france-2026/slides.pptx; do
+            old="/tmp/committed/${f//\//__}"
+            [ -f "$old" ] || continue
+            if ! diff -q <(pptx_text "$old") <(pptx_text "$f") >/dev/null; then
+              echo "::warning file=$f::$f is committed stale: rebuild and commit it"
+              diff <(pptx_text "$old") <(pptx_text "$f") | head -12
+              stale=$((stale+1))
+            fi
+          done
+
           if [ "$stale" -gt 0 ]; then
             echo "$stale committed PDF(s) no longer match their source."
             echo "Run ./build.sh and commit the result."
