@@ -269,11 +269,16 @@ bubble the audience should look at. One per chart.
 Every size in the templates comes from a fixed set. The tokens are at the top of
 each template and in `design/tokens.css`:
 
-| | Values | Token |
-|---|---|---|
-| Type | 11.5 · 13 · 14 · 15.5 · 17 · 19 · 23 · 30 · 46 px | `--t1` … `--t9` |
-| Gaps and padding | 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 48 · 64 px | `--s1` … `--s10` |
-| Corner radius | 4 · 6 · 10 px | `--r1` … `--r3` |
+| | Values |
+|---|---|
+| Type | 11.5 · 13 · 14 · 15.5 · 17 · 19 · 23 · 30 · 46 px |
+| Gaps and padding | 4 · 6 · 8 · 12 · 16 · 20 · 24 · 32 · 48 · 64 px |
+| Corner radius | 4 · 6 · 10 px |
+
+These are **values to pick from, not CSS variables.** There were `--t1` to
+`--r3` tokens here briefly and they were deleted: nothing referenced them, so
+changing `--t5` moved nothing and sent you hunting for the bug in the wrong
+file. Write the number.
 
 **Use a rung.** Picking 12.5px because a line nearly fits is how the previous
 version ended up with 35 different font sizes, which is why type that should

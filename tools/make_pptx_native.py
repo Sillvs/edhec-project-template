@@ -321,6 +321,13 @@ def build(layout_path, out_path):
             slide.notes_slide.notes_text_frame.text = s["title"]
 
     prs.core_properties.title = pathlib.Path(out_path).stem
+    # python-pptx stamps its own author into every file it creates, from the
+    # default template it ships. The repository states that no personal data
+    # of anyone other than the owner appears in it, so clear it rather than
+    # publish a stranger's name in three committed .pptx files.
+    cp = prs.core_properties
+    cp.author = "EDHEC project template"
+    cp.last_modified_by = "EDHEC project template"
     prs.save(out_path)
     mb = pathlib.Path(out_path).stat().st_size / 1e6
     print(f"{pathlib.Path(out_path).name}: {len(data['slides'])} slides, "

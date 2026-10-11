@@ -17,6 +17,7 @@ could be done by grepping CSS, which is exactly why neither was being done.
 
 Exits 1 on any failure, with the slide, the element and the number.
 """
+import collections
 import json
 import pathlib
 import sys
@@ -28,6 +29,11 @@ AA = 4.5
 DECORATIVE_OPACITY = 0.25
 # Large text is allowed 3:1 by WCAG: 24px, or 18.66px at weight 700+.
 LARGE_PX, LARGE_BOLD_PX, LARGE_AA = 24.0, 18.66, 3.0
+# The exporter maps 1 CSS px to 0.75pt, so 11.5px is 8.6pt in PowerPoint.
+# Below that nobody reads it from the back of a room.
+FLOOR_PX = 11.5
+# A box taller than this crossing into the footer band is content, not a rule.
+FOOTER_MIN_HEIGHT = 40
 
 
 def lum(hex6: str) -> float:
@@ -80,10 +86,38 @@ def background_under(item, items, idx) -> str:
     return best
 
 
+def footer_band(doc) -> float | None:
+    """Where the footer starts, measured across the whole document.
+
+    A first attempt took the highest text in the bottom of each slide and got
+    it wrong: on a chart-heavy slide that is an x-axis label, so every dense
+    slide reported a collision. A guard with false positives gets switched off,
+    which is worse than no guard.
+
+    The footer is the thing that repeats. Collect text baselines in the bottom
+    fifth of every slide, round to the pixel, and take the y that appears on
+    most slides. Accept it only if it appears on at least 60% of them, so a
+    deck with no footer is skipped rather than guessed at.
+    """
+    H = doc["h"]
+    n = len(doc["slides"])
+    seen = collections.Counter()
+    for slide in doc["slides"]:
+        ys = {round(it["rect"][1]) for it in slide["items"]
+              if it.get("t") == "text" and it["rect"][1] > H * 0.8}
+        seen.update(ys)
+    if not seen:
+        return None
+    y, hits = seen.most_common(1)[0]
+    return float(y) if hits >= max(2, n * 0.6) else None
+
+
 def check(path: pathlib.Path) -> list:
     doc = json.loads(path.read_text())
     W, H = doc["w"], doc["h"]
     fails = []
+
+    ftop = footer_band(doc)
 
     for n, slide in enumerate(doc["slides"], 1):
         where = f"{path.name} slide {n} ({slide.get('title') or 'untitled'})"
@@ -99,6 +133,28 @@ def check(path: pathlib.Path) -> list:
                     f"{x + w:.0f},{y + h:.0f} past the {W}x{H} canvas. "
                     f"It will be cut off, and the PDF will not say so.")
 
+        # Content running under the footer. It does not overflow the canvas,
+        # so the 1280x720 test above says nothing about it, and the PDF looks
+        # merely cramped rather than wrong. Found in the gallery, which is the
+        # file people copy from, so it propagates.
+        has_footer = any(it.get("t") == "text" and abs(it["rect"][1] - (ftop or -9)) < 2
+                         for it in items)
+        if ftop is not None and has_footer:
+            for it in items:
+                x, y, w, h = it["rect"]
+                if h < FOOTER_MIN_HEIGHT or y > ftop - 1 or it.get("op", 1) < .05:
+                    continue
+                # A full-bleed background is the slide, not content in it. The
+                # closing slide is burgundy edge to edge on purpose, and its
+                # footer sits on top of that by design.
+                if w >= W - 1 and y <= 1:
+                    continue
+                if y + h > ftop + 1:
+                    fails.append(
+                        f"FOOTER    {where}: a {it['t']} {h:.0f}px tall runs to "
+                        f"{y + h:.0f}, under a footer that starts at {ftop:.0f}. "
+                        f"Cramped, not clipped, so the PDF will not show it.")
+
         for i, it in enumerate(items):
             if it.get("t") != "text" or it.get("op", 1) < DECORATIVE_OPACITY:
                 continue
@@ -109,6 +165,11 @@ def check(path: pathlib.Path) -> list:
                     continue          # {"br": true} is a line break, not text
                 f = run["f"]
                 size, weight = f.get("size", 14), f.get("weight", 400)
+                if size < FLOOR_PX:
+                    fails.append(
+                        f"TYPE      {where}: \"{run['s'][:34].strip()}\" is "
+                        f"{size:g}px, under the {FLOOR_PX}px floor. That is "
+                        f"{size * 0.75:.1f}pt in the PowerPoint.")
                 need = (LARGE_AA if size >= LARGE_PX
                         or (size >= LARGE_BOLD_PX and weight >= 700) else AA)
                 for b in bgs:
@@ -148,7 +209,8 @@ def main() -> None:
               f"thumbnail, which is why they are checked here.")
         sys.exit(1)
     if checked:
-        print("   no overflow, every text run at or above its AA threshold")
+        print("   no overflow, nothing under the footer, every run at or above "
+              "AA and the 11.5px floor")
 
 
 if __name__ == "__main__":

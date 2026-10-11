@@ -131,10 +131,14 @@ that carry them, and names how each one usually goes wrong.
 </table>
 
 Every text-on-colour pairing clears **WCAG AA**, and nothing is set below
-11.5px. Not as a box-tick, and not on trust: `./build.sh` measures every
-rendered run of text against the colour actually painted behind it, and fails
-if one falls short. It fails on overflow too, because a slide that
-runs past the canvas still exports and just loses its last line.
+11.5px. Not as a box-tick, and not on trust: for the deck, the gallery and the
+worked example, `./build.sh` measures every rendered run of text against the
+colour actually painted behind it and fails if one falls short. It also fails
+on text under the floor, and on anything that overflows the canvas or runs
+under the footer, because all three still export and look plausible.
+
+The two paper templates are checked by eye, not by the tool: it reads slide
+geometry and a continuous A4 document has none.
 
 A projector in a bright room costs you far more contrast than your laptop
 suggests, and the pairing that fails is always the one carrying the number you

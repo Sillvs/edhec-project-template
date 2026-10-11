@@ -84,6 +84,15 @@ def main() -> None:
                          f"and this picture did not.")
 
     print(f"   {checked} picture(s) compared against HEAD")
+    if not checked:
+        # Reporting "every picture still matches" after comparing nothing is
+        # the worst thing a checker can do: a wrong path, a renamed folder or
+        # the wrong cwd all looked like a pass. This is the only staleness
+        # gate on the README, so silence here means the front page can lie.
+        print(f"\n   Nothing was compared. {root} holds no PNG that exists in"
+              f" HEAD.\n   Wrong path, wrong directory, or the folder was"
+              f" renamed.")
+        sys.exit(1)
     if stale:
         print()
         for s in stale:

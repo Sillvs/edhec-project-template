@@ -15,6 +15,11 @@ CHROME=$(tools/find-chrome.sh) || exit 1
 PY="${PY:-python3}"
 WORK="${WORK:-.build}"
 WHAT="${1:-all}"
+case "$WHAT" in
+  all|slides|paper|docs|example) ;;
+  *) echo "unknown target '$WHAT'. Use: all, slides, paper, docs, example" >&2
+     exit 2 ;;      # './build.sh slide' used to build nothing and exit 0
+esac
 mkdir -p "$WORK"
 
 pdf () {  # pdf <html> <out.pdf>
@@ -42,6 +47,18 @@ if [ "$WHAT" = all ] || [ "$WHAT" = slides ]; then
   "$PY" tools/check_slides.py "$WORK/slides.json" "$WORK/gallery.json" || exit 1
   "$PY" tools/make_pptx_native.py "$WORK/slides.json" slides/slides.pptx | sed 's/^/   /'
   "$PY" tools/make_pptx.py slides/slides.pdf | sed 's/^/   /'
+fi
+
+if [ "$WHAT" = all ] || [ "$WHAT" = example ]; then
+  # The example is the file people copy from, so it is held to the same bar.
+  # It was outside every check until a review found 3 AA failures and 51 runs
+  # under the type floor in it, while the README claimed neither could exist.
+  echo "== worked example =="
+  pdf examples/auditcert-france-2026/slides.html examples/auditcert-france-2026/slides.pdf
+  pdf examples/auditcert-france-2026/speaker-notes.html examples/auditcert-france-2026/speaker-notes.pdf
+  node tools/extract_layout.mjs examples/auditcert-france-2026/slides.html "$WORK/example.json" | sed 's/^/   /'
+  "$PY" tools/check_slides.py "$WORK/example.json" || exit 1
+  "$PY" tools/make_pptx_native.py "$WORK/example.json" examples/auditcert-france-2026/slides.pptx | sed 's/^/   /'
 fi
 
 if [ "$WHAT" = all ] || [ "$WHAT" = paper ]; then

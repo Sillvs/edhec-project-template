@@ -25,7 +25,16 @@ Two edits and the whole thing is yours under MIT:
 1. Replace `design/edhec-logo.svg` with your own mark, then run
    `python3 tools/inline_assets.py` so every template picks it up.
 2. Change the burgundy `#5F1937` in `design/tokens.css` and run
-   `python3 tools/sync_components.py`.
+   `python3 tools/sync_components.py`, which writes every token from that file
+   into all four templates.
+
+Then `./build.sh`. If it passes, the rebrand is complete; the build fails if a
+template still disagrees with `design/tokens.css`.
+
+These two steps were documented before they worked. `sync_components.py` only
+ever wrote the component block, so the colour stayed behind in five files and
+the next build failed with no hint as to why. Fixed, and verified by running
+the instruction as written.
 
 Using the EDHEC mark on work that is not EDHEC's is a trademark matter, not a
 licence matter, and nothing in this repository permits it.

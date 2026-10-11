@@ -82,7 +82,7 @@ research. Almost never useful as a slide in its own shape.
 
 | Build it from | Where |
 |---|---|
-| `table.dark` with a verdict column, one row per force | gallery C1 |
+| `table.dark` with a verdict column, one row per force | slides.html Q2 |
 | `.tor` when you can rank the forces by how much they move the answer | gallery C3 |
 
 **Goes wrong as:** the five-box diagram with a paragraph in each box. Nobody
@@ -161,7 +161,7 @@ on the diagonal, the two axes are measuring the same thing and you have a list.
 |---|---|
 | `.dotplot` | gallery C4 |
 | `.carto` for position by country | gallery C2 |
-| `table.dark` for a feature or capability comparison | gallery C1 |
+| `table.dark` for a feature or capability comparison | slides.html Q2 |
 
 The dot plot shows the **spread**. A bar chart of averages destroys the spread,
 and the spread is usually the finding: being at the median of a tight field and
@@ -202,6 +202,13 @@ finding visible, not to fill a frame.
 for a share, columns for a comparison, a waterfall for a bridge, a dot plot for a
 spread, a tornado for sensitivity. The nicest-looking chart that answers a
 question nobody asked is still a wasted slide.
+
+**Where to copy from.** `slides/gallery.html` holds the thirteen charts and the
+three whole-slide archetypes. The layout components (`.qblock`, `.chain`,
+`.pflow`, `.bars`, `.tiles`, `.road`, `.sgrid`, `.pts`, `table.dark`, the strips
+and bands) live in `slides/slides.html`, where the starter deck demonstrates
+them in place. Both files carry the full stylesheet, so markup moves either way
+without anything coming unstyled.
 
 See **[COMPONENTS.md](COMPONENTS.md)** for what each component is and the rules
 that keep a deck looking like one deck.

@@ -314,10 +314,13 @@ def main() -> None:
     before = HERE / "docs" / "_default-powerpoint.pdf"
 
     if slides.exists():
-        laptop_mockup(sp[2], OUT / "mockup-laptop.png")
-        room_mockup(sp[1], OUT / "mockup-room.png")
+        # Trimming the starter deck is the intended use, so never index a
+        # slide that may not be there. sp[-1] is the closing slide.
+        laptop_mockup(sp[min(2, len(sp) - 1)], OUT / "mockup-laptop.png")
+        room_mockup(sp[min(1, len(sp) - 1)], OUT / "mockup-room.png")
         if before.exists():
-            compare_mockup(pages(before)[0], sp[1], OUT / "mockup-compare.png")
+            compare_mockup(pages(before)[0], sp[min(1, len(sp) - 1)],
+                           OUT / "mockup-compare.png")
         else:
             print("   skipped mockup-compare.png: docs/_default-powerpoint.pdf "
                   "not built yet, run ./build.sh docs again")
@@ -333,8 +336,9 @@ def main() -> None:
         print_mockup(pp[:3], OUT / "mockup-paper.png")
         pp[0].resize((900, round(900 * pp[0].height / pp[0].width)),
                      Image.LANCZOS).save(OUT / "paper-cover.png")
-        pp[1].resize((900, round(900 * pp[1].height / pp[1].width)),
-                     Image.LANCZOS).save(OUT / "paper-body.png")
+        if len(pp) > 1:
+            pp[1].resize((900, round(900 * pp[1].height / pp[1].width)),
+                         Image.LANCZOS).save(OUT / "paper-body.png")
 
     for f in sorted(OUT.glob("*.png")):
         print(f"   {f.relative_to(HERE)}  {f.stat().st_size/1024:.0f} KB")

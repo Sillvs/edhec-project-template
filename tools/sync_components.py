@@ -55,6 +55,43 @@ def split(text: str, path: pathlib.Path):
 
 TOKENS = HERE / "design" / "tokens.css"
 TOKEN_RE = re.compile(r"(--[a-z0-9-]+)\s*:\s*([^;]+);")
+# Templates that carry a palette. paper.html warms --line and --soft on purpose
+# for print and is excluded from the equality check, but it still gets the
+# brand colours written into it, which is the whole point of a rebrand.
+PALETTE_FILES = TEMPLATES + [HERE / "paper" / "paper.html",
+                             HERE / "paper" / "onepager.html"]
+PAPER_OVERRIDES = {"--line", "--soft"}
+
+
+def write_tokens() -> list:
+    """Push every token in tokens.css into every template that declares it.
+
+    TRADEMARKS.md tells a forker to change the burgundy in tokens.css and run
+    this script. That instruction was false: the script only ever wrote the
+    component block, so the colour stayed in five files and the next --check
+    failed. Someone following the documented rebrand ended up with a broken
+    build and no idea why. The reference file is now actually the reference.
+    """
+    want = dict(TOKEN_RE.findall(TOKENS.read_text(encoding="utf-8")))
+    out = []
+    for p in PALETTE_FILES:
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        head, n = text[:text.index("</style>")], 0
+        for k, v in want.items():
+            if p.name == "paper.html" and k in PAPER_OVERRIDES:
+                continue
+            pat = re.compile(re.escape(k) + r"\s*:\s*([^;]+);")
+            if not pat.search(head):
+                continue
+            new, c = pat.subn(f"{k}:{v.strip()};", head)
+            if c and new != head:
+                head, n = new, n + c
+        if n:
+            p.write_text(head + text[text.index("</style>"):], encoding="utf-8")
+        out.append(f"  {p.relative_to(HERE)}: {n} token value(s) written")
+    return out
 
 
 def check_tokens() -> list:
@@ -73,8 +110,15 @@ def check_tokens() -> list:
         text = p.read_text(encoding="utf-8")
         root = text[text.index(":root{"):text.index("}", text.index(":root{"))]
         have = dict(TOKEN_RE.findall(root))
+        for k in have:
+            if k not in want and k not in {"--logo"}:
+                bad.append(f"  {p.relative_to(HERE)}: {k} is declared here but "
+                           f"not in tokens.css")
         for k, v in want.items():
-            if k in have and have[k].strip() != v.strip():
+            if k not in have:
+                bad.append(f"  {p.relative_to(HERE)}: {k} is in tokens.css but "
+                           f"missing here")
+            elif have[k].strip() != v.strip():
                 bad.append(f"  {p.relative_to(HERE)}: {k} is {have[k].strip()}, "
                            f"tokens.css says {v.strip()}")
     return bad
@@ -112,6 +156,9 @@ def main() -> None:
         p.write_text(before + want + after, encoding="utf-8")
         print(f"  {name}: {'updated' if have else 'block inserted'} "
               f"({len(want.splitlines())} lines)")
+
+    if not args.check:
+        print("\n".join(write_tokens()))
 
     if args.check:
         tokens = check_tokens()

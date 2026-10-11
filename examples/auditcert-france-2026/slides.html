@@ -193,14 +193,14 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .verdict.yes{background:var(--blue);color:#fff;}
 .verdict.part{background:var(--sky2);color:var(--navy);}
 .verdict.no{background:var(--int0);color:var(--muted);border:1px solid var(--line);}
-.verdict.warm{background:var(--orange);color:#fff;}
+.verdict.warm{background:var(--orange-dark);color:#fff;}
 
 /* Micro labels inside cards + status flags */
-.mlab{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
-.cellflag{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+.mlab{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
+.cellflag{margin-left:auto;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
   color:var(--muted);background:var(--int0);border:1px solid var(--line);border-radius:9px;padding:2px 8px;white-space:nowrap;}
 .cellflag.exit{color:#fff;background:var(--blue);border-color:var(--blue);}
-.cellflag.warm{color:#fff;background:var(--orange);border-color:var(--orange);}
+.cellflag.warm{color:#fff;background:var(--orange-dark);border-color:var(--orange-dark);}
 
 /* Implication / conclusion circles */
 .circles{display:flex;gap:34px;justify-content:center;}
@@ -234,7 +234,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .road{display:flex;align-items:stretch;gap:8px;}
 .road .ph{flex:1;min-width:0;background:var(--soft);border:1px solid var(--line);border-radius:10px;
   padding:11px 13px 12px;display:flex;flex-direction:column;}
-.road .ph .pt{font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;
+.road .ph .pt{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:#fff;
   background:var(--navy);border-radius:4px;padding:4px 8px;display:inline-block;margin-bottom:9px;}
 .road .ph.now .pt{background:var(--blue);}
 .road .ph.later .pt{background:var(--muted);}
@@ -249,7 +249,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .qblock{position:relative;border:1px solid var(--line);border-radius:10px;padding:27px 24px 20px;}
 .grow>.qblock+.qblock{margin-top:17px;}/* stacked only: side-by-side blocks must stay top-aligned */
 .qblock>.qtag{position:absolute;top:-8px;left:20px;background:#fff;padding:0 9px;
-  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);white-space:nowrap;}
+  font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);white-space:nowrap;}
 .qblock.warm{border-color:#E9E0CB;background:#FCF8F0;}
 .qblock.warm>.qtag{color:var(--orange-dark);background:#FCF8F0;}
 
@@ -280,10 +280,10 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 /* every repeated box in a row must be the same height: text is normalised to the
    same number of lines and the height is pinned so a reflow cannot break it */
 .pflow .lay.pc{background:var(--soft);border:1px solid var(--line);margin-top:6px;flex:0 0 68px;}
-.pchip{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border-radius:8px;
+.pchip{font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;border-radius:8px;
   padding:3px 9px;background:var(--sky2);color:var(--navy);margin-right:auto;white-space:nowrap;}
-.pchip.red{background:#F0E3C7;color:var(--orange-dark);}
-.pflow .lay .h{display:flex;align-items:center;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:5px;}
+.pchip.red{background:#F2E6CD;color:var(--orange-dark);}
+.pflow .lay .h{display:flex;align-items:center;font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:5px;}
 .pflow .lay.pc .h{color:var(--muted);}
 .pflow .lay li{font-size:12.8px;line-height:1.3;margin:0 0 4px;padding-left:13px;}
 .pflow .lay li:before{content:"\2022";font-size:14px;left:1px;top:-1px;color:var(--navy);}
@@ -333,7 +333,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .sgrid .shead b{font-size:15px;}
 .sgrid .srow{padding:9px 13px;border-top:1px solid var(--line);}
 .sgrid .srow:first-of-type{border-top:0;}
-.sgrid .srow .sk{font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
+.sgrid .srow .sk{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;}
 .sgrid .srow .sv{font-size:13.2px;line-height:1.32;min-height:35px;}
 .sgrid .scol.warm .shead{background:var(--orange-dark);}
 .sgrid .scol.warm .srow .sk{color:var(--orange-dark);}
@@ -369,7 +369,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
   padding:22px 72px;display:flex;gap:56px;align-items:flex-start;}
 .tfoot>div{font-size:14.5px;line-height:1.5;}
 .tfoot>div:first-child{flex:1;}
-.tfoot .k{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#C2A0AE;margin-bottom:7px;}
+.tfoot .k{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:#C2A0AE;margin-bottom:7px;}
 .footlogo{display:none;}
 .wordmark{position:absolute;top:44px;right:72px;text-align:right;}
 .wordmark .w1{font-size:16px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);}
@@ -392,7 +392,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .reco-cards{display:flex;gap:16px;}
 .reco-cards>div{flex:1;font-size:14.5px;line-height:1.45;color:rgba(255,255,255,.92);
   border-top:2px solid rgba(255,255,255,.4);padding-top:11px;}
-.reco-cards .k{display:block;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+.reco-cards .k{display:block;font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;
   color:rgba(255,255,255,.66);margin-bottom:7px;font-weight:800;}
 
 /* ---------- Q&A slide (navy) ---------- */

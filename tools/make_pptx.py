@@ -71,6 +71,14 @@ def build(pdf_path: str, dpi: int) -> None:
             sld_sz.set("type", "screen16x9")
 
         prs.core_properties.title = pdf.stem
+        # python-pptx stamps its own author into every file it creates, from the
+        # default template it ships. The repository states that no personal data
+        # of anyone other than the owner appears in it, so clear it rather than
+        # publish a stranger's name in three committed .pptx files.
+        cp = prs.core_properties
+        cp.author = "EDHEC project template"
+        cp.last_modified_by = "EDHEC project template"
+
 
         out = pdf.with_name(pdf.stem + "-pictures.pptx")
         prs.save(str(out))
