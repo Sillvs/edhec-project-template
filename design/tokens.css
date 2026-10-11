@@ -1,18 +1,40 @@
 /* EDHEC design tokens.
-   The slide and paper templates each carry their own copy of these variables so
-   that a single HTML file stays self-contained and can be handed in or opened
-   offline. This file is the reference: change a value here, then mirror it into
-   slides/slides.html and paper/paper.html.
+   The burgundy #5F1937 is read out of the official mark at design/edhec-logo.svg.
+   Every other tone is derived from it.
 
-   The burgundy is read out of the official logo at design/edhec-logo.svg. */
+   Each template carries its own copy of this block, so one HTML file stays
+   self-contained and can be mailed, opened offline or archived alone. That
+   duplication is deliberate, and it is checked:
+
+       python3 tools/sync_components.py --check
+
+   runs in ./build.sh and fails if a template disagrees with this file. The
+   check exists because this file once called itself the reference while
+   carrying a contrast failure the templates had already fixed. A reference
+   nobody verifies is a second opinion.
+
+   Two rules the values encode:
+
+   AA or it does not ship. Every text-on-colour pairing in the templates is at
+   or above 4.5:1. A projector in a bright room costs far more contrast than a
+   laptop suggests, and the pairing that fails is always the one carrying the
+   number you came to show.
+
+   A gradient is only as readable as its lightest pixel. White on --orange is
+   3.04:1 and fails, so --orange is for fills without text. Any gold band with
+   text on it runs --orange-dark to --orange-mid, and --orange-mid is the
+   lightest point on that line that still clears AA.
+
+   paper/paper.html deviates on purpose and is not covered by the check. It
+   warms --line to #EFE1E7 and --soft to #FAF6F8, because the cool greys that
+   read as neutral on a screen read as grubby on paper, and it omits the chart
+   ramp entirely. Deliberate per-medium overrides, not drift. */
 
 :root{
   --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
   --sky:#F8F1F4; --sky2:#EEDCE4;
-  --olive:#7A8300; --olive-dark:#5F6600;
-  --orange:#C08A2E; --orange-dark:#8C5F1B;
+  --orange:#C08A2E; --orange-dark:#8C5F1B; --orange-mid:#9D6D21;
   --ink:#1A2430; --muted:#5D6B79; --line:#D9E0E7; --soft:#F3F6F9;
-  --optA:#5F1937; --optB:#9C0D16; --optC:#69085A; --optD:#5D6B79;
-  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A96882; --int3:#5F1937;
+  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A4627D; --int3:#5F1937;
   --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
 }

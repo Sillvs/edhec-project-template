@@ -25,11 +25,9 @@
 :root{
   --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
   --sky:#F8F1F4; --sky2:#EEDCE4;
-  --olive:#7A8300; --olive-dark:#5F6600;
-  --orange:#C08A2E; --orange-dark:#8C5F1B;
+  --orange:#C08A2E; --orange-dark:#8C5F1B; --orange-mid:#9D6D21;
   --ink:#1A2430; --muted:#5D6B79; --line:#D9E0E7; --soft:#F3F6F9;
-  --optA:#5F1937; --optB:#9C0D16; --optC:#69085A; --optD:#5D6B79;
-  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A96882; --int3:#5F1937;
+  --int0:#F7F3F5; --int1:#E4CBD6; --int2:#A4627D; --int3:#5F1937;
   --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
 }
 *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
@@ -103,13 +101,13 @@ li.g:before{color:var(--olive);}
   color:#fff;border-radius:4px;padding:9px 16px 9px 62px;font-size:16.5px;font-weight:800;
   letter-spacing:.08em;text-transform:uppercase;}
 .band.green .bhead{background:linear-gradient(90deg,var(--olive-dark),var(--olive));}
-.band.warm .bhead{background:linear-gradient(90deg,var(--orange-dark),var(--orange));}
+.band.warm .bhead{background:linear-gradient(90deg,var(--orange-dark),var(--orange-mid));}
 
 .band .bicon{position:absolute;left:-8px;top:-10px;width:58px;height:58px;border-radius:50%;
   background:radial-gradient(circle at 30% 25%,#7E2A4B,var(--deep));border:3px solid #fff;z-index:2;
   display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(7,33,64,.3);}
 .band.green .bicon{background:radial-gradient(circle at 30% 25%,#8a9410,var(--olive-dark));}
-.band.warm .bicon{background:radial-gradient(circle at 30% 25%,#D2A049,var(--orange-dark));}
+.band.warm .bicon{background:radial-gradient(circle at 30% 25%,#9D6D21,var(--orange-dark));}
 
 .band .bicon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
 .band .bbody{background:var(--soft);border:1px solid var(--line);border-top:0;border-radius:0 0 6px 6px;
@@ -149,7 +147,6 @@ li.g:before{color:var(--olive);}
 
 /* Option identity: colour square + letter (never colour alone) */
 .fdot{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;flex-shrink:0;}
-.oA{background:var(--optA);} .oB{background:var(--optB);} .oC{background:var(--optC);} .oD{background:var(--optD);}
 
 /* Recommendation / claim banner */
 .prop{border-radius:10px;padding:13px 18px;color:#fff;font-size:16px;line-height:1.4;}
@@ -231,7 +228,7 @@ td.na{background:transparent;color:var(--muted);border:1px dashed var(--line);}
 .tiles.sm .tile .n{font-size:36px;}
 .tiles.sm .tile .l{font-size:13px;margin-top:8px;}
 .band-navy{background:linear-gradient(100deg,var(--deep),var(--blue));border-radius:10px;padding:16px 24px;color:#fff;}
-.band-warm{background:linear-gradient(100deg,var(--orange-dark),var(--orange));border-radius:10px;padding:16px 24px;color:#fff;}
+.band-warm{background:linear-gradient(100deg,var(--orange-dark),var(--orange-mid));border-radius:10px;padding:16px 24px;color:#fff;}
 
 /* Roadmap rail (phases with gates) */
 .road{display:flex;align-items:stretch;gap:8px;}

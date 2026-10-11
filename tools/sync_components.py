@@ -24,6 +24,7 @@ presentation.
 import argparse
 import difflib
 import pathlib
+import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent.parent
@@ -50,6 +51,33 @@ def split(text: str, path: pathlib.Path):
                  f"Restore the '{CLOSE.strip()}' line or re-run without --check.")
     k += len(CLOSE)
     return text[:i], text[i:k], text[k:]
+
+
+TOKENS = HERE / "design" / "tokens.css"
+TOKEN_RE = re.compile(r"(--[a-z0-9-]+)\s*:\s*([^;]+);")
+
+
+def check_tokens() -> list:
+    """design/tokens.css calls itself the reference. Verify that it is one.
+
+    It drifted once already: the templates had --int2 raised to clear AA and
+    an obsolete --olive deleted, while the reference still carried both. A
+    reference nobody verifies is a second opinion, and the next template built
+    from it inherits the failure.
+    """
+    if not TOKENS.exists():
+        return []
+    want = dict(TOKEN_RE.findall(TOKENS.read_text(encoding="utf-8")))
+    bad = []
+    for p in TEMPLATES:
+        text = p.read_text(encoding="utf-8")
+        root = text[text.index(":root{"):text.index("}", text.index(":root{"))]
+        have = dict(TOKEN_RE.findall(root))
+        for k, v in want.items():
+            if k in have and have[k].strip() != v.strip():
+                bad.append(f"  {p.relative_to(HERE)}: {k} is {have[k].strip()}, "
+                           f"tokens.css says {v.strip()}")
+    return bad
 
 
 def main() -> None:
@@ -85,11 +113,22 @@ def main() -> None:
         print(f"  {name}: {'updated' if have else 'block inserted'} "
               f"({len(want.splitlines())} lines)")
 
-    if args.check and drifted:
-        print("\nA template was edited inside the generated block, or design/components.css")
-        print("changed without a sync. Edit design/components.css, then run:")
-        print("    python3 tools/sync_components.py")
-        sys.exit(1)
+    if args.check:
+        tokens = check_tokens()
+        if tokens:
+            print("\ndesign/tokens.css disagrees with a template:")
+            print("\n".join(tokens))
+            print("\nFix whichever is wrong. tokens.css is meant to be the reference,")
+            print("so a template that is right and a reference that is stale is the")
+            print("worse of the two failures: the next template inherits the stale value.")
+        else:
+            print("  design/tokens.css: agrees with both templates")
+        if drifted or tokens:
+            if drifted:
+                print("\nA template was edited inside the generated block, or")
+                print("design/components.css changed without a sync. Run:")
+                print("    python3 tools/sync_components.py")
+            sys.exit(1)
 
 
 if __name__ == "__main__":
