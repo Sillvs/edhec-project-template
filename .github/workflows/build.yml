@@ -84,15 +84,7 @@ jobs:
           echo "Every committed PDF matches its source."
 
       - name: Are the README pictures still current?
-        run: |
-          # docs/img/* must stay committed or the README renders broken on
-          # GitHub, which means they can go stale in exactly the same way.
-          if ! git diff --quiet -- docs/img; then
-            echo "::warning::docs/img changed. Run ./build.sh docs and commit."
-            git diff --stat -- docs/img
-            exit 1
-          fi
-          echo "Every README picture matches the templates."
+        run: python3 tools/check_images.py docs/img
 
       - uses: actions/upload-artifact@v4
         if: always()          # a failed build is exactly when you want the output
