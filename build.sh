@@ -42,6 +42,13 @@ fi
 if [ "$WHAT" = all ] || [ "$WHAT" = paper ]; then
   echo "== paper =="
   pdf paper/paper.html paper/paper.pdf
+  pdf paper/onepager.html paper/onepager.pdf
+  # One page is the whole format. Nothing else enforces it.
+  op=$(pdfinfo paper/onepager.pdf | awk '/Pages/{print $2}')
+  if [ "$op" != 1 ]; then
+    echo "   FAIL: the one-pager is $op pages. Cut until it is one." >&2
+    exit 1
+  fi
 fi
 
 if [ "$WHAT" = all ] || [ "$WHAT" = docs ]; then

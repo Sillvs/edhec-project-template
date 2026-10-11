@@ -28,6 +28,7 @@ TEMPLATES = [
     HERE / "slides" / "slides.html",
     HERE / "slides" / "gallery.html",
     HERE / "paper" / "paper.html",
+    HERE / "paper" / "onepager.html",
 ]
 TOKEN_LINE = "  --logo:url(\"data:image/svg+xml,{}\");\n"
 # Scan only OUTSIDE data URIs. An inlined SVG carries its own internal
@@ -51,6 +52,15 @@ def data_uri(svg_path: pathlib.Path) -> str:
 
 def inline(path: pathlib.Path, encoded: str) -> str:
     s = path.read_text(encoding="utf-8")
+    # A template that declares --logo:url("edhec-logo.svg") itself would get
+    # that line rewritten to --logo:var(--logo) below: a self-reference that
+    # resolves to nothing, so the mark silently disappears. Which is the exact
+    # failure this tool exists to prevent, arriving by the tool's own hand.
+    # The token belongs to the tool. Templates reference the file.
+    if re.search(r'--logo:\s*url\("edhec-logo\.svg"\)', s):
+        sys.exit(f'{path.name}: do not declare --logo yourself. Write\n'
+                 f'  background:url("edhec-logo.svg") ...\n'
+                 f'in the rule that needs it; this tool adds the token.')
     before = s.count('url("edhec-logo.svg")')
     if before:
         s = s.replace('url("edhec-logo.svg")', "var(--logo)")
