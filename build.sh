@@ -27,6 +27,9 @@ pdf () {  # pdf <html> <out.pdf>
 echo "== self-containment =="
 "$PY" tools/inline_assets.py --check || exit 1
 
+echo "== shared components =="
+"$PY" tools/sync_components.py --check || exit 1
+
 if [ "$WHAT" = all ] || [ "$WHAT" = slides ]; then
   echo "== slides =="
   pdf slides/slides.html slides/slides.pdf

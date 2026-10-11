@@ -484,6 +484,14 @@ body.overview #ov{display:grid;}
   filter:brightness(0) invert(1);z-index:4;}
 
 /* =====================================================================
+   SHARED COMPONENTS -- generated from design/components.css
+   Do not edit this block inside a template. Edit design/components.css
+   and run `python3 tools/sync_components.py`. `./build.sh` fails if the
+   two templates drift apart, because a component fixed in one file and
+   not the other still renders fine in both, which is how a catalogue
+   stops being a catalogue.
+   ===================================================================== */
+/* =====================================================================
    CHARTS
    Built from divs wherever possible, because div charts survive the
    PowerPoint export as native, editable shapes. Only the donut and the
@@ -553,7 +561,12 @@ body.overview #ov{display:grid;}
 .legend .lv{margin-left:auto;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;}
 
 /* ---- two by two matrix --------------------------------------------- */
-.quadwrap{padding-left:34px;}
+/* The y label sits above the axis, left aligned, and is NOT rotated.
+   transform:rotate() is the one transform the PowerPoint exporter cannot
+   follow: it reads the rotated bounding box but writes the text flat, so
+   the label lands on its side in the PDF and upright across the chart in
+   the .pptx. Above-left reads the same and exports correctly. */
+.quadwrap{padding-left:0;}
 .quad{position:relative;height:238px;border-left:2px solid var(--navy);
   border-bottom:2px solid var(--navy);}
 .quad .cell{position:absolute;width:50%;height:50%;border:1px dashed var(--line);}
@@ -566,10 +579,8 @@ body.overview #ov{display:grid;}
   font-size:13px;font-weight:800;border:2px solid #fff;}
 .quad .bub.accent{background:var(--orange);}
 .quad .bub.dim{background:var(--int2);}
-.quad-y{position:absolute;left:-34px;top:0;bottom:0;width:28px;display:flex;
-  align-items:center;justify-content:center;}
-.quad-y span{transform:rotate(-90deg);white-space:nowrap;font-size:11.5px;font-weight:800;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--navy);}
+.quad-y{margin-bottom:7px;font-size:11.5px;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--navy);}
 .quad-x{margin-top:9px;text-align:center;font-size:11.5px;font-weight:800;
   letter-spacing:.09em;text-transform:uppercase;color:var(--navy);}
 
@@ -594,6 +605,191 @@ body.overview #ov{display:grid;}
 .carto .t.none{background:transparent;}
 .carto-key{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);margin-top:12px;}
 .carto-key i{width:24px;height:13px;border-radius:4px;display:inline-block;}
+
+/* ---- marimekko ------------------------------------------------------ */
+/* Two shares at once: the column width is one, the segment height is the
+   other. Use it when "big share of a small market" is the finding. Both
+   percentages are literal in the markup, so a wrong number looks wrong
+   rather than hiding in a data file. Widths must total 100. */
+.mekko{display:flex;gap:4px;height:188px;}
+.mekko .mc{display:flex;flex-direction:column;min-width:0;}
+.mekko .mhead{font-size:11.5px;font-weight:800;color:var(--navy);padding-bottom:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mekko .mhead b{color:var(--muted);font-weight:800;}
+.mekko .mbody{flex:1;display:flex;flex-direction:column;border-radius:4px;overflow:hidden;}
+.mekko .ms{display:flex;align-items:center;justify-content:center;min-height:0;
+  font-size:11.5px;font-weight:700;color:#fff;}
+.mekko .ms.a{background:var(--deep);}
+.mekko .ms.b{background:var(--navy);}
+.mekko .ms.c{background:var(--int2);}
+.mekko .ms.d{background:var(--int1);color:var(--ink);}
+.mekko .ms.accent{background:var(--orange-dark);}
+
+/* ---- tornado, for sensitivity --------------------------------------- */
+/* Rows sorted by how much they move the answer, widest at the top. The
+   reader's eye stops where the bars stop mattering, which is the point. */
+.tor{display:flex;flex-direction:column;gap:7px;}
+.tor .trow{display:flex;align-items:center;gap:8px;}
+.tor .tlab{flex:0 0 130px;font-size:13px;color:var(--ink);text-align:right;line-height:1.25;}
+.tor .tend{flex:0 0 50px;font-size:11.5px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;}
+.tor .tend.l{text-align:right;} .tor .tend.r{text-align:left;}
+.tor .ttrack{flex:1;position:relative;height:22px;}
+.tor .tzero{position:absolute;left:50%;top:-6px;bottom:-6px;width:1.5px;background:var(--navy);}
+.tor .tneg,.tor .tpos{position:absolute;top:0;height:22px;}
+.tor .tneg{right:50%;background:var(--int2);border-radius:4px 0 0 4px;}
+.tor .tpos{left:50%;background:var(--blue);border-radius:0 4px 4px 0;}
+.tor .tneg.accent,.tor .tpos.accent{background:var(--orange-dark);}
+
+/* ---- gantt with dependencies ---------------------------------------- */
+/* A plan only argues if it shows what waits on what. The connectors are
+   filled rectangles ending in a dot, not an arrowhead: a CSS triangle is
+   borders on a zero-size box, which the PowerPoint exporter reads as an
+   empty rectangle, so the arrow would vanish in the file somebody edits.
+   A dot is an oval and survives. Overlay coordinates are x in % of the
+   track and y in px from the top of the first row.
+   The row class is `.gline`, not `.grow`: `.grow` is the slide content area
+   and a gantt row that inherits `flex:1` collapses the whole chart. */
+.gantt{position:relative;}
+.gantt .gscale{display:flex;height:24px;margin-left:148px;
+  border-bottom:1px solid var(--line);}
+.gantt .gscale>div{flex:1;font-size:11.5px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);text-align:center;}
+.gantt .gline{display:flex;align-items:center;height:32px;}
+.gantt .glab{flex:0 0 148px;font-size:13px;color:var(--ink);padding-right:12px;line-height:1.2;}
+.gantt .gtrack{flex:1;position:relative;height:100%;}
+.gantt .gtrack .gq{position:absolute;top:0;bottom:0;width:1px;background:var(--line);}
+.gantt .gbar{position:absolute;top:7px;height:18px;border-radius:4px;background:var(--blue);
+  display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden;
+  font-size:11.5px;font-weight:700;color:#fff;}
+.gantt .gbar.crit{background:var(--deep);}
+.gantt .gbar.soft{background:var(--int1);color:var(--ink);}
+.gantt .gmile{position:absolute;top:5px;width:22px;height:22px;border-radius:50%;
+  background:var(--orange-dark);border:2px solid #fff;}
+.gantt .gdeps{position:absolute;left:148px;right:0;top:24px;bottom:0;}
+.gantt .dep{position:absolute;background:var(--int2);}
+.gantt .dep.v{width:1.5px;} .gantt .dep.h{height:1.5px;}
+.gantt .dephead{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--int2);}
+
+/* ---- sizing ladder --------------------------------------------------- */
+/* Market sizing where every step names its multiplier and its reason. A
+   funnel hides the arithmetic; a ladder makes each step arguable on its
+   own, which is what a jury actually attacks. */
+.ladder{display:flex;flex-direction:column;}
+.ladder .rung{display:flex;align-items:center;gap:14px;}
+.ladder .lbar{height:38px;border-radius:4px;display:flex;align-items:center;padding:0 12px;
+  white-space:nowrap;font-size:13px;font-weight:800;color:#fff;}
+.ladder .lbar.r1{background:var(--deep);}
+.ladder .lbar.r2{background:var(--navy);}
+.ladder .lbar.r3{background:var(--blue);}
+.ladder .lbar.r4{background:var(--orange-dark);}
+.ladder .lval{font-size:17px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;white-space:nowrap;}
+.ladder .lstep{display:flex;align-items:center;gap:9px;height:26px;padding-left:18px;}
+.ladder .lstep .lx{font-size:11.5px;font-weight:800;color:var(--navy);background:var(--sky);
+  border-radius:4px;padding:2px 7px;font-variant-numeric:tabular-nums;}
+.ladder .lstep .lwhy{font-size:11.5px;color:var(--muted);}
+
+/* ---- peer dot plot ---------------------------------------------------- */
+/* One row per measure, the peers on the ramp and you in the accent. Shows
+   the spread, which a bar chart of averages destroys. */
+.dotplot{display:flex;flex-direction:column;gap:24px;}
+.dotplot .drow{display:flex;align-items:center;gap:12px;}
+.dotplot .dlab{flex:0 0 120px;font-size:13px;color:var(--ink);line-height:1.2;}
+.dotplot .dtrack{flex:1;position:relative;height:20px;}
+.dotplot .dline{position:absolute;left:0;right:0;top:9px;height:2px;background:var(--int0);}
+.dotplot .dspan{position:absolute;top:9px;height:2px;background:var(--int1);}
+.dotplot .d{position:absolute;top:4px;width:12px;height:12px;border-radius:50%;
+  background:var(--int2);transform:translateX(-50%);}
+.dotplot .d.you{top:1px;width:18px;height:18px;background:var(--orange-dark);
+  border:2px solid #fff;}
+.dotplot .dend{flex:0 0 54px;font-size:11.5px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;text-align:right;}
+.dotplot-key{display:flex;align-items:center;gap:20px;font-size:11.5px;color:var(--muted);
+  margin-top:14px;}
+.dotplot-key i{width:12px;height:12px;border-radius:50%;display:inline-block;
+  vertical-align:-2px;margin-right:7px;}
+
+/* =====================================================================
+   SLIDE ARCHETYPES
+   Whole-slide layouts rather than single components. Copy the whole
+   <section>, not just the inner div.
+   ===================================================================== */
+
+/* ---- executive summary ------------------------------------------------ */
+/* The one slide a reader keeps. The rail names the move, the body makes
+   it. Four rows maximum: a fifth row means you have two summaries. */
+.exec{display:flex;flex-direction:column;gap:9px;}
+.exec .erow{display:flex;align-items:stretch;border:1px solid var(--line);
+  border-radius:6px;overflow:hidden;background:#fff;}
+.exec .erail{flex:0 0 136px;background:var(--sky);padding:11px 14px;
+  display:flex;flex-direction:column;justify-content:center;}
+.exec .erail .ek{font-size:11.5px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--navy);}
+.exec .erail .en{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3;}
+.exec .ebody{flex:1;padding:11px 16px;display:flex;align-items:center;}
+.exec .ebody p{margin:0;font-size:14px;line-height:1.45;color:var(--ink);}
+.exec .ebody b{color:var(--navy);}
+.exec .erow.answer{border-color:var(--deep);}
+.exec .erow.answer .erail{background:var(--deep);}
+.exec .erow.answer .erail .ek{color:#fff;}
+.exec .erow.answer .erail .en{color:var(--int1);}
+.exec .erow.answer .ebody{background:var(--sky);}
+.exec .erow.answer .ebody p{font-size:15.5px;font-weight:700;color:var(--navy);}
+.exec .eask{display:flex;align-items:center;gap:14px;background:var(--deep);color:#fff;
+  border-radius:6px;padding:12px 18px;}
+.exec .eask .ekl{flex:0 0 auto;font-size:11.5px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--int1);}
+.exec .eask .ekv{font-size:15.5px;font-weight:700;}
+
+/* ---- issue tree -------------------------------------------------------- */
+/* One question split into parts that do not overlap and leave nothing out.
+   Connectors are filled rectangles, for the same export reason as the
+   gantt. Three branches: with four, the type drops below the floor. */
+.tree{display:flex;align-items:stretch;}
+.tree .tbox{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:#fff;}
+.tree .tbox .tq{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+.tree .tbox .ta{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.3;}
+.tree .tbox.hot{border-color:var(--orange-dark);border-width:2px;padding:9px 11px;}
+.tree .troot{flex:0 0 214px;display:flex;align-items:center;}
+.tree .troot .tbox{width:100%;background:var(--deep);border-color:var(--deep);}
+.tree .troot .tbox .tq{color:#fff;}
+.tree .troot .tbox .ta{color:var(--int1);}
+.tree .tconn{flex:0 0 32px;position:relative;}
+.tree .tconn .l{position:absolute;background:var(--int1);}
+.tree .tconn .l.h{height:1.5px;} .tree .tconn .l.v{width:1.5px;}
+.tree .tbranch{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:12px;}
+.tree .tleaf{display:flex;align-items:stretch;}
+.tree .tleaf>.tbox{flex:0 0 214px;}
+.tree .tsub{flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;
+  padding-left:14px;}
+.tree .tsub .ti{display:flex;gap:8px;font-size:11.5px;color:var(--ink);line-height:1.35;}
+.tree .tsub .ti i{flex:0 0 5px;height:5px;border-radius:50%;background:var(--int2);margin-top:5px;}
+
+/* ---- section divider and agenda ----------------------------------------- */
+/* Where the audience is in the argument. The section being entered is
+   burgundy, everything else recedes. The dot carries done against still
+   to come, so the distinction never rests on a grey too light to read. */
+.agenda{display:flex;align-items:center;gap:44px;height:100%;}
+.agenda .anum{font-size:46px;font-weight:800;color:var(--deep);line-height:1;}
+.agenda .arule{flex:0 0 3px;align-self:stretch;background:var(--deep);border-radius:4px;
+  margin:12px 0;}
+.agenda .alist{flex:1;display:flex;flex-direction:column;}
+.agenda .ai{display:flex;align-items:center;gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--line);}
+.agenda .ai:last-child{border-bottom:0;}
+.agenda .ai .adot{flex:0 0 10px;height:10px;border-radius:50%;background:var(--int0);}
+.agenda .ai .an{flex:0 0 28px;font-size:13px;font-weight:800;color:var(--muted);
+  font-variant-numeric:tabular-nums;}
+.agenda .ai .at{font-size:17px;color:var(--muted);}
+.agenda .ai .amin{margin-left:auto;font-size:11.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;}
+.agenda .ai.done .adot{background:var(--int2);}
+.agenda .ai.now .adot{background:var(--deep);}
+.agenda .ai.now .an{color:var(--deep);}
+.agenda .ai.now .at{color:var(--navy);font-weight:800;}
+
+/* ==== END SHARED COMPONENTS ==== */
 </style>
 </head>
 <body>
@@ -716,8 +912,8 @@ body.overview #ov{display:grid;}
       <div class="qblock" style="flex:1.1;padding:24px 20px 14px;">
         <span class="qtag">Two by two, for positioning options</span>
         <div class="quadwrap">
+          <div class="quad-y">Value at stake</div>
           <div class="quad">
-            <div class="quad-y"><span>Value at stake</span></div>
             <div class="cell tl"><span>Invest</span></div>
             <div class="cell tr"><span>Protect</span></div>
             <div class="cell bl"><span>Watch</span></div>
@@ -783,6 +979,330 @@ body.overview #ov{display:grid;}
     </div>
   </div>
   <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy from here</span><span class="fright"></span></div>
+</section>
+
+
+<!-- ======================= CHARTS 3 ======================= -->
+<section class="slide" data-title="Charts: two shares and sensitivity" data-fnum="C3">
+  <span class="slidemark"></span>
+  <div class="pad">
+    <div class="secrow"><span class="n">C3</span><span class="t">Charts</span></div>
+    <div class="action">Two shares at once, and what moves the answer</div>
+    <div class="grow">
+    <div class="cols" style="gap:20px;align-items:stretch;">
+
+      <div class="qblock" style="flex:1.25;padding:24px 20px 16px;">
+        <span class="qtag">Marimekko, for share within share</span>
+        <div class="mekko">
+          <div class="mc" style="flex:0 0 38%;">
+            <div class="mhead">France <b>38%</b></div>
+            <div class="mbody">
+              <div class="ms a" style="flex:0 0 46%;">46</div>
+              <div class="ms c" style="flex:0 0 33%;">33</div>
+              <div class="ms d" style="flex:0 0 21%;">21</div>
+            </div>
+          </div>
+          <div class="mc" style="flex:0 0 27%;">
+            <div class="mhead">Germany <b>27%</b></div>
+            <div class="mbody">
+              <div class="ms a" style="flex:0 0 28%;">28</div>
+              <div class="ms c" style="flex:0 0 44%;">44</div>
+              <div class="ms d" style="flex:0 0 28%;">28</div>
+            </div>
+          </div>
+          <div class="mc" style="flex:0 0 21%;">
+            <div class="mhead">Benelux <b>21%</b></div>
+            <div class="mbody">
+              <div class="ms accent" style="flex:0 0 61%;">61</div>
+              <div class="ms c" style="flex:0 0 25%;">25</div>
+              <div class="ms d" style="flex:0 0 14%;">14</div>
+            </div>
+          </div>
+          <div class="mc" style="flex:0 0 14%;">
+            <div class="mhead">Nordics <b>14%</b></div>
+            <div class="mbody">
+              <div class="ms a" style="flex:0 0 31%;">31</div>
+              <div class="ms c" style="flex:0 0 40%;">40</div>
+              <div class="ms d" style="flex:0 0 29%;">29</div>
+            </div>
+          </div>
+        </div>
+        <p class="small" style="margin-top:13px;font-size:13px;">Column width is the market, segment
+        height is the share inside it. The accent marks the only cell worth arguing about, a large
+        share of a small market.</p>
+      </div>
+
+      <div class="qblock" style="flex:1;padding:24px 20px 16px;">
+        <span class="qtag">Tornado, for what the answer turns on</span>
+        <div class="tor">
+          <div class="trow">
+            <div class="tlab">Adoption rate</div><div class="tend l">-4.1</div>
+            <div class="ttrack"><div class="tzero"></div>
+              <div class="tneg" style="width:41%;"></div><div class="tpos" style="width:44%;"></div></div>
+            <div class="tend r">+4.4</div>
+          </div>
+          <div class="trow">
+            <div class="tlab">Licence price</div><div class="tend l">-3.3</div>
+            <div class="ttrack"><div class="tzero"></div>
+              <div class="tneg" style="width:33%;"></div><div class="tpos" style="width:30%;"></div></div>
+            <div class="tend r">+3.0</div>
+          </div>
+          <div class="trow">
+            <div class="tlab">Build cost</div><div class="tend l">-2.4</div>
+            <div class="ttrack"><div class="tzero"></div>
+              <div class="tneg accent" style="width:24%;"></div><div class="tpos accent" style="width:18%;"></div></div>
+            <div class="tend r">+1.8</div>
+          </div>
+          <div class="trow">
+            <div class="tlab">Churn</div><div class="tend l">-1.5</div>
+            <div class="ttrack"><div class="tzero"></div>
+              <div class="tneg" style="width:15%;"></div><div class="tpos" style="width:13%;"></div></div>
+            <div class="tend r">+1.3</div>
+          </div>
+          <div class="trow">
+            <div class="tlab">Support headcount</div><div class="tend l">-0.6</div>
+            <div class="ttrack"><div class="tzero"></div>
+              <div class="tneg" style="width:6%;"></div><div class="tpos" style="width:5%;"></div></div>
+            <div class="tend r">+0.5</div>
+          </div>
+        </div>
+        <p class="small" style="margin-top:14px;font-size:13px;">Sorted widest first, so the eye stops
+        where the drivers stop mattering. Below the fourth row, nothing changes the decision.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy from here</span><span class="fright"></span></div>
+</section>
+
+
+<!-- ======================= CHARTS 4 ======================= -->
+<section class="slide" data-title="Charts: plan, sizing and benchmark" data-fnum="C4">
+  <span class="slidemark"></span>
+  <div class="pad">
+    <div class="secrow"><span class="n">C4</span><span class="t">Charts</span></div>
+    <div class="action">A plan that shows its dependencies, a size that shows its arithmetic</div>
+    <div class="grow">
+
+    <div class="qblock" style="padding:22px 20px 14px;">
+      <span class="qtag">Gantt, for a plan where something waits on something else</span>
+      <div class="gantt">
+        <div class="gscale"><div>Q1</div><div>Q2</div><div>Q3</div><div>Q4</div></div>
+        <div class="gline"><div class="glab">Data foundation</div>
+          <div class="gtrack"><div class="gq" style="left:25%"></div><div class="gq" style="left:50%"></div><div class="gq" style="left:75%"></div>
+            <div class="gbar crit" style="left:0;width:30%;">Clean and label</div></div></div>
+        <div class="gline"><div class="glab">Pilot, one region</div>
+          <div class="gtrack"><div class="gq" style="left:25%"></div><div class="gq" style="left:50%"></div><div class="gq" style="left:75%"></div>
+            <div class="gbar" style="left:34%;width:26%;">Build and measure</div></div></div>
+        <div class="gline"><div class="glab">Go or no go</div>
+          <div class="gtrack"><div class="gq" style="left:25%"></div><div class="gq" style="left:50%"></div><div class="gq" style="left:75%"></div>
+            <div class="gmile" style="left:62%;"></div></div></div>
+        <div class="gline"><div class="glab">Rollout</div>
+          <div class="gtrack"><div class="gq" style="left:25%"></div><div class="gq" style="left:50%"></div><div class="gq" style="left:75%"></div>
+            <div class="gbar" style="left:67%;width:30%;">Remaining regions</div></div></div>
+        <div class="gline"><div class="glab">Training, in parallel</div>
+          <div class="gtrack"><div class="gq" style="left:25%"></div><div class="gq" style="left:50%"></div><div class="gq" style="left:75%"></div>
+            <div class="gbar soft" style="left:40%;width:50%;">Runs alongside, blocks nothing</div></div></div>
+        <div class="gdeps">
+          <div class="dep v" style="left:30%;top:25px;height:22px;"></div>
+          <div class="dep h" style="left:30%;top:46px;width:4%;"></div>
+          <div class="dephead" style="left:33.4%;top:43.5px;"></div>
+          <div class="dep v" style="left:60%;top:57px;height:22px;"></div>
+          <div class="dep h" style="left:60%;top:78px;width:2%;"></div>
+          <div class="dephead" style="left:61.4%;top:75.5px;"></div>
+          <div class="dep v" style="left:64%;top:89px;height:22px;"></div>
+          <div class="dep h" style="left:64%;top:110px;width:3%;"></div>
+          <div class="dephead" style="left:66.4%;top:107.5px;"></div>
+        </div>
+      </div>
+      <p class="small" style="margin-top:8px;font-size:13px;">The connectors are the argument. Rollout
+      does not start in Q3 because the calendar says so, it starts because the gate clears.</p>
+    </div>
+
+    <div class="cols" style="gap:20px;align-items:stretch;margin-top:16px;">
+      <div class="qblock" style="flex:1;padding:22px 20px 14px;">
+        <span class="qtag">Sizing ladder, for a number you will be asked to defend</span>
+        <div class="ladder">
+          <div class="rung"><div class="lbar r1" style="width:100%;">Total market</div><div class="lval">840 m</div></div>
+          <div class="lstep"><span class="lx">x 0.42</span><span class="lwhy">regulated segments only</span></div>
+          <div class="rung"><div class="lbar r2" style="width:68%;">Addressable</div><div class="lval">353 m</div></div>
+          <div class="lstep"><span class="lx">x 0.31</span><span class="lwhy">firms above 50 staff, our minimum</span></div>
+          <div class="rung"><div class="lbar r3" style="width:44%;">Serviceable</div><div class="lval">109 m</div></div>
+          <div class="lstep"><span class="lx">x 0.11</span><span class="lwhy">share we can win in three years</span></div>
+          <div class="rung"><div class="lbar r4" style="width:24%;">Target</div><div class="lval">12 m</div></div>
+        </div>
+      </div>
+
+      <div class="qblock" style="flex:1;padding:22px 20px 14px;">
+        <span class="qtag">Dot plot, for where you sit against the field</span>
+        <div class="dotplot">
+          <div class="drow"><div class="dlab">Margin</div>
+            <div class="dtrack"><div class="dline"></div><div class="dspan" style="left:22%;width:56%;"></div>
+              <div class="d" style="left:22%;"></div><div class="d" style="left:38%;"></div>
+              <div class="d" style="left:61%;"></div><div class="d" style="left:78%;"></div>
+              <div class="d you" style="left:31%;"></div></div>
+            <div class="dend">18%</div></div>
+          <div class="drow"><div class="dlab">Growth</div>
+            <div class="dtrack"><div class="dline"></div><div class="dspan" style="left:14%;width:68%;"></div>
+              <div class="d" style="left:14%;"></div><div class="d" style="left:44%;"></div>
+              <div class="d" style="left:57%;"></div><div class="d" style="left:82%;"></div>
+              <div class="d you" style="left:72%;"></div></div>
+            <div class="dend">14%</div></div>
+          <div class="drow"><div class="dlab">Revenue per head</div>
+            <div class="dtrack"><div class="dline"></div><div class="dspan" style="left:28%;width:52%;"></div>
+              <div class="d" style="left:28%;"></div><div class="d" style="left:46%;"></div>
+              <div class="d" style="left:66%;"></div><div class="d" style="left:80%;"></div>
+              <div class="d you" style="left:41%;"></div></div>
+            <div class="dend">134 k</div></div>
+          <div class="drow"><div class="dlab">Repeat clients</div>
+            <div class="dtrack"><div class="dline"></div><div class="dspan" style="left:35%;width:50%;"></div>
+              <div class="d" style="left:35%;"></div><div class="d" style="left:52%;"></div>
+              <div class="d" style="left:70%;"></div><div class="d" style="left:85%;"></div>
+              <div class="d you" style="left:88%;"></div></div>
+            <div class="dend">71%</div></div>
+        </div>
+        <div class="dotplot-key">
+          <span><i style="background:var(--int2)"></i>Four peers</span>
+          <span><i style="background:var(--orange-dark)"></i>This client</span>
+          <span>Spread, not an average</span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy from here</span><span class="fright"></span></div>
+</section>
+
+
+<!-- ======================= ARCHETYPE: EXEC SUMMARY ======================= -->
+<section class="slide" data-title="Archetype: executive summary" data-fnum="A1">
+  <span class="slidemark"></span>
+  <div class="pad">
+    <div class="secrow"><span class="n">A1</span><span class="t">Archetype</span></div>
+    <div class="action">The one slide a reader keeps, so it carries the whole argument</div>
+    <div class="grow">
+      <div class="exec">
+        <div class="erow">
+          <div class="erail"><div class="ek">Situation</div><div class="en">What is true today</div></div>
+          <div class="ebody"><p>The client holds <b>a strong position in a market that is no longer
+          growing</b>, and has done so for four years.</p></div>
+        </div>
+        <div class="erow">
+          <div class="erail"><div class="ek">Complication</div><div class="en">What changed</div></div>
+          <div class="ebody"><p>Two competitors moved first and now quote <b>a price we cannot match
+          at our cost base</b>, which takes the next renewal cycle with them.</p></div>
+        </div>
+        <div class="erow answer">
+          <div class="erail"><div class="ek">Answer</div><div class="en">What we recommend</div></div>
+          <div class="ebody"><p>Move the standard service to a machine-assisted process and keep the
+          judgement work priced as it is.</p></div>
+        </div>
+        <div class="erow">
+          <div class="erail"><div class="ek">Because</div><div class="en">What makes it hold</div></div>
+          <div class="ebody"><p>It closes the price gap on <b>61 per cent of volume</b>, needs no new
+          licence, and the pilot is reversible inside one quarter.</p></div>
+        </div>
+        <div class="eask">
+          <span class="ekl">The ask</span>
+          <span class="ekv">Approve the pilot budget and the Q3 gate. Nothing else is decided today.</span>
+        </div>
+      </div>
+      <p class="small" style="margin-top:14px;font-size:13px;">Situation, complication, answer, because,
+      ask. The answer row is the only one in the brand colour, because a summary with four emphases has
+      none. Four rows is the ceiling. A fifth row means you are holding two summaries.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy the whole section</span><span class="fright"></span></div>
+</section>
+
+<!-- ======================= ARCHETYPE: ISSUE TREE ======================= -->
+<section class="slide" data-title="Archetype: issue tree" data-fnum="A2">
+  <span class="slidemark"></span>
+  <div class="pad">
+    <div class="secrow"><span class="n">A2</span><span class="t">Archetype</span></div>
+    <div class="action">One question split into parts that do not overlap and leave nothing out</div>
+    <div class="grow">
+      <div class="tree" style="height:368px;">
+        <div class="troot">
+          <div class="tbox">
+            <div class="tq">Why has margin fallen four years running?</div>
+            <div class="ta">Price, cost or mix. Nothing else can move it.</div>
+          </div>
+        </div>
+        <div class="tconn">
+          <div class="l h" style="left:0;right:50%;top:50%;"></div>
+          <div class="l v" style="left:50%;top:16%;bottom:16%;"></div>
+          <div class="l h" style="left:50%;right:0;top:16%;"></div>
+          <div class="l h" style="left:50%;right:0;top:50%;"></div>
+          <div class="l h" style="left:50%;right:0;bottom:16%;"></div>
+        </div>
+        <div class="tbranch">
+          <div class="tleaf">
+            <div class="tbox"><div class="tq">Are we charging less?</div>
+              <div class="ta">Realised price, not list price</div></div>
+            <div class="tsub">
+              <div class="ti"><i></i><span>Discount depth by segment and by deal size</span></div>
+              <div class="ti"><i></i><span>Share of work won on price alone</span></div>
+            </div>
+          </div>
+          <div class="tleaf">
+            <div class="tbox hot"><div class="tq">Does the work cost more?</div>
+              <div class="ta">Hours per engagement, fully loaded</div></div>
+            <div class="tsub">
+              <div class="ti"><i></i><span>Hours per standard engagement, three year trend</span></div>
+              <div class="ti"><i></i><span>Rework and review loops as a share of hours</span></div>
+              <div class="ti"><i></i><span>Seniority mix on routine work</span></div>
+            </div>
+          </div>
+          <div class="tleaf">
+            <div class="tbox"><div class="tq">Has the mix shifted?</div>
+              <div class="ta">Toward the thinner service lines</div></div>
+            <div class="tsub">
+              <div class="ti"><i></i><span>Revenue share by line, weighted by margin</span></div>
+              <div class="ti"><i></i><span>New logos against renewals</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="small" style="margin-top:12px;font-size:13px;">The outlined branch is the one the
+      evidence supports, so the audience knows where the next slide goes. Three branches is the limit
+      at this size: a fourth drops the type below the floor.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy the whole section</span><span class="fright"></span></div>
+</section>
+
+<!-- ======================= ARCHETYPE: DIVIDER ======================= -->
+<section class="slide" data-title="Archetype: section divider" data-fnum="A3">
+  <span class="slidemark"></span>
+  <div class="pad">
+    <div class="secrow"><span class="n">A3</span><span class="t">Archetype</span></div>
+    <div class="action">Where the audience is, in one look</div>
+    <div class="grow" style="padding:6px 0 0;">
+      <div class="agenda" style="height:352px;">
+        <div class="anum">03</div>
+        <div class="arule"></div>
+        <div class="alist">
+          <div class="ai done"><span class="adot"></span><span class="an">01</span>
+            <span class="at">The question and why it matters now</span><span class="amin">3 min</span></div>
+          <div class="ai done"><span class="adot"></span><span class="an">02</span>
+            <span class="at">What the market already does</span><span class="amin">4 min</span></div>
+          <div class="ai now"><span class="adot"></span><span class="an">03</span>
+            <span class="at">Our recommendation</span><span class="amin">6 min</span></div>
+          <div class="ai"><span class="adot"></span><span class="an">04</span>
+            <span class="at">What it costs and what it returns</span><span class="amin">5 min</span></div>
+          <div class="ai"><span class="adot"></span><span class="an">05</span>
+            <span class="at">Risks and the first ninety days</span><span class="amin">4 min</span></div>
+          <div class="ai"><span class="adot"></span><span class="an">06</span>
+            <span class="at">The decision we are asking for</span><span class="amin">3 min</span></div>
+        </div>
+      </div>
+      <p class="small" style="margin-top:12px;font-size:13px;">The dot carries done against still to
+      come, so the distinction never rests on a grey too light to read from the back of the room. The
+      minutes are for you, and they also tell a jury you have rehearsed.</p>
+    </div>
+  </div>
+  <div class="foot"><span>Component gallery</span><span class="fmid">EDHEC project template</span><span>Copy the whole section</span><span class="fright"></span></div>
 </section>
 
 </div>

@@ -154,6 +154,84 @@ rehearsal, by anybody, without a toolchain.
 | `.carto` | a value per country | precise geography |
 | `.bars` | totals split into components, horizontally | more than five bars |
 
+## Charts for a second question
+
+Four charts answer questions the first eight cannot.
+
+**`.mekko` — Marimekko.** Column width is one share, segment height is another.
+Reach for it when the finding is "a big share of a small market", which a bar
+chart has to say in two charts and a sentence. The widths must total 100, and
+nothing checks that for you.
+
+**`.tor` — tornado.** Sensitivity. One row per driver, sorted widest first, so
+the eye stops where the drivers stop mattering. Five rows is plenty; below the
+fourth, nothing is changing the decision.
+
+**`.gantt` — a plan with dependencies.** The connectors are the argument. A plan
+where the bars merely sit next to each other says the calendar decided; a plan
+with connectors says the work decided. Rows are `.gline`, **not** `.grow` —
+`.grow` is the slide content area and a row that inherits `flex:1` collapses the
+chart. Dependency coordinates are x in per cent of the track and y in px from
+the top of the first row.
+
+The connectors end in a **dot, not an arrowhead**, on purpose. A CSS triangle is
+borders on a zero-size box, which the exporter reads as an empty rectangle, so
+the arrow would disappear in exactly the file somebody opens to edit.
+
+**`.ladder` — sizing ladder.** TAM to SAM to SOM, except every step shows its own
+multiplier and its own reason. A funnel hides the arithmetic. A ladder makes each
+step arguable on its own, which is what a jury attacks.
+
+**`.dotplot` — peers.** One row per measure, the peers on the ramp, you in the
+accent. It shows the spread. A bar chart of averages destroys the spread, and the
+spread is usually the finding.
+
+## Slide archetypes
+
+Whole-slide layouts. Copy the entire `<section>` from the gallery, not the inner
+div.
+
+**`.exec` — executive summary.** Situation, complication, answer, because, ask.
+The answer row is the only one in the brand colour, because a summary with four
+emphases has none. Four rows is the ceiling: a fifth means you are holding two
+summaries and should split them.
+
+**`.tree` — issue tree.** One question split into parts that do not overlap and
+leave nothing out. Outline the branch the evidence supports, so the audience
+knows where the next slide goes. Three branches is the limit at 1280x720; a
+fourth drops the type below the floor.
+
+**`.agenda` — section divider.** Where the audience is. The dot carries done
+against still to come, so the distinction never rests on a grey too light to read
+from the back of a room. The minutes are for you, and they also tell a jury you
+rehearsed.
+
+## One stylesheet, two files
+
+`design/components.css` is the master. Both templates carry a **generated copy**
+of it, between markers:
+
+```
+/* ==== SHARED COMPONENTS -- generated from design/components.css ==== */
+...
+/* ==== END SHARED COMPONENTS ==== */
+```
+
+Do not edit inside that block. Edit the master and run:
+
+```bash
+python3 tools/sync_components.py
+```
+
+`./build.sh` runs `--check` and fails if a template has drifted.
+
+Why generate rather than link: the chart stylesheet used to live only in
+`gallery.html`. The gallery's whole job is to be copied from, so every chart
+copied into `slides.html` arrived unstyled — a donut as a bare number, a
+waterfall as a stack of empty divs. Silent at copy time, loud at rehearsal time.
+Each template still carries a full copy, so one file still opens offline on its
+own.
+
 ## Reading the markup
 
 Heights and widths are percentages written straight into `style`. A column at

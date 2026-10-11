@@ -482,6 +482,313 @@ body.overview #ov{display:grid;}
 .reco-slide .brandslot{display:block;position:absolute;top:44px;right:72px;margin:0;
   width:176px;height:44px;background:var(--logo) no-repeat right center/contain;
   filter:brightness(0) invert(1);z-index:4;}
+/* =====================================================================
+   SHARED COMPONENTS -- generated from design/components.css
+   Do not edit this block inside a template. Edit design/components.css
+   and run `python3 tools/sync_components.py`. `./build.sh` fails if the
+   two templates drift apart, because a component fixed in one file and
+   not the other still renders fine in both, which is how a catalogue
+   stops being a catalogue.
+   ===================================================================== */
+/* =====================================================================
+   CHARTS
+   Built from divs wherever possible, because div charts survive the
+   PowerPoint export as native, editable shapes. Only the donut and the
+   trend line need SVG, and those arrive in PowerPoint as pictures.
+   Every value is a plain number in the markup: no library and no data
+   file, so a chart can still be corrected during a rehearsal.
+   ===================================================================== */
+
+/* ---- column chart -------------------------------------------------- */
+.cols-chart{display:flex;align-items:flex-end;gap:18px;height:186px;
+  border-bottom:2px solid var(--line);padding:0 6px;}
+.cols-chart .c{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;height:100%;}
+.cols-chart .cbar{width:100%;max-width:74px;background:var(--blue);border-radius:4px 4px 0 0;
+  position:relative;}
+.cols-chart .cbar.dim{background:var(--int1);}
+.cols-chart .cbar.accent{background:var(--orange);}
+.cols-chart .cval{position:absolute;top:-22px;left:-10px;right:-10px;text-align:center;
+  font-size:14px;font-weight:800;color:var(--navy);}
+.chart-x{display:flex;gap:18px;padding:6px 6px 0;}
+.chart-x>div{flex:1;font-size:13px;color:var(--muted);text-align:center;line-height:1.3;}
+
+/* ---- stacked column ------------------------------------------------ */
+.stack{display:flex;align-items:flex-end;gap:18px;height:186px;
+  border-bottom:2px solid var(--line);padding:0 6px;}
+.stack .s{flex:1;display:flex;flex-direction:column;justify-content:flex-end;height:100%;}
+.stack .seg{display:flex;align-items:center;justify-content:center;font-size:11.5px;
+  font-weight:700;color:#fff;}
+.stack .seg:first-child{border-radius:4px 4px 0 0;}
+.stack .seg.a{background:var(--deep);}
+.stack .seg.b{background:var(--blue);}
+.stack .seg.c{background:var(--int2);}
+.stack .seg.d{background:var(--int1);color:var(--ink);}
+
+/* ---- waterfall ----------------------------------------------------- */
+.fall{display:flex;align-items:flex-end;gap:14px;height:196px;
+  border-bottom:2px solid var(--line);padding:0 6px;position:relative;}
+.fall .w{flex:1;position:relative;height:100%;}
+.fall .wbar{position:absolute;left:10%;right:10%;border-radius:4px;}
+.fall .wbar.base{background:var(--deep);}
+.fall .wbar.up{background:var(--blue);}
+.fall .wbar.down{background:var(--orange);}
+.fall .wbar.total{background:var(--navy);}
+.fall .wval{position:absolute;left:-6px;right:-6px;text-align:center;font-size:13px;
+  font-weight:800;color:var(--navy);}
+
+/* ---- trend line, svg ----------------------------------------------- */
+.trend{width:100%;height:186px;display:block;}
+.trend .grid{stroke:var(--line);stroke-width:1;}
+.trend .area{fill:var(--sky);}
+.trend .line{fill:none;stroke:var(--blue);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;}
+.trend .line.dash{stroke:var(--orange);stroke-dasharray:7 6;}
+.trend .dot{fill:#fff;stroke:var(--blue);stroke-width:3;}
+
+/* ---- donut, svg ---------------------------------------------------- */
+.donut-wrap{position:relative;width:176px;flex:0 0 176px;}
+.donut{width:176px;height:176px;transform:rotate(-90deg);display:block;}
+.donut circle{fill:none;stroke-width:26;}
+.donut .track{stroke:var(--int0);}
+.donut-mid{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;}
+.donut-mid .n{font-size:30px;font-weight:800;color:var(--navy);line-height:1;}
+.donut-mid .l{font-size:11.5px;color:var(--muted);margin-top:4px;}
+.legend{display:flex;flex-direction:column;gap:10px;}
+.legend .li{display:flex;align-items:center;gap:10px;font-size:14px;}
+.legend .sw{width:13px;height:13px;border-radius:4px;flex:0 0 13px;}
+.legend .lv{margin-left:auto;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums;}
+
+/* ---- two by two matrix --------------------------------------------- */
+/* The y label sits above the axis, left aligned, and is NOT rotated.
+   transform:rotate() is the one transform the PowerPoint exporter cannot
+   follow: it reads the rotated bounding box but writes the text flat, so
+   the label lands on its side in the PDF and upright across the chart in
+   the .pptx. Above-left reads the same and exports correctly. */
+.quadwrap{padding-left:0;}
+.quad{position:relative;height:238px;border-left:2px solid var(--navy);
+  border-bottom:2px solid var(--navy);}
+.quad .cell{position:absolute;width:50%;height:50%;border:1px dashed var(--line);}
+.quad .cell.tl{left:0;top:0;} .quad .cell.tr{left:50%;top:0;}
+.quad .cell.bl{left:0;top:50%;} .quad .cell.br{left:50%;top:50%;}
+.quad .cell span{position:absolute;top:8px;left:11px;font-size:11.5px;font-weight:800;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+.quad .bub{position:absolute;transform:translate(-50%,50%);border-radius:50%;
+  background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;border:2px solid #fff;}
+.quad .bub.accent{background:var(--orange);}
+.quad .bub.dim{background:var(--int2);}
+.quad-y{margin-bottom:7px;font-size:11.5px;font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--navy);}
+.quad-x{margin-top:9px;text-align:center;font-size:11.5px;font-weight:800;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--navy);}
+
+/* ---- funnel -------------------------------------------------------- */
+.funnel{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.funnel .f{display:flex;align-items:center;justify-content:center;color:#fff;
+  font-size:13px;font-weight:700;height:32px;border-radius:4px;}
+.funnel .f.s1{background:var(--deep);}
+.funnel .f.s2{background:var(--navy);}
+.funnel .f.s3{background:var(--blue);}
+.funnel .f.s4{background:var(--int2);}
+.funnel .f.s5{background:var(--orange);}
+
+/* ---- tile cartogram ------------------------------------------------ */
+.carto{display:grid;grid-template-columns:repeat(7,34px);gap:4px;}
+.carto .t{height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-size:11.5px;font-weight:800;color:var(--muted);background:var(--int0);}
+.carto .t.v1{background:var(--int1);color:var(--ink);}
+.carto .t.v2{background:var(--int2);color:#fff;}
+.carto .t.v3{background:var(--blue);color:#fff;}
+.carto .t.v4{background:var(--deep);color:#fff;}
+.carto .t.none{background:transparent;}
+.carto-key{display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--muted);margin-top:12px;}
+.carto-key i{width:24px;height:13px;border-radius:4px;display:inline-block;}
+
+/* ---- marimekko ------------------------------------------------------ */
+/* Two shares at once: the column width is one, the segment height is the
+   other. Use it when "big share of a small market" is the finding. Both
+   percentages are literal in the markup, so a wrong number looks wrong
+   rather than hiding in a data file. Widths must total 100. */
+.mekko{display:flex;gap:4px;height:188px;}
+.mekko .mc{display:flex;flex-direction:column;min-width:0;}
+.mekko .mhead{font-size:11.5px;font-weight:800;color:var(--navy);padding-bottom:4px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mekko .mhead b{color:var(--muted);font-weight:800;}
+.mekko .mbody{flex:1;display:flex;flex-direction:column;border-radius:4px;overflow:hidden;}
+.mekko .ms{display:flex;align-items:center;justify-content:center;min-height:0;
+  font-size:11.5px;font-weight:700;color:#fff;}
+.mekko .ms.a{background:var(--deep);}
+.mekko .ms.b{background:var(--navy);}
+.mekko .ms.c{background:var(--int2);}
+.mekko .ms.d{background:var(--int1);color:var(--ink);}
+.mekko .ms.accent{background:var(--orange-dark);}
+
+/* ---- tornado, for sensitivity --------------------------------------- */
+/* Rows sorted by how much they move the answer, widest at the top. The
+   reader's eye stops where the bars stop mattering, which is the point. */
+.tor{display:flex;flex-direction:column;gap:7px;}
+.tor .trow{display:flex;align-items:center;gap:8px;}
+.tor .tlab{flex:0 0 130px;font-size:13px;color:var(--ink);text-align:right;line-height:1.25;}
+.tor .tend{flex:0 0 50px;font-size:11.5px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;}
+.tor .tend.l{text-align:right;} .tor .tend.r{text-align:left;}
+.tor .ttrack{flex:1;position:relative;height:22px;}
+.tor .tzero{position:absolute;left:50%;top:-6px;bottom:-6px;width:1.5px;background:var(--navy);}
+.tor .tneg,.tor .tpos{position:absolute;top:0;height:22px;}
+.tor .tneg{right:50%;background:var(--int2);border-radius:4px 0 0 4px;}
+.tor .tpos{left:50%;background:var(--blue);border-radius:0 4px 4px 0;}
+.tor .tneg.accent,.tor .tpos.accent{background:var(--orange-dark);}
+
+/* ---- gantt with dependencies ---------------------------------------- */
+/* A plan only argues if it shows what waits on what. The connectors are
+   filled rectangles ending in a dot, not an arrowhead: a CSS triangle is
+   borders on a zero-size box, which the PowerPoint exporter reads as an
+   empty rectangle, so the arrow would vanish in the file somebody edits.
+   A dot is an oval and survives. Overlay coordinates are x in % of the
+   track and y in px from the top of the first row.
+   The row class is `.gline`, not `.grow`: `.grow` is the slide content area
+   and a gantt row that inherits `flex:1` collapses the whole chart. */
+.gantt{position:relative;}
+.gantt .gscale{display:flex;height:24px;margin-left:148px;
+  border-bottom:1px solid var(--line);}
+.gantt .gscale>div{flex:1;font-size:11.5px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);text-align:center;}
+.gantt .gline{display:flex;align-items:center;height:32px;}
+.gantt .glab{flex:0 0 148px;font-size:13px;color:var(--ink);padding-right:12px;line-height:1.2;}
+.gantt .gtrack{flex:1;position:relative;height:100%;}
+.gantt .gtrack .gq{position:absolute;top:0;bottom:0;width:1px;background:var(--line);}
+.gantt .gbar{position:absolute;top:7px;height:18px;border-radius:4px;background:var(--blue);
+  display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden;
+  font-size:11.5px;font-weight:700;color:#fff;}
+.gantt .gbar.crit{background:var(--deep);}
+.gantt .gbar.soft{background:var(--int1);color:var(--ink);}
+.gantt .gmile{position:absolute;top:5px;width:22px;height:22px;border-radius:50%;
+  background:var(--orange-dark);border:2px solid #fff;}
+.gantt .gdeps{position:absolute;left:148px;right:0;top:24px;bottom:0;}
+.gantt .dep{position:absolute;background:var(--int2);}
+.gantt .dep.v{width:1.5px;} .gantt .dep.h{height:1.5px;}
+.gantt .dephead{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--int2);}
+
+/* ---- sizing ladder --------------------------------------------------- */
+/* Market sizing where every step names its multiplier and its reason. A
+   funnel hides the arithmetic; a ladder makes each step arguable on its
+   own, which is what a jury actually attacks. */
+.ladder{display:flex;flex-direction:column;}
+.ladder .rung{display:flex;align-items:center;gap:14px;}
+.ladder .lbar{height:38px;border-radius:4px;display:flex;align-items:center;padding:0 12px;
+  white-space:nowrap;font-size:13px;font-weight:800;color:#fff;}
+.ladder .lbar.r1{background:var(--deep);}
+.ladder .lbar.r2{background:var(--navy);}
+.ladder .lbar.r3{background:var(--blue);}
+.ladder .lbar.r4{background:var(--orange-dark);}
+.ladder .lval{font-size:17px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;white-space:nowrap;}
+.ladder .lstep{display:flex;align-items:center;gap:9px;height:26px;padding-left:18px;}
+.ladder .lstep .lx{font-size:11.5px;font-weight:800;color:var(--navy);background:var(--sky);
+  border-radius:4px;padding:2px 7px;font-variant-numeric:tabular-nums;}
+.ladder .lstep .lwhy{font-size:11.5px;color:var(--muted);}
+
+/* ---- peer dot plot ---------------------------------------------------- */
+/* One row per measure, the peers on the ramp and you in the accent. Shows
+   the spread, which a bar chart of averages destroys. */
+.dotplot{display:flex;flex-direction:column;gap:24px;}
+.dotplot .drow{display:flex;align-items:center;gap:12px;}
+.dotplot .dlab{flex:0 0 120px;font-size:13px;color:var(--ink);line-height:1.2;}
+.dotplot .dtrack{flex:1;position:relative;height:20px;}
+.dotplot .dline{position:absolute;left:0;right:0;top:9px;height:2px;background:var(--int0);}
+.dotplot .dspan{position:absolute;top:9px;height:2px;background:var(--int1);}
+.dotplot .d{position:absolute;top:4px;width:12px;height:12px;border-radius:50%;
+  background:var(--int2);transform:translateX(-50%);}
+.dotplot .d.you{top:1px;width:18px;height:18px;background:var(--orange-dark);
+  border:2px solid #fff;}
+.dotplot .dend{flex:0 0 54px;font-size:11.5px;font-weight:800;color:var(--navy);
+  font-variant-numeric:tabular-nums;text-align:right;}
+.dotplot-key{display:flex;align-items:center;gap:20px;font-size:11.5px;color:var(--muted);
+  margin-top:14px;}
+.dotplot-key i{width:12px;height:12px;border-radius:50%;display:inline-block;
+  vertical-align:-2px;margin-right:7px;}
+
+/* =====================================================================
+   SLIDE ARCHETYPES
+   Whole-slide layouts rather than single components. Copy the whole
+   <section>, not just the inner div.
+   ===================================================================== */
+
+/* ---- executive summary ------------------------------------------------ */
+/* The one slide a reader keeps. The rail names the move, the body makes
+   it. Four rows maximum: a fifth row means you have two summaries. */
+.exec{display:flex;flex-direction:column;gap:9px;}
+.exec .erow{display:flex;align-items:stretch;border:1px solid var(--line);
+  border-radius:6px;overflow:hidden;background:#fff;}
+.exec .erail{flex:0 0 136px;background:var(--sky);padding:11px 14px;
+  display:flex;flex-direction:column;justify-content:center;}
+.exec .erail .ek{font-size:11.5px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--navy);}
+.exec .erail .en{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.3;}
+.exec .ebody{flex:1;padding:11px 16px;display:flex;align-items:center;}
+.exec .ebody p{margin:0;font-size:14px;line-height:1.45;color:var(--ink);}
+.exec .ebody b{color:var(--navy);}
+.exec .erow.answer{border-color:var(--deep);}
+.exec .erow.answer .erail{background:var(--deep);}
+.exec .erow.answer .erail .ek{color:#fff;}
+.exec .erow.answer .erail .en{color:var(--int1);}
+.exec .erow.answer .ebody{background:var(--sky);}
+.exec .erow.answer .ebody p{font-size:15.5px;font-weight:700;color:var(--navy);}
+.exec .eask{display:flex;align-items:center;gap:14px;background:var(--deep);color:#fff;
+  border-radius:6px;padding:12px 18px;}
+.exec .eask .ekl{flex:0 0 auto;font-size:11.5px;font-weight:800;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--int1);}
+.exec .eask .ekv{font-size:15.5px;font-weight:700;}
+
+/* ---- issue tree -------------------------------------------------------- */
+/* One question split into parts that do not overlap and leave nothing out.
+   Connectors are filled rectangles, for the same export reason as the
+   gantt. Three branches: with four, the type drops below the floor. */
+.tree{display:flex;align-items:stretch;}
+.tree .tbox{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:#fff;}
+.tree .tbox .tq{font-size:13px;font-weight:700;color:var(--navy);line-height:1.3;}
+.tree .tbox .ta{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.3;}
+.tree .tbox.hot{border-color:var(--orange-dark);border-width:2px;padding:9px 11px;}
+.tree .troot{flex:0 0 214px;display:flex;align-items:center;}
+.tree .troot .tbox{width:100%;background:var(--deep);border-color:var(--deep);}
+.tree .troot .tbox .tq{color:#fff;}
+.tree .troot .tbox .ta{color:var(--int1);}
+.tree .tconn{flex:0 0 32px;position:relative;}
+.tree .tconn .l{position:absolute;background:var(--int1);}
+.tree .tconn .l.h{height:1.5px;} .tree .tconn .l.v{width:1.5px;}
+.tree .tbranch{flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:12px;}
+.tree .tleaf{display:flex;align-items:stretch;}
+.tree .tleaf>.tbox{flex:0 0 214px;}
+.tree .tsub{flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;
+  padding-left:14px;}
+.tree .tsub .ti{display:flex;gap:8px;font-size:11.5px;color:var(--ink);line-height:1.35;}
+.tree .tsub .ti i{flex:0 0 5px;height:5px;border-radius:50%;background:var(--int2);margin-top:5px;}
+
+/* ---- section divider and agenda ----------------------------------------- */
+/* Where the audience is in the argument. The section being entered is
+   burgundy, everything else recedes. The dot carries done against still
+   to come, so the distinction never rests on a grey too light to read. */
+.agenda{display:flex;align-items:center;gap:44px;height:100%;}
+.agenda .anum{font-size:46px;font-weight:800;color:var(--deep);line-height:1;}
+.agenda .arule{flex:0 0 3px;align-self:stretch;background:var(--deep);border-radius:4px;
+  margin:12px 0;}
+.agenda .alist{flex:1;display:flex;flex-direction:column;}
+.agenda .ai{display:flex;align-items:center;gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--line);}
+.agenda .ai:last-child{border-bottom:0;}
+.agenda .ai .adot{flex:0 0 10px;height:10px;border-radius:50%;background:var(--int0);}
+.agenda .ai .an{flex:0 0 28px;font-size:13px;font-weight:800;color:var(--muted);
+  font-variant-numeric:tabular-nums;}
+.agenda .ai .at{font-size:17px;color:var(--muted);}
+.agenda .ai .amin{margin-left:auto;font-size:11.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;}
+.agenda .ai.done .adot{background:var(--int2);}
+.agenda .ai.now .adot{background:var(--deep);}
+.agenda .ai.now .an{color:var(--deep);}
+.agenda .ai.now .at{color:var(--navy);font-weight:800;}
+
+/* ==== END SHARED COMPONENTS ==== */
 </style>
 </head>
 <body>
