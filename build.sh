@@ -53,5 +53,7 @@ fi
 
 if [ "$WHAT" = all ] || [ "$WHAT" = docs ]; then
   echo "== README images =="
+  # the before-and-after needs a rendered default-Office slide to compare against
+  pdf docs/_default-powerpoint.html docs/_default-powerpoint.pdf
   "$PY" tools/mockups.py
 fi

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Default PowerPoint, for comparison</title>
+<!--
+  A faithful "Title and Content" slide in the stock Office theme, used as the
+  left half of the before-and-after picture in the README.
+
+  It is deliberately NOT a strawman. Real Calibri, the real Office accent
+  #4472C4, the real default 44pt/24pt sizes, the real bullet indents, no
+  clip art and no comic colours. The content is the same finding as the
+  template slide beside it.
+
+  The comparison has to be fair or it is worthless: the point is what
+  information design does to the same facts, not that somebody chose an
+  ugly theme. If you think this flatters our side unfairly, open
+  PowerPoint, pick Title and Content, and compare.
+
+  Font: real Calibri if you have it, otherwise Carlito, which is
+  metric-compatible with it (Debian: fonts-crosextra-carlito), otherwise
+  Liberation Sans. The picture in the README was rendered with Carlito, so
+  the line breaks match what PowerPoint would actually produce.
+-->
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{width:1280px;height:720px;overflow:hidden;
+  font-family:Calibri,Carlito,"Liberation Sans",Arial,sans-serif;color:#000;background:#fff;}
+.s{width:1280px;height:720px;padding:49px 76px 60px;display:flex;flex-direction:column;}
+h1{font-size:40pt;font-weight:400;color:#44546A;line-height:1.1;margin-bottom:28px;}
+ul{list-style:none;margin-left:4px;}
+li{font-size:24pt;line-height:1.35;color:#000;margin-bottom:14px;padding-left:34px;
+  position:relative;}
+li:before{content:"\25CF";position:absolute;left:4px;top:1px;font-size:14pt;color:#4472C4;}
+li ul{margin-top:8px;}
+li li{font-size:20pt;margin-bottom:8px;}
+li li:before{content:"\2013";color:#4472C4;font-size:20pt;top:-2px;}
+</style>
+</head>
+<body>
+<div class="s">
+  <h1>Cost structure analysis</h1>
+  <ul>
+    <li>Margin has declined over the past four years
+      <ul>
+        <li>Cost per engagement is the main driver</li>
+        <li>Price and mix are broadly stable</li>
+      </ul>
+    </li>
+    <li>Competitors have introduced AI-assisted workflows</li>
+    <li>Recommendation: pilot a machine-assisted process for standard work</li>
+    <li>Estimated investment of EUR 288,000 in year one</li>
+  </ul>
+</div>
+</body>
+</html>
