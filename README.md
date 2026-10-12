@@ -21,7 +21,7 @@ No framework, no build step, no npm, nothing to break the night before a hand-in
 gh repo create my-deck --template Sillvs/edhec-project-template --private --clone
 ```
 
-Open source · MIT licensed · [**See it live →**](https://sillvs.github.io/edhec-project-template/)
+Open source · MIT licensed · [**See it live**](https://sillvs.github.io/edhec-project-template/)
 
 <sub>No <code>gh</code>? Click <b>Use this template</b> at the top of this page.</sub>
 
