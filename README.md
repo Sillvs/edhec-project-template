@@ -11,6 +11,20 @@ No framework, no build step, no npm, nothing to break the night before a hand-in
 
 <img src="docs/img/mockup-screen.png" width="840" alt="A slide from the template on a presentation screen">
 
+<br><br>
+
+**ENTIRE TEMPLATE**
+
+### Start from it in one command
+
+```bash
+gh repo create my-deck --template Sillvs/edhec-project-template --private --clone
+```
+
+Open source · MIT licensed · [**See it live →**](https://sillvs.github.io/edhec-project-template/)
+
+<sub>No <code>gh</code>? Click <b>Use this template</b> at the top of this page.</sub>
+
 </div>
 
 ---

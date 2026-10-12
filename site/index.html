@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>EDHEC project template — HTML slides to PDF and editable PowerPoint</title>
+<meta name="description" content="Write slides in plain HTML, get a PDF and a genuinely editable PowerPoint with real shapes and real text. Consulting-style deck, A4 paper and one-pager, a thirteen-chart library, WCAG-AA checks, no build step for authoring.">
+<link rel="canonical" href="https://sillvs.github.io/edhec-project-template/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sillvs.github.io/edhec-project-template/">
+<meta property="og:title" content="Hand in work that looks like you meant it">
+<meta property="og:description" content="Slides, a paper and a one-page leave-behind. Write plain HTML, get a PDF and an editable PowerPoint. No framework, no build step, nothing to break the night before a hand-in.">
+<meta property="og:image" content="https://sillvs.github.io/edhec-project-template/img/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hand in work that looks like you meant it">
+<meta name="twitter:description" content="HTML slides to PDF and genuinely editable PowerPoint. No build step for authoring.">
+<meta name="twitter:image" content="https://sillvs.github.io/edhec-project-template/img/social.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%235F1937'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "EDHEC project template",
+  "description": "Write slides in plain HTML, get a PDF and a genuinely editable PowerPoint. Consulting-style deck, A4 paper and one-pager templates with a chart library and WCAG-AA checks.",
+  "codeRepository": "https://github.com/Sillvs/edhec-project-template",
+  "programmingLanguage": ["HTML", "CSS", "Python", "JavaScript"],
+  "license": "https://spdx.org/licenses/MIT.html",
+  "author": {"@type": "Person", "name": "Silas Zamzow"},
+  "keywords": "presentation, slides, powerpoint, pptx, pdf, html slides, charts, design system, accessibility, consulting, business school"
+}
+</script>
+
+<style>
+/* The landing page is built from the same tokens as the templates. It is the
+   demonstration: if the design system cannot carry one web page, it cannot
+   carry a deck either. */
+:root{
+  --blue:#5F1937; --navy:#431127; --deep:#2F0B1B;
+  --sky:#F8F1F4; --sky2:#EEDCE4;
+  --orange-dark:#8C5F1B; --orange-mid:#9D6D21;
+  --ink:#1A2430; --muted:#5D6B79; --line:#D9E0E7;
+  --sans:"Helvetica Neue",Arial,"Segoe UI",Roboto,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--ink);line-height:1.6;
+  background:#fff;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px;}
+a{color:var(--blue);}
+
+/* ---------- hero, with the dotted field from the brief ---------- */
+.hero{padding:88px 0 72px;text-align:center;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 1px 1px, #E7DDE2 1px, transparent 0) 0 0/22px 22px,
+    linear-gradient(#FCFAFB,#F6F1F3);
+  border-bottom:1px solid var(--line);}
+.eyebrow{font-size:13px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:18px;}
+h1{font-size:44px;font-weight:800;letter-spacing:-.02em;line-height:1.1;
+  margin-bottom:18px;}
+.lede{font-size:19px;color:var(--muted);max-width:640px;margin:0 auto 38px;}
+
+/* ---------- the command block ---------- */
+.cmd{display:flex;max-width:760px;margin:0 auto;background:#fff;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  box-shadow:0 1px 2px rgba(47,11,27,.06),0 8px 24px rgba(47,11,27,.05);}
+.cmd .kind{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:0 18px;
+  border-right:1px solid var(--line);font-size:15px;color:var(--ink);background:#FCFAFB;}
+.cmd code{flex:1;padding:18px 20px;font-family:var(--mono);font-size:15px;
+  color:var(--muted);text-align:left;white-space:nowrap;overflow-x:auto;}
+.cmd button{flex:0 0 auto;width:58px;border:0;border-left:1px solid var(--line);
+  background:#fff;cursor:pointer;color:var(--muted);font-size:15px;}
+.cmd button:hover{background:var(--sky);color:var(--blue);}
+.cmd button.done{color:var(--blue);font-weight:800;}
+.meta{margin-top:20px;font-size:15px;color:var(--muted);}
+.meta a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--sky2);}
+.btn{display:inline-block;margin-top:30px;padding:13px 26px;border-radius:10px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);font-size:16px;
+  font-weight:700;text-decoration:none;}
+.btn:hover{border-color:var(--blue);color:var(--blue);}
+
+/* ---------- sections ---------- */
+section{padding:64px 0;border-bottom:1px solid var(--line);}
+h2{font-size:27px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px;}
+.sub{color:var(--muted);margin-bottom:34px;max-width:620px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;}
+.card{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff;
+  text-decoration:none;color:inherit;display:block;}
+.card:hover{border-color:var(--blue);}
+.card img{width:100%;display:block;border-bottom:1px solid var(--line);}
+.card .body{padding:16px 18px;}
+.card h3{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:5px;}
+.card p{font-size:14px;color:var(--muted);line-height:1.5;}
+.shot{width:100%;border:1px solid var(--line);border-radius:12px;display:block;}
+ul.plain{list-style:none;}
+ul.plain li{position:relative;padding-left:22px;margin-bottom:9px;color:var(--muted);}
+ul.plain li:before{content:"";position:absolute;left:0;top:10px;width:7px;height:7px;
+  border-radius:50%;background:var(--blue);}
+ul.plain li b{color:var(--ink);}
+footer{padding:44px 0 60px;font-size:14px;color:var(--muted);text-align:center;}
+@media(max-width:640px){
+  h1{font-size:32px;} .cmd code{font-size:13px;} .cmd .kind{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">EDHEC project template</div>
+    <h1>Hand in work that looks like you meant it</h1>
+    <p class="lede">Slides, a paper and a one-page leave-behind. Write plain HTML,
+    get a PDF and a genuinely editable PowerPoint. No framework, no build step for
+    authoring, nothing to break the night before a hand-in.</p>
+
+    <div class="cmd">
+      <span class="kind">gh</span>
+      <code id="cmd">gh repo create my-deck --template Sillvs/edhec-project-template --private --clone</code>
+      <button id="copy" aria-label="Copy command">⧉</button>
+    </div>
+
+    <p class="meta">Open source · MIT licensed ·
+      <a href="https://github.com/Sillvs/edhec-project-template">github.com/Sillvs/edhec-project-template</a></p>
+
+    <a class="btn" href="slides.html">See the deck →</a>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>The same facts, laid out two ways</h2>
+    <p class="sub">Both took five minutes. One has a finding in the title, a visible
+    process, and something for the eye to land on. That difference is the whole repository.</p>
+    <img class="shot" src="img/mockup-compare.png" width="1760"
+         alt="A default PowerPoint slide beside the same content in this template">
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Open the real thing</h2>
+    <p class="sub">Every file below is the actual template, rendered in your browser.
+    No video, no screenshot. Press <b>O</b> for the overview grid, <b>F</b> for full screen.</p>
+    <div class="grid">
+      <a class="card" href="slides.html">
+        <img src="img/slide-title.png" width="1300" alt="Title slide of the starter deck">
+        <div class="body"><h3>The deck</h3>
+        <p>Twelve layout components and three whole-slide archetypes, 1280×720.</p></div>
+      </a>
+      <a class="card" href="gallery.html">
+        <img src="img/charts-1.png" width="1300" alt="Donut, columns, stacked columns and waterfall charts">
+        <div class="body"><h3>Chart gallery</h3>
+        <p>Thirteen charts to copy. No charting library: every value is a number in the markup.</p></div>
+      </a>
+      <a class="card" href="onepager.html">
+        <img src="img/onepager.png" width="900" alt="The executive one-pager">
+        <div class="body"><h3>One-pager</h3>
+        <p>The A4 sheet that stays on the table after you leave the room.</p></div>
+      </a>
+      <a class="card" href="paper.html">
+        <img src="img/paper-cover.png" width="900" alt="Cover page of the A4 paper template">
+        <div class="body"><h3>The paper</h3>
+        <p>A4, real page numbers, automatic section and figure numbering.</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The part nobody else does</h2>
+    <p class="sub">Most HTML slide tools give you a PDF and stop. This one reads the
+    rendered geometry out of Chrome and rebuilds every box, every line of text and
+    every colour as a native PowerPoint shape.</p>
+    <ul class="plain">
+      <li><b>Real shapes, real text.</b> A teammate who has never opened a terminal can drag a box and fix a typo an hour before the presentation.</li>
+      <li><b>Checked, not promised.</b> The build fails on overflow, on text under 11.5px, and on any text that misses WCAG AA against the colour actually painted behind it.</li>
+      <li><b>One file, offline.</b> The logo is embedded, so a mailed HTML file still arrives with its mark.</li>
+      <li><b>No npm.</b> Chromium, poppler, Node and <code>python-pptx</code>. That is the whole dependency list.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    MIT licensed. The EDHEC mark is a trademark and is not covered —
+    see <a href="https://github.com/Sillvs/edhec-project-template/blob/main/TRADEMARKS.md">TRADEMARKS.md</a>.
+  </div>
+</footer>
+
+<script>
+document.getElementById('copy').addEventListener('click', function () {
+  navigator.clipboard.writeText(document.getElementById('cmd').textContent.trim());
+  this.textContent = '✓'; this.classList.add('done');
+  setTimeout(() => { this.textContent = '⧉'; this.classList.remove('done'); }, 1600);
+});
+</script>
+</body>
+</html>

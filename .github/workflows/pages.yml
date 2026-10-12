@@ -1,0 +1,41 @@
+name: pages
+
+# Publishes the templates themselves as a live demo. A template repository that
+# you cannot look at before cloning asks for a lot of trust, and a rendered page
+# is also the only thing a search engine can index: a README is one page, this
+# is five, and the deck and gallery are the pages people actually search for.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble the site from the committed templates
+        run: |
+          # No Chrome needed: the site is the HTML sources plus the committed
+          # pictures. Rendering happens in the visitor's browser, which is the
+          # whole point of the templates being self-contained.
+          WHAT=site ./build.sh site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

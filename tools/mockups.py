@@ -273,6 +273,37 @@ def compare_mockup(before: Image.Image, after: Image.Image, out: pathlib.Path,
     return out
 
 
+def social_card(slide: Image.Image, out: pathlib.Path):
+    """The 1200x630 card that link previews show on Slack, LinkedIn and X.
+
+    GitHub has no API for a repository's social preview, so this one is used by
+    the GitHub Pages site via og:image and uploaded by hand to the repo under
+    Settings, General, Social preview. Without it, every shared link renders as
+    the grey default and a visual project looks like a config file.
+    """
+    W, H = 1200, 630
+    canvas = backdrop((W, H), top=(252, 250, 251), bottom=(240, 233, 236))
+    d = ImageDraw.Draw(canvas)
+    d.rectangle([0, 0, W, 7], fill=BURGUNDY)
+
+    sw = 760
+    sh = round(sw * slide.height / slide.width)
+    im = slide.resize((sw, sh), Image.LANCZOS)
+    card = Image.new("RGB", (sw + 2, sh + 2), (222, 208, 215))
+    card.paste(im, (1, 1))
+    card = rounded(card, 8)
+    x, y = (W - sw) // 2, 232
+    sh_lay = shadow(card.size, 8, 22, 3, 80)
+    canvas.paste(sh_lay, (x - 44, y - 30), sh_lay)
+    canvas.paste(card, (x, y), card)
+
+    label(canvas, (64, 74), "EDHEC PROJECT TEMPLATE", 23, BURGUNDY)
+    label(canvas, (64, 118), "Hand in work that looks", 46, (26, 36, 48))
+    label(canvas, (64, 170), "like you meant it", 46, (26, 36, 48))
+    canvas.save(out)
+    return out
+
+
 def contact_sheet(pgs: list[Image.Image], out: pathlib.Path, cols=4, cell=440, pad=14):
     rows = (len(pgs) + cols - 1) // cols
     ch = round(cell * pgs[0].height / pgs[0].width)
@@ -301,6 +332,7 @@ def main() -> None:
         sp = pages(slides)
         screen_mockup(sp[1], OUT / "mockup-screen.png")
         contact_sheet(sp, OUT / "slides-overview.png")
+        social_card(sp[1], OUT / "social.png")
         sp[0].resize((1300, round(1300 * sp[0].height / sp[0].width)),
                      Image.LANCZOS).save(OUT / "slide-title.png")
         sp[-1].resize((1300, round(1300 * sp[-1].height / sp[-1].width)),

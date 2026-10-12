@@ -16,8 +16,8 @@ PY="${PY:-python3}"
 WORK="${WORK:-.build}"
 WHAT="${1:-all}"
 case "$WHAT" in
-  all|slides|paper|docs|example) ;;
-  *) echo "unknown target '$WHAT'. Use: all, slides, paper, docs, example" >&2
+  all|slides|paper|docs|example|site) ;;
+  *) echo "unknown target '$WHAT'. Use: all, slides, paper, docs, example, site" >&2
      exit 2 ;;      # './build.sh slide' used to build nothing and exit 0
 esac
 mkdir -p "$WORK"
@@ -71,6 +71,30 @@ if [ "$WHAT" = all ] || [ "$WHAT" = paper ]; then
     echo "   FAIL: the one-pager is $op pages. Cut until it is one." >&2
     exit 1
   fi
+fi
+
+if [ "$WHAT" = all ] || [ "$WHAT" = site ]; then
+  # The GitHub Pages site. It is the templates themselves, not a description of
+  # them: the only honest demo of a self-contained HTML deck is the file.
+  echo "== site =="
+  mkdir -p site/img
+  cp slides/slides.html   site/slides.html
+  cp slides/gallery.html  site/gallery.html
+  cp paper/paper.html     site/paper.html
+  cp paper/onepager.html  site/onepager.html
+  cp docs/img/social.png docs/img/mockup-compare.png docs/img/slide-title.png \
+     docs/img/charts-1.png docs/img/onepager.png docs/img/paper-cover.png site/img/
+  # paper.html is the one template that still references an image by file
+  cp paper/figure-placeholder.png site/ 2>/dev/null || true
+  BASE=https://sillvs.github.io/edhec-project-template
+  printf 'User-agent: *\nAllow: /\nSitemap: %s/sitemap.xml\n' "$BASE" > site/robots.txt
+  { echo '<?xml version="1.0" encoding="UTF-8"?>'
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+    for u in "" slides.html gallery.html onepager.html paper.html; do
+      echo "  <url><loc>$BASE/$u</loc></url>"
+    done
+    echo '</urlset>'; } > site/sitemap.xml
+  echo "   site/: $(find site -type f | wc -l | tr -d ' ') files"
 fi
 
 if [ "$WHAT" = all ] || [ "$WHAT" = docs ]; then

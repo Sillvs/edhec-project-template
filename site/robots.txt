@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sillvs.github.io/edhec-project-template/sitemap.xml
