@@ -243,6 +243,7 @@ templates drift apart or if `design/tokens.css` disagrees with them.
 |---|---|
 | **[docs/EXPORT.md](docs/EXPORT.md)** | How to export, and the traps that silently break the output. Read this before you hand anything in. |
 | **[docs/COMPONENTS.md](docs/COMPONENTS.md)** | Every component and chart, the type and spacing scale, and the contrast rules. |
+| **[docs/SLIDES.md](docs/SLIDES.md)** | Slide craft: one finding, one line, room to breathe. Sourced, with the numbers measured at 1280×720. |
 | **[docs/FRAMEWORKS.md](docs/FRAMEWORKS.md)** | Nine consulting frameworks and what to build each one from. |
 | **[docs/PAPER.md](docs/PAPER.md)** | Writing a paper in the same design. |
 | **[TODO.md](TODO.md)** | Everything that was found, fixed and why, plus what was proposed and deliberately rejected. |

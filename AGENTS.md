@@ -71,8 +71,9 @@ where everything is highlighted highlights nothing.
 **Every chart value is a literal number in the markup.** No charting library, no
 data file. A chart has to be correctable during a rehearsal.
 
-See `docs/COMPONENTS.md` for what exists and `docs/FRAMEWORKS.md` for which
-framework to build from what.
+See `docs/COMPONENTS.md` for what exists, `docs/FRAMEWORKS.md` for which
+framework to build from what, and `docs/SLIDES.md` for the headline, spacing
+and density rules, with the numbers measured in this renderer.
 
 ## The copy and design filter: antislop
 
